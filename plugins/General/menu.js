@@ -1,10 +1,10 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const util = require("util");
 const fs = require("fs-extra");
 const path = require("path");
 const os = require("os");
 const moment = require("moment-timezone");
-const { format } = require(__dirname + "/../../devbmb/mesfonctions");
+const { format } = require(__dirname + "/../../devblaze/mesfonctions");
 const s = require(__dirname + "/../../settings");
 
 // ====== LOAD RANDOM IMAGE FROM /scs FOLDER ======
@@ -81,7 +81,7 @@ bmbtz({
   reaction: "🌚",
 }, async (dest, client, commandeOptions) => {
   const { ms, repondre, prefixe } = commandeOptions;
-  const { cm } = require(__dirname + "/../../devbmb/bmbtz");
+  const { cm } = require(__dirname + "/../../devblaze/blazetz");
 
   // ====== GROUP COMMANDS BY CATEGORY ======
   let coms = {};

@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devbmb/bmbtz');
+const { bmbtz } = require('../../devblaze/blazetz');
 const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/baileys');
 
 /**

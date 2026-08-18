@@ -1,5 +1,5 @@
 "use strict";
-// Verify the core command registry (devbmb/bmbtz.js) hasn't been
+// Verify the core command registry (devblaze/blazetz.js) hasn't been
 // renamed, removed, or tampered with before anything else loads — see
 // lib/integrityGuard.js for what exactly this checks and why.
 require("./lib/integrityGuard").verifyIntegrity(__dirname);
@@ -78,11 +78,11 @@ try {
 
 const { verifierEtatJid , recupererActionJid } = require("./lib/antilien");
 const { atbverifierEtatJid , atbrecupererActionJid } = require("./lib/antibot");
-let evt = require(__dirname + "/devbmb/bmbtz");
+let evt = require(__dirname + "/devblaze/blazetz");
 const {isUserBanned , addUserToBanList , removeUserFromBanList} = require("./lib/banUser");
 const  {addGroupToBanList,isGroupBanned,removeGroupFromBanList} = require("./lib/banGroup");
 const {isGroupOnlyAdmin,addGroupToOnlyAdminList,removeGroupFromOnlyAdminList} = require("./lib/onlyAdmin");
-let { reagir } = require(__dirname + "/devbmb/app");
+let { reagir } = require(__dirname + "/devblaze/app");
 const { getAllSudoNumbers } = require("./lib/sudo");
 let cachedSudoNumbers = [];
 async function refreshSudoCache() {

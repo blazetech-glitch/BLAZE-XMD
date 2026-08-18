@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devbmb/bmbtz');
+const { bmbtz } = require('../../devblaze/blazetz');
 const { addOrUpdateDataInAlive, getDataFromAlive } = require('../../lib/alive');
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../../settings");

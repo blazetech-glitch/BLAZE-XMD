@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.genererNomFichier = exports.stick = exports.format = exports.styletext = exports.zJson = exports.getBuffer = exports.reaction = exports.police = exports.bmbtz = void 0;
-let { bmbtz } = require("./bmbtz");
+let { bmbtz } = require("./blazetz");
 exports.bmbtz = bmbtz;
 const mesfonctions_1 = require("./mesfonctions");
 Object.defineProperty(exports, "reaction", { enumerable: true, get: function () { return mesfonctions_1.reaction; } });

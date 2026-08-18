@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 
 /* ===== API CONFIG ===== */
 const API_URL = "https://iamtkm.vercel.app/ai/gpt5";

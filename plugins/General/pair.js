@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;

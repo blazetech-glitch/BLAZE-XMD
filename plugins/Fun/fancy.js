@@ -1,5 +1,5 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
-const fancy = require("../../devbmb/style");
+const { bmbtz } = require("../../devblaze/blazetz");
+const fancy = require("../../devblaze/style");
 
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;

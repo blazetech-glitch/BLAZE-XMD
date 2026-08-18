@@ -1,6 +1,6 @@
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
-const { bmbtz } = require("../../devbmb/bmbtz");
-const traduire = require("../../devbmb/traduction");
+const { bmbtz } = require("../../devblaze/blazetz");
+const traduire = require("../../devblaze/traduction");
 const { downloadMediaMessage,downloadContentFromMessage } =  require('@whiskeysockets/baileys');
 const fs =require("fs-extra") ;
 const axios = require('axios');  

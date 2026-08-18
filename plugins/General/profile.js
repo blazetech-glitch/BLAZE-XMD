@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const conf = require(__dirname + "/../../settings");
 
 // VCard Contact kwa quoting

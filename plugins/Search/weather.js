@@ -1,7 +1,7 @@
 const axios = require("axios");
 const {
   bmbtz
-} = require("../../devbmb/bmbtz");
+} = require("../../devblaze/blazetz");
 bmbtz({
   'nomCom': 'weather',
   'reaction': "🌡️",

@@ -1,7 +1,7 @@
-const { bmbtz } = require('../../devbmb/bmbtz');
+const { bmbtz } = require('../../devblaze/blazetz');
 const axios = require('axios');
 const fs = require('fs-extra');
-const { mediafireDl } = require("../../devbmb/Function");
+const { mediafireDl } = require("../../devblaze/Function");
 const conf = require(__dirname + "/../../settings");
 
 // VCard Contact

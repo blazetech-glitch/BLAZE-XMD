@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 const { ajouterOuMettreAJourJid, mettreAJourAction, verifierEtatJid } = require('../../lib/antilien');
 const { atbajouterOuMettreAJourJid, atbverifierEtatJid } = require('../../lib/antibot');

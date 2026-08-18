@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devbmb/bmbtz');
+const { bmbtz } = require('../../devblaze/blazetz');
 const axios = require("axios")
 let { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
 const {isUserBanned , addUserToBanList , removeUserFromBanList} = require("../../lib/banUser");

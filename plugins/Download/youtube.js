@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 const YT_API = "https://apiziaul.vercel.app/api/downloader/ytmp3";

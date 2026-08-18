@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 
 // VCard Contact (optional)
 const quotedContact = {

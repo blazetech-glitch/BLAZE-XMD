@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
-const {bmbtz} = require("../../devbmb/bmbtz");
+const {bmbtz} = require("../../devblaze/blazetz");
 
 bmbtz({
   nomCom: "stickersearch",

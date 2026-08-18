@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const os = require("os");
 const { ButtonV2 } = require("../../lib/buttonBuilder");
 const conf = require("../../settings");

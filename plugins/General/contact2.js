@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz");
+const { bmbtz } = require("../../devblaze/blazetz");
 const { downloadMediaMessage, downloadContentFromMessage } = require("@whiskeysockets/baileys");
 const { exec } = require('child_process');
 const { writeFile } = require("fs/promises");

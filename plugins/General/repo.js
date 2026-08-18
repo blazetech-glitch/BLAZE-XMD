@@ -1,4 +1,4 @@
-const { bmbtz } = require(__dirname + "/../../devbmb/bmbtz");
+const { bmbtz } = require(__dirname + "/../../devblaze/blazetz");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");

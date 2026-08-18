@@ -1,6 +1,6 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devbmb/bmbtz");
-const traduire = require("../../devbmb/traduction");
+const { bmbtz } = require("../../devblaze/blazetz");
+const traduire = require("../../devblaze/traduction");
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 
 // VCard Contact (BLAZE VERIFIED ✅)

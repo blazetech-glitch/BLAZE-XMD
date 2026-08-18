@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devbmb/bmbtz")
+const { bmbtz } = require("../../devblaze/blazetz")
 //const { getGroupe } = require("../../lib/groupe")
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const {ajouterOuMettreAJourJid,mettreAJourAction,verifierEtatJid} = require("../../lib/antilien")
@@ -7,7 +7,7 @@ const { search, download } = require("aptoide-scraper");
 const fs = require("fs-extra");
 const conf = require("../../settings");
 const { default: axios } = require('axios');
-//const { uploadImageToImgur } = require('../../devbmb/imgur');
+//const { uploadImageToImgur } = require('../../devblaze/imgur');
 
 
 

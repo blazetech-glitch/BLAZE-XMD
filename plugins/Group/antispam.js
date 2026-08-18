@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devbmb/bmbtz');
+const { bmbtz } = require('../../devblaze/blazetz');
 const { getGroupFeature, setGroupFeature } = require('../../lib/groupProtection');
 
 const ON = new Set(['on', 'enable', 'enabled', 'warn', 'start']);
