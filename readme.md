@@ -1,5 +1,7 @@
 <div align="center">
   <img src="public/blaze-xmd-logo.svg" width="760" alt="Animated BLAZE-XMD logo" />
+  <br />
+  <img src="public/blaze-tech-logo.svg" width="680" alt="Animated BLAZE-TECH logo" />
   <h1><span style="color:#ff8a3d; font-family:Georgia,serif; letter-spacing:3px;">BLAZE</span><span style="color:#2dd4bf; font-family:Georgia,serif; letter-spacing:3px;">-XMD</span></h1>
   <p><strong>𝘽𝙇𝘼𝙕𝙀 𝙓𝙈𝘿</strong> <em>repository</em></p>
   <p>

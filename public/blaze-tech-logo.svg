@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">BLAZE-TECH by ARNOLDT20</title>
+  <desc id="desc">Animated BLAZE-TECH flame logo created by ARNOLDT20</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#050914"/>
+      <stop offset="0.55" stop-color="#10243d"/>
+      <stop offset="1" stop-color="#24133d"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff3d28"/>
+      <stop offset="0.48" stop-color="#ff8a00"/>
+      <stop offset="1" stop-color="#fff0a3"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#ffcf65"/>
+      <stop offset="1" stop-color="#ff6248"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff4d36"/>
+      <stop offset="0.5" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#49e7d0"/>
+    </linearGradient>
+    <filter id="glow" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="wide"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="tight"/>
+      <feMerge><feMergeNode in="wide"/><feMergeNode in="tight"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      .brand { font-family: Inter, Segoe UI, Arial, sans-serif; }
+      .flicker { animation: flicker 1.8s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center bottom; }
+      .breathe { animation: breathe 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+      .credit { animation: credit 3s ease-in-out infinite; }
+      @keyframes flicker { from { transform: scaleY(.93) rotate(-2deg); } to { transform: scaleY(1.07) rotate(2deg); } }
+      @keyframes breathe { 0%,100% { opacity: .35; transform: scale(.94); } 50% { opacity: .9; transform: scale(1.08); } }
+      @keyframes credit { 0%,100% { opacity: .72; letter-spacing: 4px; } 50% { opacity: 1; letter-spacing: 6px; } }
+      @media (prefers-reduced-motion: reduce) { .flicker, .breathe, .credit { animation: none; } }
+    </style>
+  </defs>
+  <rect width="1200" height="520" rx="44" fill="url(#bg)"/>
+  <circle class="breathe" cx="1060" cy="70" r="220" fill="#49e7d0" opacity=".18" filter="url(#glow)"/>
+  <circle class="breathe" cx="1060" cy="455" r="250" fill="#ff4d36" opacity=".16" filter="url(#glow)"/>
+  <path d="M0 458 C250 415 420 500 680 450 S1030 416 1200 452" fill="none" stroke="#49e7d0" stroke-opacity=".2" stroke-width="2"/>
+  <g transform="translate(82 78)" filter="url(#shadow)">
+    <circle class="breathe" cx="116" cy="145" r="110" fill="#ff8a00" opacity=".34" filter="url(#glow)"/>
+    <g class="flicker" filter="url(#glow)">
+      <path d="M116 4c18 53-12 74-37 99-22 22-30 44-20 67 8 18 27 30 49 30 39 0 69-30 69-70 0-32-17-63-61-126z" fill="url(#flame)"/>
+      <path d="M93 105c-25 25-39 46-33 67 5 17 18 28 36 28 27 0 47-22 47-48 0-17-9-34-28-55-5 14-10 18-22 8z" fill="#fff4c2" opacity=".95"/>
+    </g>
+    <circle cx="75" cy="220" r="6" fill="#ff633f" opacity=".85"/>
+    <circle cx="158" cy="218" r="7" fill="#ffe08a" opacity=".9"/>
+  </g>
+  <g class="brand" transform="translate(310 0)">
+    <text x="0" y="190" fill="url(#word)" font-size="96" font-weight="900" letter-spacing="5">BLAZE</text>
+    <text x="0" y="300" fill="#ffffff" font-size="82" font-weight="800" letter-spacing="7">TECH</text>
+    <rect x="5" y="326" width="560" height="5" rx="3" fill="url(#accent)" opacity=".9">
+      <animate attributeName="width" values="360;560;360" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <text class="credit" x="5" y="405" fill="#ffe08a" font-size="22" font-weight="800" letter-spacing="4">CRAFTED BY ARNOLDT20</text>
+  </g>
+</svg>
