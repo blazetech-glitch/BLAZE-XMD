@@ -21,7 +21,7 @@ const quotedContact = {
 bmbtz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOptions) => {
     let { ms, repondre } = commandeOptions;
 
-    const repoUrl = "https://api.github.com/repos/novaxmd/BLAZE-TECH";
+    const repoUrl = "https://api.github.com/repos/blazetech-glitch/BLAZE-TECH";
 
     // Random image from /scs folder
     const scsFolder = path.join(__dirname, "../scs");
