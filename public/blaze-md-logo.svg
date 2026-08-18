@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">BLAZE-MD</title>
+  <desc id="desc">BLAZE-MD WhatsApp automation bot logo</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.58" stop-color="#102a43"/>
+      <stop offset="1" stop-color="#183b56"/>
+    </linearGradient>
+    <linearGradient id="fire" x1="0" y1="1" x2="0.9" y2="0">
+      <stop offset="0" stop-color="#ff6b35"/>
+      <stop offset="0.5" stop-color="#ffb000"/>
+      <stop offset="1" stop-color="#ffe08a"/>
+    </linearGradient>
+    <linearGradient id="word" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#9ee7ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="360" rx="42" fill="url(#bg)"/>
+  <circle cx="930" cy="-10" r="220" fill="#2dd4bf" opacity="0.08"/>
+  <circle cx="1100" cy="310" r="250" fill="#ff7a45" opacity="0.08"/>
+  <g transform="translate(82 45)" filter="url(#shadow)">
+    <path d="M116 4c18 53-12 74-37 99-22 22-30 44-20 67 8 18 27 30 49 30 39 0 69-30 69-70 0-32-17-63-61-126z" fill="url(#fire)"/>
+    <path d="M93 105c-25 25-39 46-33 67 5 17 18 28 36 28 27 0 47-22 47-48 0-17-9-34-28-55-5 14-10 18-22 8z" fill="#fff4c2" opacity="0.92"/>
+    <circle cx="115" cy="236" r="7" fill="#ffb000"/>
+    <circle cx="76" cy="220" r="4" fill="#ff6b35"/>
+    <circle cx="155" cy="216" r="5" fill="#ffe08a"/>
+  </g>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" transform="translate(310 0)">
+    <text x="0" y="178" fill="url(#word)" font-size="104" font-weight="800" letter-spacing="6">BLAZE</text>
+    <text x="410" y="178" fill="#ffb000" font-size="104" font-weight="800" letter-spacing="2">-MD</text>
+    <rect x="5" y="212" width="520" height="4" rx="2" fill="#2dd4bf" opacity="0.72"/>
+    <text x="5" y="263" fill="#c9e8f3" font-size="25" font-weight="500" letter-spacing="5">WHATSAPP AUTOMATION</text>
+    <text x="5" y="302" fill="#8fb5c6" font-size="18" letter-spacing="2">FAST  •  MODERN  •  RELIABLE</text>
+  </g>
+</svg>
