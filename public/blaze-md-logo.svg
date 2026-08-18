@@ -26,9 +26,19 @@
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
       <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.35"/>
     </filter>
-    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="9" result="blur"/>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="luminous" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="wide"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="tight"/>
+      <feColorMatrix in="wide" type="matrix" values="1 0 0 0 0.08  0 0.72 0 0 0.04  0 0 0.35 0 0  0 0 0 0.82 0" result="warmWide"/>
+      <feMerge>
+        <feMergeNode in="warmWide"/>
+        <feMergeNode in="tight"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
     <style>
       .brand { font-family: Inter, Segoe UI, Arial, sans-serif; }
@@ -47,13 +57,13 @@
   </defs>
 
   <rect width="1200" height="420" rx="42" fill="url(#bg)"/>
-  <circle class="pulse" cx="930" cy="-10" r="220" fill="#2dd4bf"/>
-  <circle class="pulse" cx="1100" cy="340" r="250" fill="#ff7a45"/>
+  <circle class="pulse" cx="930" cy="-10" r="220" fill="#2dd4bf" opacity=".14" filter="url(#glow)"/>
+  <circle class="pulse" cx="1100" cy="340" r="250" fill="#ff7a45" opacity=".14" filter="url(#glow)"/>
   <path d="M0 356 C220 318 382 398 622 352 S1010 315 1200 350" fill="none" stroke="#2dd4bf" stroke-opacity=".16" stroke-width="2"/>
 
   <g transform="translate(82 53)" filter="url(#shadow)">
-    <circle class="pulse" cx="116" cy="147" r="104" fill="#ff8a3d" opacity=".22" filter="url(#glow)"/>
-    <g class="flicker">
+    <circle class="pulse" cx="116" cy="147" r="104" fill="#ffb000" opacity=".34" filter="url(#luminous)"/>
+    <g class="flicker" filter="url(#luminous)">
       <path d="M116 4c18 53-12 74-37 99-22 22-30 44-20 67 8 18 27 30 49 30 39 0 69-30 69-70 0-32-17-63-61-126z" fill="url(#fire)"/>
       <path d="M93 105c-25 25-39 46-33 67 5 17 18 28 36 28 27 0 47-22 47-48 0-17-9-34-28-55-5 14-10 18-22 8z" fill="#fff4c2" opacity=".94"/>
     </g>

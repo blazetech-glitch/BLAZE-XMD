@@ -896,7 +896,7 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
                         }
 
                         try {
-                            const gifLink = "https://github.com/novaxmd/BLAZE-MD-DATA/raw/refs/heads/main/remover.gif";
+                            const gifLink = "https://raw.githubusercontent.com/blazetech-glitch/BLAZE-TECH/main/plugins/scs/menu1.jpg";
                             var sticker = new Sticker(gifLink, {
                                 pack: 'Blaze-Tech',
                                 author: conf.OWNER_NAME,
@@ -972,7 +972,7 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
                 participant: auteurMessage
             };
             var txt = "bot detected, \n";
-            const gifLink = "https://github.com/novaxmd/BLAZE-MD-DATA/raw/refs/heads/main/remover.gif";
+            const gifLink = "https://raw.githubusercontent.com/blazetech-glitch/BLAZE-TECH/main/plugins/scs/menu1.jpg";
             var sticker = new Sticker(gifLink, {
                 pack: 'Blaze-Tech',
                 author: conf.OWNER_NAME,

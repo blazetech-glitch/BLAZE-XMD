@@ -1,6 +1,10 @@
 <div align="center">
   <img src="public/blaze-md-logo.svg" width="760" alt="Animated BLAZE-MD logo" />
-  <h1>BLAZE-MD</h1>
+  <h1><span style="color:#ff8a3d;">BLAZE</span><span style="color:#2dd4bf;">-MD</span></h1>
+  <p>
+    <img src="https://img.shields.io/badge/WHATSAPP%20AUTOMATION-07111f?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=ff6b35" alt="WhatsApp automation" />
+    <img src="https://img.shields.io/badge/FAST%20%7C%20MODERN%20%7C%20RELIABLE-102a43?style=for-the-badge&labelColor=2dd4bf" alt="Fast modern reliable" />
+  </p>
 </div>
 
 ## About BLAZE-MD
@@ -20,7 +24,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
 
 <p align="center">
   <a href="https://github.com/blazetech-glitch">
-    <img title="Developer" src="https://img.shields.io/badge/ARNOLDT20-BLAZE--MD-darkgreen?style=for-the-badge&logo=github" alt="ARNOLDT20 - BLAZE-MD developer" />
+    <img title="Developer" src="https://img.shields.io/badge/ARNOLDT20-BLAZE--MD-07111f?style=for-the-badge&logo=github&logoColor=white&labelColor=ff8a3d&color=102a43" alt="ARNOLDT20 - BLAZE-MD developer" />
   </a>
 </p>
 
