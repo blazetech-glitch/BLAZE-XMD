@@ -17,7 +17,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
   <a href="https://github.com/blazetech-glitch/BLAZE-TECH/fork">
     <img src="https://img.shields.io/github/forks/blazetech-glitch/BLAZE-TECH?label=Forks&style=social" alt="GitHub Forks" />
   </a>
-  <a href="https://github.com/blazetech-glitch/BLAZE-TECH/stargazers">
+  <a href="https://github.com/blazetech-glitch/BLAZE-TECH">
     <img src="https://img.shields.io/github/stars/blazetech-glitch/BLAZE-TECH?style=social" alt="GitHub Stars" />
   </a>
 </p>
