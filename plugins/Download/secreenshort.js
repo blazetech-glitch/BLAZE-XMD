@@ -20,8 +20,8 @@ bmbtz({
       forwardingScore: 999,
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
-        newsletterJid: "120363382023564830@newsletter",
-        newsletterName: "B.M.B TECH",
+        newsletterJid: "120363421014261315@newsletter",
+        newsletterName: "BLAZE TECH",
         serverMessageId: 0x8f
       }
     };

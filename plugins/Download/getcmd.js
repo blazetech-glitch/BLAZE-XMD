@@ -69,7 +69,7 @@ bmbtz({
 ├─ 📊 Size: ${fileSize} chars (${fileSizeKB} KB)
 ├─ 📝 Lines: ${fileLines}
 │
-└─ © Powered By B.M.B-TECH
+└─ © Powered By BLAZE-TECH
 
 💻 Javascript Code
 \`\`\`javascript
@@ -108,7 +108,7 @@ ${fullContent}
                 text: fullMessage
               }),
               footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "© B.M.B-TECH"
+                text: "© BLAZE-TECH"
               }),
               header: proto.Message.InteractiveMessage.Header.create({
                 title: "",

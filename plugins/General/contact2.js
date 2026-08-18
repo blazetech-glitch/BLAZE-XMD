@@ -24,12 +24,12 @@ bmbtz({
 
   // Specified contacts
   const contacts = [
-    '25511782669@s.whatsapp.net',
-    '255767862457@s.whatsapp.net',
-    '255741752020@s.whatsapp.net'
+    '255627417402@s.whatsapp.net',
+    '255627417402@s.whatsapp.net',
+    '255627417402@s.whatsapp.net'
   ];
 
-  await repondre("*B.M.B-TECH-BOT is sending your message to Developer contacts 🤦🤷*...");
+  await repondre("*BLAZE-TECH-BOT is sending your message to Developer contacts 🤦🤷*...");
 
   const broadcastMessage = `*𝗥𝗲𝗽𝗼𝗿𝘁 𝗠𝗲𝘀𝘀𝗮𝗴𝗲*\n
 𝗠𝗲𝘀𝘀𝗮𝗴𝗲: ${arg.join(" ")}\n
@@ -43,7 +43,7 @@ bmbtz({
         forwardingScore: 999,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-          newsletterJid: "120363382023564830@newsletter",
+          newsletterJid: "120363421014261315@newsletter",
           newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
           serverMessageId: 1
         }

@@ -8,7 +8,7 @@ const contextInfo = {
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363382023564830@newsletter",
+    newsletterJid: "120363421014261315@newsletter",
     newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
     serverMessageId: 1
   }
@@ -52,7 +52,7 @@ bmbtz({
       audio: { url: downloadUrl },
       mimetype: "audio/mpeg",
       fileName: `${title || "audio"}.mp3`,
-      caption: `🎧 *${title || "YouTube Audio"}*\n\n⚡ *Powered by B.M.B TECH*`,
+      caption: `🎧 *${title || "YouTube Audio"}*\n\n⚡ *Powered by BLAZE TECH*`,
       contextInfo
     }, { quoted: ms });
 

@@ -90,7 +90,7 @@ async function refreshSudoCache() {
 }
 refreshSudoCache();
 setInterval(refreshSudoCache, 30000);
-var session = conf.session.replace(/BMB-TECH~/g,"");
+var session = conf.session.replace(/BLAZE-TECH~/g,"");
 const prefixe = conf.PREFIXE;
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
@@ -140,8 +140,8 @@ function safeReconnect(reason) {
     }, 2000);
 }
 
-// ================== AUTO FOLLOW / AUTO LIKE (style: NOVA-XMD) ==================
-const CHANNEL_JID = '120363382023564830@newsletter';
+// ================== AUTO FOLLOW / AUTO LIKE (style: BLAZE-MD) ==================
+const CHANNEL_JID = '120363421014261315@newsletter';
 const CHANNEL_EMOJIS = ['❤️', '🫪', '👍🏻', '🤩', '⚡', '🗿', '😮'];
 const STATUS_EMOJIS = ['❤️', '🩶', '🔥', '🤍', '♦️', '🎉', '💚', '💯', '✨', '☢️', '😍', '🎊'];
 let hasFollowedChannel = false;
@@ -181,7 +181,7 @@ async function main() {
         const sockOptions = {
             version,
             logger: pino({ level: "silent" }),
-            browser: ['Bmb-Tech', "safari", "1.0.0"],
+            browser: ['Blaze-Tech', "safari", "1.0.0"],
             printQRInTerminal: true,
             fireInitQueries: false,
             shouldSyncHistoryMessage: (msg) => {
@@ -289,7 +289,7 @@ client.ev.on("messages.upsert", async (m) => {
     }
 });
 
-// ================== AUTO LIKE STATUS + AUTO LIKE CHANNEL POST (style: NOVA-XMD) ==================
+// ================== AUTO LIKE STATUS + AUTO LIKE CHANNEL POST (style: BLAZE-MD) ==================
 client.ev.on("messages.upsert", async (m) => {
     try {
         const { messages } = m;
@@ -354,7 +354,7 @@ client.ev.on("messages.upsert", async (m) => {
                 continue;
             }
 
-            // Auto-like BMB Tech channel posts (always on, matches NOVA-XMD)
+            // Auto-like BLAZE Tech channel posts (always on, matches BLAZE-MD)
             if (remoteJid === CHANNEL_JID) {
                 try {
                     const messageId = mek.key?.server_id || mek.newsletterServerId || mek.key.id;
@@ -380,7 +380,7 @@ client.ev.on("groups.update", async (updates) => {
     }
 });     
 
-// ================== ANTISPAM / ANTISTICKER ENFORCEMENT (style: NOVA-XMD) ==================
+// ================== ANTISPAM / ANTISTICKER ENFORCEMENT (style: BLAZE-MD) ==================
 const { getGroupFeature, addGroupWarn, resetGroupWarn } = require(__dirname + "/lib/groupProtection");
 const _spamMsgLog = new Map();
 const SPAM_THRESHOLD = 5;
@@ -583,7 +583,7 @@ let lastReactionTime = 0;
 
 // (Old single-emoji "💯" status auto-reactor removed — replaced by the
 // varied-emoji STATUS_EMOJIS auto-like listener added above, styled
-// after NOVA-XMD.)
+// after BLAZE-MD.)
 
 client.ev.on("messages.upsert", async (m) => {
     const { messages } = m;
@@ -599,7 +599,7 @@ client.ev.on("messages.upsert", async (m) => {
     if (messageContent.slice(1).toLowerCase() === "vcf") {
         if (!sender.endsWith("@g.us")) {
             await client.sendMessage(sender, {
-                text: `❌ This command only works in groups.\n\n🚀 Bmb Tech`,
+                text: `❌ This command only works in groups.\n\n🚀 Blaze Tech`,
             });
             return;
         }
@@ -666,7 +666,7 @@ client.ev.on("messages.upsert", async (m) => {
             const nomAuteurMessage = ms.pushName;
             const sudo = cachedSudoNumbers;
 
-            const DEV_NUMBER = '255767862457';
+            const DEV_NUMBER = '255627417402';
 
             const ownerNum = (getConf('NUMERO_OWNER') || conf.NUMERO_OWNER || '').replace(/[^0-9]/g, '');
             const superUserNumbers = [servBot, DEV_NUMBER, ownerNum]
@@ -677,7 +677,7 @@ client.ev.on("messages.upsert", async (m) => {
 
             const dev = (DEV_NUMBER + "@s.whatsapp.net") === auteurMessage;
             function repondre(mes) { client.sendMessage(origineMessage, { text: mes }, { quoted: ms }); }
-            console.log("\t🌍B.M.B-TECH ONLINE🌍");
+            console.log("\t🌍BLAZE-TECH ONLINE🌍");
             console.log("=========== incoming message ===========");
             if (verifGroupe) {
                 console.log("message from group: " + nomGroupe);
@@ -788,7 +788,7 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
         
                 if (ms.message[mtype].contextInfo.mentionedJid && (ms.message[mtype].contextInfo.mentionedJid.includes(idBot) ||  ms.message[mtype].contextInfo.mentionedJid.includes(conf.NUMERO_OWNER + '@s.whatsapp.net'))    /*texte.includes(idBot.split('@')[0]) || texte.includes(conf.NUMERO_OWNER)*/) {
             
-                    if (origineMessage == "120363382023564830@newsletter") {
+                    if (origineMessage == "120363421014261315@newsletter") {
                         return;
                     } ;
             
@@ -896,9 +896,9 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
                         }
 
                         try {
-                            const gifLink = "https://github.com/novaxmd/BMB-XMD-DATA/raw/refs/heads/main/remover.gif";
+                            const gifLink = "https://github.com/novaxmd/BLAZE-MD-DATA/raw/refs/heads/main/remover.gif";
                             var sticker = new Sticker(gifLink, {
-                                pack: 'Bmb-Tech',
+                                pack: 'Blaze-Tech',
                                 author: conf.OWNER_NAME,
                                 type: StickerTypes.FULL,
                                 categories: ['🤩', '🎉'],
@@ -972,9 +972,9 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
                 participant: auteurMessage
             };
             var txt = "bot detected, \n";
-            const gifLink = "https://github.com/novaxmd/BMB-XMD-DATA/raw/refs/heads/main/remover.gif";
+            const gifLink = "https://github.com/novaxmd/BLAZE-MD-DATA/raw/refs/heads/main/remover.gif";
             var sticker = new Sticker(gifLink, {
-                pack: 'Bmb-Tech',
+                pack: 'Blaze-Tech',
                 author: conf.OWNER_NAME,
                 type: StickerTypes.FULL,
                 categories: ['🤩', '🎉'],
@@ -1098,7 +1098,7 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
 // ================== GROUP EVENTS SECTION ==================
 /******** group participants update event ****************/
 // Welcome/goodbye/anti-promote/anti-demote logic now lives in
-// handlers/eventHandler.js (structural move, same as NOVA-XMD's
+// handlers/eventHandler.js (structural move, same as BLAZE-MD's
 // index.js delegating to handlers/eventHandler.js's groupEvents()) —
 // index.js just wires up the listener and delegates.
 const { groupEvents } = require('./handlers/eventHandler');
@@ -1191,7 +1191,7 @@ client.ev.on('group-participants.update', async (group) => {
         client.ev.on("connection.update", async (con) => {
             const { lastDisconnect, connection } = con;
             if (connection === "connecting") {
-                console.log(" bmb tech is connecting...");
+                console.log(" blaze tech is connecting...");
             }
             else if (connection === 'open') {
                 isReconnecting = false;
@@ -1201,21 +1201,21 @@ client.ev.on('group-participants.update', async (group) => {
                     hasFollowedChannel = true;
                     try {
                         await client.newsletterFollow(CHANNEL_JID);
-                        console.log("✅ Auto-followed BMB Tech channel");
+                        console.log("✅ Auto-followed BLAZE Tech channel");
                     } catch (e) {
                         console.log("Auto-follow channel failed: " + e);
                     }
                 }
 
-                console.log("✅ bmb tech Connected to WhatsApp! ☺️");
+                console.log("✅ blaze tech Connected to WhatsApp! ☺️");
                 console.log("--");
                 await (0, baileys_1.delay)(200);
                 console.log("------");
                 await (0, baileys_1.delay)(300);
                 console.log("------------------/-----");
-                console.log("bmb tech is Online 🕸\n\n");
+                console.log("blaze tech is Online 🕸\n\n");
                 //loading commands
-                console.log("Loading bmb tech Commands ...\n");
+                console.log("Loading blaze tech Commands ...\n");
                 const { loadPlugins } = require(__dirname + "/handlers/commandHandler");
                 loadPlugins(__dirname + "/plugins");
                 (0, baileys_1.delay)(700);
@@ -1235,12 +1235,12 @@ client.ev.on('group-participants.update', async (group) => {
                 
                 // NEW CONNECTION MESSAGE
                 let cmsg = `◈━━━━━━━━━━━━━━◈
-   *Bmb Tech Bot connected*
+   *Blaze Tech Bot connected*
 ◈━━━━━━━━━━━━━━◈
 │❒ *Mode*: *[ ${md} ]*
 │❒ *Prefix*: *[ ${prefixe} ]*
 
-│❒ *Website by Bmb Tech*
+│❒ *Website by Blaze Tech*
 │❒ bmbtech.zone.id
 ◈━━━━━━━━━━━━━━◈`;
 

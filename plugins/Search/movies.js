@@ -3,7 +3,7 @@ const { bmbtz } = require("../../devbmb/bmbtz");
 const traduire = require("../../devbmb/traduction");
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 
-// VCard Contact (B.M.B VERIFIED ✅)
+// VCard Contact (BLAZE VERIFIED ✅)
 const quotedContact = {
   key: {
     fromMe: false,
@@ -12,8 +12,8 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
-      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:B.M.B VERIFIED ✅\nORG:BMB-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255767862457:+255767862457\nEND:VCARD"
+      displayName: "BLAZE VERIFIED ✅",
+      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:BLAZE VERIFIED ✅\nORG:BLAZE-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255627417402:+255627417402\nEND:VCARD"
     }
   }
 };
@@ -24,7 +24,7 @@ const newsletterContext = {
     forwardingScore: 999,
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
-      newsletterJid: "120363382023564830@newsletter",
+      newsletterJid: "120363421014261315@newsletter",
       newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
       serverMessageId: 1
     }
@@ -47,7 +47,7 @@ bmbtz({
     const imdbData = response.data;
 
     let imdbInfo = "THANKS ALL FOR THE SUPPORT ITS ME PKDRILLER \n";
-    imdbInfo += " ``` B.M.B-TECH FILMS```\n";
+    imdbInfo += " ``` BLAZE-TECH FILMS```\n";
     imdbInfo += "*Made by 𝙱.𝙼.𝙱-𝚇𝙼𝙳*\n";
     imdbInfo += "🎬Title    : " + imdbData.Title + "\n";
     imdbInfo += "📅year      : " + imdbData.Year + "\n";

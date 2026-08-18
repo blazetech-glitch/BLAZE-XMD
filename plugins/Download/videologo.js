@@ -10,13 +10,13 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
+      displayName: "BLAZE VERIFIED ✅",
       vcard:
         "BEGIN:VCARD\n" +
         "VERSION:3.0\n" +
-        "FN:B.M.B VERIFIED ✅\n" +
-        "ORG:BMB-TECH BOT;\n" +
-        "TEL;type=CELL;type=VOICE;waid=255767862457:+255767862457\n" +
+        "FN:BLAZE VERIFIED ✅\n" +
+        "ORG:BLAZE-TECH BOT;\n" +
+        "TEL;type=CELL;type=VOICE;waid=255627417402:+255627417402\n" +
         "END:VCARD"
     }
   }
@@ -27,15 +27,15 @@ const contextInfo = {
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363382023564830@newsletter",
+    newsletterJid: "120363421014261315@newsletter",
     newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
     serverMessageId: 1
   },
   externalAdReply: {
     title: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
-    body: "Powered by B.M.B TECH",
+    body: "Powered by BLAZE TECH",
     thumbnailUrl: "https://files.catbox.moe/g2brwg.jpg",
-    sourceUrl: "https://whatsapp.com/channel/0029VawO6hgF6sn7k3SuVU3z",
+    sourceUrl: "https://whatsapp.com/channel/0029VbAjwl9MF8vQQa0ZT32",
     mediaType: 1,
     renderLargerThumbnail: true
   }

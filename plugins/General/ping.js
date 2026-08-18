@@ -57,7 +57,7 @@ bmbtz({
 
     const statusMsg = `📌 *PING*
 ━━━━━━━━━━━━━━━━
-${greeting}, Bmb Tech
+${greeting}, Blaze Tech
 Prefix : ${prefixe}
 𝐋𝐚𝐭𝐞𝐧𝐜𝐲 : ${ping.toFixed(4)}ms
 𝐒𝐞𝐫𝐯𝐞𝐫 𝐓𝐢𝐦𝐞 : ${serverTime}
@@ -66,16 +66,16 @@ Prefix : ${prefixe}
 𝐍𝐨𝐝𝐞𝐉𝐒 : ${process.version}
 𝐏𝐥𝐚𝐭𝐟𝐨𝐫𝐦 : ${process.platform === "linux" ? "Linux" : process.platform}
 ━━━━━━━━━━━━━━━━
-© bmb tech`;
+© blaze tech`;
 
     await client.sendMessage(dest, { text: statusMsg }, { quoted: ms });
 
-    // Quick-nav buttons (styled after NOVA-XMD's fullmenu.js)
+    // Quick-nav buttons (styled after BLAZE-MD's fullmenu.js)
     try {
       const btnV2 = new ButtonV2(client);
       btnV2
-        .setBody(`📌 *QUICK NAV*\n━━━━━━━━━━━━━━━━\nTap a button below\n━━━━━━━━━━━━━━━━\n© bmb tech`)
-        .setFooter("> © BMB TECH")
+        .setBody(`📌 *QUICK NAV*\n━━━━━━━━━━━━━━━━\nTap a button below\n━━━━━━━━━━━━━━━━\n© blaze tech`)
+        .setFooter("> © BLAZE TECH")
         .addButton("📜 Menu", `${prefixe}menu`)
         .addButton("👑 Owner", `${prefixe}owner`);
       await btnV2.send(dest, { mentions: [reponse.auteurMessage] });

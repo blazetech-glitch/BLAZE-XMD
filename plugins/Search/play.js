@@ -2,9 +2,9 @@ const { bmbtz } = require("../../devbmb/bmbtz");
 const axios = require('axios');
 const yts = require('yt-search');
 
-const BOT_NAME = 'B.M.B-TECH'; // Change as you want
-const NEWSLETTER_JID = '120363382023564830@newsletter';
-const NEWSLETTER_NAME = 'Bmb Tech Info';
+const BOT_NAME = 'BLAZE-TECH'; // Change as you want
+const NEWSLETTER_JID = '120363421014261315@newsletter';
+const NEWSLETTER_NAME = 'Blaze Tech Info';
 
 const buildCaption = (type, video) => {
   const banner = type === "video" ? `${BOT_NAME} VIDEO PLAYER` : `${BOT_NAME} SONG PLAYER`;

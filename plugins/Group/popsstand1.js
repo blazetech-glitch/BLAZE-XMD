@@ -12,7 +12,7 @@ const { getBinaryNodeChild, getBinaryNodeChildren } = require("@whiskeysockets/b
 
 // ADD COMMAND — moved to plugins/Group/add.js (fixed: was superUser-only
 // and used an invalid "settings" query type that silently failed against
-// current WhatsApp servers; the new version matches NOVA-XMD's working add.js)
+// current WhatsApp servers; the new version matches BLAZE-MD's working add.js)
 
 
 // REJECT COMMAND
@@ -76,18 +76,18 @@ bmbtz({
 
     for (let member of participants) {
       let number = member.id.split('@')[0];
-      let name = member.name || member.notify || `[B.M.B-TECH] +${number}`;
+      let name = member.name || member.notify || `[BLAZE-TECH] +${number}`;
       vcardData += `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL;type=CELL;type=VOICE;waid=${number}:+${number}\nEND:VCARD\n`;
     }
 
-    repondre(`A moment, *B.M.B-TECH* is compiling ${participants.length} contacts into a vcf...`);
+    repondre(`A moment, *BLAZE-TECH* is compiling ${participants.length} contacts into a vcf...`);
     fs.writeFileSync("./contacts.vcf", vcardData.trim());
 
     await sock.sendMessage(jid, {
       document: fs.readFileSync("./contacts.vcf"),
       mimetype: "text/vcard",
       fileName: `${metadata.subject}.vcf`,
-      caption: `VCF for ${metadata.subject}\nTotal Contacts: ${participants.length}\n*THANKS FOR USING B.M.B-TECH*`
+      caption: `VCF for ${metadata.subject}\nTotal Contacts: ${participants.length}\n*THANKS FOR USING BLAZE-TECH*`
     }, { ephemeralExpiration: 86400, quoted: ms });
 
     fs.unlinkSync('./contacts.vcf');

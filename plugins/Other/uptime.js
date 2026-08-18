@@ -73,7 +73,7 @@ bmbtz(
     
     // --- Format Output ---
     const uptimeMessage = `◈━━━━━━━━━━━━━━◈
-│❒  *BMB-TECH STATUS*
+│❒  *BLAZE-TECH STATUS*
 │❒ 
 │❒ ⏳ *Uptime:* ${formattedUptime}
 │❒ 

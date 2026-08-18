@@ -61,7 +61,7 @@ bmbtz({
 📁 *Type:* ${mediaType}
 🔗 *Source:* ${url}
 ━━━━━━━━━━━━━━━━
-⚡ *Powered by B.M.B TECH*`;
+⚡ *Powered by BLAZE TECH*`;
 
     if (mediaType === "Video") {
       await client.sendMessage(dest, {

@@ -1,7 +1,7 @@
 {
-  "name": "BMB-TECH",
+  "name": "BLAZE-TECH",
   "version": "1.1.0",
-  "description": "bmb-tech-Whatsapp-bot",
+  "description": "blaze-tech-Whatsapp-bot",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
@@ -12,12 +12,12 @@
     "whatsapp-openai",
     "whatsapp-bot",
     "whatsapp-baileys",
-    "bmb-md",
-    "bmb-tech",
-    "bmb-xmd",
-    "bmb-tech-Whatsapp-bot"
+    "blaze-md",
+    "blaze-tech",
+    "blaze-xmd",
+    "blaze-tech-Whatsapp-bot"
   ],
-  "author": "B.M.B-TECH",
+  "author": "BLAZE-TECH",
   "license": "ISC",
   "dependencies": {
     "@whiskeysockets/baileys": "npm:bmbtech-baileys@latest",

@@ -32,13 +32,13 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
+      displayName: "BLAZE VERIFIED ✅",
       vcard:
         "BEGIN:VCARD\n" +
         "VERSION:3.0\n" +
-        "FN:B.M.B VERIFIED ✅\n" +
-        "ORG:BMB-TECH BOT;\n" +
-        "TEL;type=CELL;type=VOICE;waid=255767862457:+255767862457\n" +
+        "FN:BLAZE VERIFIED ✅\n" +
+        "ORG:BLAZE-TECH BOT;\n" +
+        "TEL;type=CELL;type=VOICE;waid=255627417402:+255627417402\n" +
         "END:VCARD"
     }
   }
@@ -49,7 +49,7 @@ const contextInfo = {
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363382023564830@newsletter",
+    newsletterJid: "120363421014261315@newsletter",
     newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
     serverMessageId: 1
   }
@@ -61,13 +61,13 @@ function getBotInfo(mode, totalCommands) {
   const totalRAM = format(os.totalmem());
 
   return `
-╭───「 *B.M.B-TECH* 」─────⊛
+╭───「 *BLAZE-TECH* 」─────⊛
 ┃⊛╭───────────────⊛
 ┃⊛│☢️ *Mode*: ${mode.toUpperCase()}
 ┃⊛│🖥️ *RAM*: ${usedRAM} / ${totalRAM}
 ┃⊛│📦 *Commands*: ${totalCommands}
 ┃⊛│✅ *Status*: ONLINE
-┃⊛│👑 *Creator* : Bmb Tech
+┃⊛│👑 *Creator* : Blaze Tech
 ┃⊛│🌐 *website* : bmbtech.online
 ┃⊛╰━━━━━━━━━━━━━━⊛
 ╰━━━━━━━━━━━━━━━━━━━━⊛
@@ -99,7 +99,7 @@ bmbtz({
   const imagePath = getRandomScsImage();
   
   // ====== BUILD OPTIONS TEXT ======
-  let optionsText = `📑 *BMB TOOL MENU*\n\n`;
+  let optionsText = `📑 *BLAZE TOOL MENU*\n\n`;
   optionsText += `Reply with category number:\n\n`;
   
   categories.forEach((cat, index) => {

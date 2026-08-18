@@ -19,7 +19,7 @@ bmbtz(
     /* ===== HELP ===== */
     if (!arg[0] || arg[0].toLowerCase() === "help") {
       return repondre(
-        "🤖 *B.M.B GPT-5*\n\n" +
+        "🤖 *BLAZE GPT-5*\n\n" +
         "📌 *Usage:*\n" +
         "• .gpt hello\n" +
         "• .gpt code javascript function\n" +
@@ -100,7 +100,7 @@ bmbtz(
 
       /* ===== FINAL MESSAGE ===== */
       let text =
-        "🤖 *B.M.B GPT-5*\n\n";
+        "🤖 *BLAZE GPT-5*\n\n";
 
       if (mode !== "general") {
         const icons = {
@@ -114,7 +114,7 @@ bmbtz(
       text +=
         `🎯 *Question:*\n${query.slice(0, 100)}\n\n` +
         `✨ *Response:*\n${aiResponse}\n\n` +
-        "⚡ *Powered by B.M.B TECH*";
+        "⚡ *Powered by BLAZE TECH*";
 
       await client.sendMessage(dest, { text });
 

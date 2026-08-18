@@ -85,7 +85,7 @@ bmbtz({ nomCom: "link", categorie: 'Group', reaction: "🙋" }, async (dest, cli
 │
 │ 👉 ${lien}
 │
-│ © B.M.B-TECH 𝐬𝐜𝐢𝐞𝐧𝐜𝐞
+│ © BLAZE-TECH 𝐬𝐜𝐢𝐞𝐧𝐜𝐞
 ╰────────────────────────────╯`;
 
   repondre(mess);
@@ -105,7 +105,7 @@ bmbtz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest, 
   // caused this command to wrongly report "I am not an administrator"
   // even when the bot WAS admin. Instead, just attempt the action and
   // let WhatsApp's own response tell us if it failed — same approach
-  // NOVA-XMD's promote.js uses.
+  // BLAZE-MD's promote.js uses.
   try {
     await client.groupParticipantsUpdate(dest, [utilisateur], "promote");
     var txt = `🎊🎊🎊  @${utilisateur.split("@")[0]} rose in rank.\n
@@ -540,7 +540,7 @@ bmbtz({ nomCom: "tag", categorie: 'Group', reaction: "🎤" }, async (dest, clie
     } else if (msgRepondu.stickerMessage) {
       let media = await client.downloadAndSaveMediaMessage(msgRepondu.stickerMessage);
       let stickerMess = new Sticker(media, {
-        pack: 'bmb-tech',
+        pack: 'blaze-tech',
         type: StickerTypes.CROPPED,
         categories: ["🤩", "🎉"],
         id: "12345",

@@ -13,12 +13,12 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
+      displayName: "BLAZE VERIFIED ✅",
       vcard: `BEGIN:VCARD
 VERSION:3.0
-FN:B.M.B VERIFIED
-ORG:BMB-TECH BOT;
-TEL;type=CELL;type=VOICE;waid=255767862457:+255767862457
+FN:BLAZE VERIFIED
+ORG:BLAZE-TECH BOT;
+TEL;type=CELL;type=VOICE;waid=255627417402:+255627417402
 END:VCARD`
     }
   }
@@ -43,8 +43,8 @@ bmbtz(
           from,
           {
             text:
-              `Example:\n${prefixe}fancy 10 bmb tech\n\n` +
-              fancy.list("B.M.B-TECH", fancy)
+              `Example:\n${prefixe}fancy 10 blaze tech\n\n` +
+              fancy.list("BLAZE-TECH", fancy)
           },
           { quoted: quotedContact }
         );

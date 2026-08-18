@@ -13,10 +13,10 @@ bmbtz({
   const q = arg.join(" ");
 
   try {
-    if (!q) return repondre("❎ Please provide a WhatsApp Channel link.\n\n*Example:* .channel https://whatsapp.com/channel/123456789");
+    if (!q) return repondre("❎ Please provide a WhatsApp Channel link.\n\n*Example:* .channel https://whatsapp.com/channel/0029VbAjwl9MF8vQQa0ZT32");
 
     const match = q.match(/whatsapp\.com\/channel\/([\w-]+)/);
-    if (!match) return repondre("⚠️ *Invalid channel link format.*\n\nMake sure it looks like:\nhttps://whatsapp.com/channel/xxxxxxxxx");
+    if (!match) return repondre("⚠️ *Invalid channel link format.*\n\nMake sure it looks like:\nhttps://whatsapp.com/channel/0029VbAjwl9MF8vQQa0ZT32");
 
     const inviteId = match[1];
 
@@ -79,7 +79,7 @@ bmbtz({
                 text: infoText
               }),
               footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "© B.M.B-TECH"
+                text: "© BLAZE-TECH"
               }),
               header: proto.Message.InteractiveMessage.Header.create(headerProps),
               nativeFlowMessage:

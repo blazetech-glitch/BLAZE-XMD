@@ -16,14 +16,14 @@
  *      its .env default on the next restart/redeploy (which on Heroku
  *      happens often). They now persist via database/db.js (through
  *      lib/settingsCache.js's write-through cache), matching how
- *      NOVA-XMD keeps bot settings in its database instead of app.json.
+ *      BLAZE-MD keeps bot settings in its database instead of app.json.
  */
 const { bmbtz } = require("../../devbmb/bmbtz");
 const { getCachedSettingsSync, updateCachedSetting } = require("../../lib/settingsCache");
 const s = require("../../settings");
 
-const NEWSLETTER_JID = "120363382023564830@newsletter";
-const NEWSLETTER_NAME = "B.M.B TECH OFFICIAL";
+const NEWSLETTER_JID = "120363421014261315@newsletter";
+const NEWSLETTER_NAME = "BLAZE TECH OFFICIAL";
 
 const newsletterContext = {
   contextInfo: {

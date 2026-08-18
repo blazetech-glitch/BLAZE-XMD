@@ -1,1 +1,1 @@
-#developer bmb tech 
+#developer blaze tech 

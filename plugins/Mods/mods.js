@@ -47,7 +47,7 @@ const sleep =  (ms) =>{
         type = 'not animated sticker'
       }
   
-      let msg = `   bmb-tech-stickers-dl
+      let msg = `   blaze-tech-stickers-dl
       
   *Name :* ${stickers.data.result.name}
   *Type :* ${type} 
@@ -295,7 +295,7 @@ bmbtz({ nomCom: "save", categorie: "Mods" }, async (dest, client, commandeOption
           let media  = await client.downloadAndSaveMediaMessage(msgRepondu.stickerMessage)
   
           let stickerMess = new Sticker(media, {
-            pack: 'B.M.B-TECH',
+            pack: 'BLAZE-TECH',
             type: StickerTypes.CROPPED,
             categories: ["🤩", "🎉"],
             id: "12345",

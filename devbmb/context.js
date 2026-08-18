@@ -6,8 +6,8 @@ module.exports = {
       forwardingScore: 999,
       isForwarded: true, 
       forwardedNewsletterMessageInfo: {
-        newsletterJid: '120363382023564830@newsletter', 
-        newsletterName: 'Bmb Tech info', 
+        newsletterJid: '120363421014261315@newsletter', 
+        newsletterName: 'Blaze Tech info', 
         serverMessageId: 143 
       }
     };

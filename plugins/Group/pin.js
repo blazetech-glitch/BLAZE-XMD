@@ -3,7 +3,7 @@ const { bmbtz } = require('../../devbmb/bmbtz');
 /**
  * pin / unpin
  *
- * Pins (or unpins) the message the command is replying to. BMB-TECH's
+ * Pins (or unpins) the message the command is replying to. BLAZE-TECH's
  * commandeOptions doesn't expose the quoted stanzaId directly (only
  * the quoted content via msgRepondu and its author via auteurMsgRepondu),
  * so this reads it straight off the raw message (reponse.ms).

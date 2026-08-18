@@ -6,7 +6,7 @@
  * anti-promote, and anti-demote. Moved here out of index.js (which
  * previously had this logic inline) so index.js only wires up the
  * event listener and delegates the actual work here — matching how
- * NOVA-XMD splits this into handlers/eventHandler.js's groupEvents()
+ * BLAZE-MD splits this into handlers/eventHandler.js's groupEvents()
  * function, called from its index.js the same way.
  *
  * This is a structural move only — the behavior (custom text support,
@@ -63,7 +63,7 @@ async function groupEvents(client, group) {
 ║════════════════════════
 ║ᴛʜᴇ ᴛɪᴍᴇ ʜᴇ ᴇɴᴛᴇʀᴇᴅ ${time}
 ║════════════════════════
-║ Bmb web bmbtech.zone.id
+║ Blaze web bmbtech.zone.id
 ║════════════════════════
 ║ ${groupDesc}
 ╰──────────────────────━⊷`;
@@ -106,7 +106,7 @@ async function groupEvents(client, group) {
 ║════════════════════════
 ║ᴅᴀᴛᴇ ɪs ᴏᴜᴛ ${date}
 ║════════════════════════
-║Bmb web bmbtech.zone.id
+║Blaze web bmbtech.zone.id
 ╰──────────────────────────━⊷`;
             }
 

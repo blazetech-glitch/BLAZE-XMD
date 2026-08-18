@@ -10,9 +10,9 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
+      displayName: "BLAZE VERIFIED ✅",
       vcard:
-        "BEGIN:VCARD\nVERSION:3.0\nFN:B.M.B VERIFIED ✅\nORG:BMB-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255767862457:+255767862457\nEND:VCARD",
+        "BEGIN:VCARD\nVERSION:3.0\nFN:BLAZE VERIFIED ✅\nORG:BLAZE-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255627417402:+255627417402\nEND:VCARD",
     },
   },
 };
@@ -22,7 +22,7 @@ const newsletterContext = {
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363382023564830@newsletter",
+    newsletterJid: "120363421014261315@newsletter",
     newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
     serverMessageId: 1,
   },
@@ -59,7 +59,7 @@ bmbtz(
       // Remove + and spaces
       code = code.replace(/\+/g, "").trim();
 
-      const API_URL = "https://bmb-countries-api.vercel.app/api";
+      const API_URL = "https://blaze-countries-api.vercel.app/api";
 
       const response = await axios.get(API_URL, {
         timeout: 10000,
@@ -98,7 +98,7 @@ bmbtz(
 🌎 *Country List:*
 ${countryList}
 
-_By BMB-XMD_`;
+_By BLAZE-MD_`;
 
       await client.sendMessage(
         dest,

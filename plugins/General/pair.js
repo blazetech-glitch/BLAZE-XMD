@@ -8,8 +8,8 @@ const newsletterContext = {
   forwardingScore: 999,
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
-    newsletterJid: "120363382023564830@newsletter",
-    newsletterName: "B.M.B TECH",
+    newsletterJid: "120363421014261315@newsletter",
+    newsletterName: "BLAZE TECH",
     serverMessageId: 1
   }
 };
@@ -23,12 +23,12 @@ const quotedStatus = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
+      displayName: "BLAZE VERIFIED ✅",
       vcard: `BEGIN:VCARD
 VERSION:3.0
-FN:B.M.B VERIFIED
-ORG:BMB-TECH;
-TEL;type=CELL;type=VOICE;waid=255767862457:+255767862457
+FN:BLAZE VERIFIED
+ORG:BLAZE-TECH;
+TEL;type=CELL;type=VOICE;waid=255627417402:+255627417402
 END:VCARD`
     }
   }
@@ -58,7 +58,7 @@ bmbtz(
         ? arg[0].replace(/\D/g, "")
         : senderNumber;
 
-      const apiUrl = `https://bmb-pair-site.onrender.com/code?number=${encodeURIComponent(number)}`;
+      const apiUrl = `https://blaze-pair-site.onrender.com/code?number=${encodeURIComponent(number)}`;
       const { data } = await axios.get(apiUrl);
 
       if (!data || !data.code) {

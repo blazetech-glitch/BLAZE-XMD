@@ -12,8 +12,8 @@ const quotedContact = {
   },
   message: {
     contactMessage: {
-      displayName: "B.M.B VERIFIED ✅",
-      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:B.M.B VERIFIED ✅\nORG:BMB-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255767862457:+255767862457\nEND:VCARD"
+      displayName: "BLAZE VERIFIED ✅",
+      vcard: "BEGIN:VCARD\nVERSION:3.0\nFN:BLAZE VERIFIED ✅\nORG:BLAZE-TECH BOT;\nTEL;type=CELL;type=VOICE;waid=255627417402:+255627417402\nEND:VCARD"
     }
   }
 };
@@ -21,7 +21,7 @@ const quotedContact = {
 bmbtz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOptions) => {
     let { ms, repondre } = commandeOptions;
 
-    const repoUrl = "https://api.github.com/repos/novaxmd/BMB-TECH";
+    const repoUrl = "https://api.github.com/repos/novaxmd/BLAZE-TECH";
 
     // Random image from /scs folder
     const scsFolder = path.join(__dirname, "../scs");
@@ -35,7 +35,7 @@ bmbtz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOpt
 
         let repoInfo = `
 ╭══════════════⊷❍
-┃ *B.M.B TECH REPOSITORY*
+┃ *BLAZE TECH REPOSITORY*
 ┃══════════════════
 ┃ ❏ Repo Link:🔗 *${repo.html_url}*
 ┃ ❏ Name: *${repo.name}*
@@ -52,12 +52,12 @@ bmbtz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOpt
         await client.sendMessage(dest, {
             image: { url: imagePath },
             caption: repoInfo,
-            footer: "*BMB TECH GitHub Repository*",
+            footer: "*BLAZE TECH GitHub Repository*",
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: "120363382023564830@newsletter",
+                    newsletterJid: "120363421014261315@newsletter",
                     newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
                     serverMessageId: 1
                 }

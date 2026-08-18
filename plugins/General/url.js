@@ -6,7 +6,7 @@ const FormData = require('form-data');
 const fs = require("fs-extra");
 const path = require("path");
 
-const BMB_API = 'https://url.bmbxmd.workers.dev/api/upload';
+const BLAZE_API = 'https://url.bmbxmd.workers.dev/api/upload';
 
 // Function to generate random 6 characters (A-Z, 0-9)
 function generateShortId(length = 6) {
@@ -22,7 +22,7 @@ bmbtz({
   nomCom: "url",
   categorie: "General",
   reaction: "🖇",
-  desc: "Convert media to BMB URL"
+  desc: "Convert media to BLAZE URL"
 }, async (dest, client, commandeOptions) => {
   const { repondre, msgRepondu, ms } = commandeOptions;
 
@@ -77,14 +77,14 @@ bmbtz({
     const shortId = generateShortId(6);
     const filename = `${shortId}${extension}`;
 
-    // Upload to BMB API
+    // Upload to BLAZE API
     const form = new FormData();
     form.append('file', fs.createReadStream(mediaBuffer), {
       filename: filename,
       contentType: mimeType
     });
 
-    const response = await axios.post(BMB_API, form, {
+    const response = await axios.post(BLAZE_API, form, {
       headers: form.getHeaders(),
       timeout: 60000
     });
@@ -94,7 +94,7 @@ bmbtz({
 
     const data = response.data;
     if (!data || !data.url) {
-      throw new Error("Upload failed. BMB did not return a valid URL.");
+      throw new Error("Upload failed. BLAZE did not return a valid URL.");
     }
 
     const mediaUrl = data.url;
@@ -115,7 +115,7 @@ bmbtz({
 🔑 *ID:* ${shortId}
 🌐 *Link:* ${mediaUrl}
 ━━━━━━━━━━━━━━━━
-© B.M.B-TECH`;
+© BLAZE-TECH`;
 
     // Create buttons
     const buttons = [
@@ -142,7 +142,7 @@ bmbtz({
                 text: textMessage
               }),
               footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "© B.M.B-TECH"
+                text: "© BLAZE-TECH"
               }),
               header: proto.Message.InteractiveMessage.Header.create({
                 title: "",
