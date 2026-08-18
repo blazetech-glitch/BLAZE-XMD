@@ -98,7 +98,7 @@ bmbtz(
 🌎 *Country List:*
 ${countryList}
 
-_By BLAZE-MD_`;
+_By BLAZE-XMD_`;
 
       await client.sendMessage(
         dest,

@@ -4,7 +4,7 @@ const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/b
 /**
  * add
  *
- * Fixed/ported from BLAZE-MD's plugins/Groups/add.js. The old BLAZE-TECH
+ * Fixed/ported from BLAZE-XMD's plugins/Groups/add.js. The old BLAZE-TECH
  * version (previously in popsstand1.js) had two bugs that made it
  * effectively unusable:
  *   1. It required superUser (bot owner) in addition to being a group
@@ -12,7 +12,7 @@ const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/b
  *   2. The WhatsApp query used tag "settings" (attrs.type: "settings")
  *      instead of "set", which is not a valid add-participant request
  *      and fails silently against current WhatsApp servers.
- * This version fixes both, matching BLAZE-MD's working implementation.
+ * This version fixes both, matching BLAZE-XMD's working implementation.
  */
 bmbtz({
     nomCom: 'add',
@@ -24,7 +24,7 @@ bmbtz({
     if (!verifGroupe) return repondre('*This command works in groups only!*');
 
     // Caller check: admin OR the bot owner (superUser) — matches
-    // BLAZE-MD's middleware.js `!isDev && !context.isAdmin` bypass logic.
+    // BLAZE-XMD's middleware.js `!isDev && !context.isAdmin` bypass logic.
     // The previous version required verifAdmin with no bypass at all, so
     // even the owner typing the command on their own device could get
     // blocked if verifAdmin's JID comparison didn't line up perfectly
@@ -41,7 +41,7 @@ bmbtz({
         return repondre('Failed to fetch group metadata.');
     }
 
-    // Bot-admin check, ported from BLAZE-MD's middleware.js style
+    // Bot-admin check, ported from BLAZE-XMD's middleware.js style
     // (tolerant substring/suffix match instead of strict JID equality).
     // NON-BLOCKING: only logged, not enforced. Reasoning — .link in this
     // same project calls client.groupInviteCode() with NO pre-check at

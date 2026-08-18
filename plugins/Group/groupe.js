@@ -105,7 +105,7 @@ bmbtz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest, 
   // caused this command to wrongly report "I am not an administrator"
   // even when the bot WAS admin. Instead, just attempt the action and
   // let WhatsApp's own response tell us if it failed — same approach
-  // BLAZE-MD's promote.js uses.
+  // BLAZE-XMD's promote.js uses.
   try {
     await client.groupParticipantsUpdate(dest, [utilisateur], "promote");
     var txt = `🎊🎊🎊  @${utilisateur.split("@")[0]} rose in rank.\n

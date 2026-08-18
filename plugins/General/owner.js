@@ -3,10 +3,10 @@ const { bmbtz } = require("../../devblaze/blazetz");
 /**
  * owner
  *
- * Ported from BLAZE-MD's plugins/General/dev.js (aliased there as
+ * Ported from BLAZE-XMD's plugins/General/dev.js (aliased there as
  * 'owner' among others) — replaces BLAZE-TECH's previous owner.js.
  * Sends an interactive card (title/body/footer + buttons) via
- * relayMessage, followed by a vCard contact, matching BLAZE-MD's exact
+ * relayMessage, followed by a vCard contact, matching BLAZE-XMD's exact
  * output. Falls back to a plain text card + vCard if the interactive
  * message fails to send (e.g. unsupported on the recipient's client).
  */

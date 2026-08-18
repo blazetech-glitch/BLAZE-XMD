@@ -16,7 +16,7 @@
  *      its .env default on the next restart/redeploy (which on Heroku
  *      happens often). They now persist via database/db.js (through
  *      lib/settingsCache.js's write-through cache), matching how
- *      BLAZE-MD keeps bot settings in its database instead of app.json.
+ *      BLAZE-XMD keeps bot settings in its database instead of app.json.
  */
 const { bmbtz } = require("../../devblaze/blazetz");
 const { getCachedSettingsSync, updateCachedSetting } = require("../../lib/settingsCache");

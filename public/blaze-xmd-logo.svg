@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
-  <title id="title">BLAZE-MD by ARNOLDT20</title>
-  <desc id="desc">Animated BLAZE-MD WhatsApp automation bot logo created by ARNOLDT20</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">BLAZE-XMD by ARNOLDT20</title>
+  <desc id="desc">Animated BLAZE-XMD WhatsApp automation bot logo created by ARNOLDT20</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#07111f"/>
@@ -56,10 +56,10 @@
     </style>
   </defs>
 
-  <rect width="1200" height="420" rx="42" fill="url(#bg)"/>
+  <rect width="1200" height="520" rx="42" fill="url(#bg)"/>
   <circle class="pulse" cx="930" cy="-10" r="220" fill="#2dd4bf" opacity=".14" filter="url(#glow)"/>
-  <circle class="pulse" cx="1100" cy="340" r="250" fill="#ff7a45" opacity=".14" filter="url(#glow)"/>
-  <path d="M0 356 C220 318 382 398 622 352 S1010 315 1200 350" fill="none" stroke="#2dd4bf" stroke-opacity=".16" stroke-width="2"/>
+  <circle class="pulse" cx="1100" cy="430" r="250" fill="#ff7a45" opacity=".14" filter="url(#glow)"/>
+  <path d="M0 454 C220 414 382 494 622 448 S1010 411 1200 446" fill="none" stroke="#2dd4bf" stroke-opacity=".16" stroke-width="2"/>
 
   <g transform="translate(82 53)" filter="url(#shadow)">
     <circle class="pulse" cx="116" cy="147" r="104" fill="#ffb000" opacity=".34" filter="url(#luminous)"/>
@@ -74,12 +74,12 @@
 
   <g class="brand" transform="translate(310 0)">
     <text x="0" y="178" fill="url(#word)" font-size="104" font-weight="800" letter-spacing="6">BLAZE</text>
-    <text x="410" y="178" fill="#ffb000" font-size="104" font-weight="800" letter-spacing="2">-MD</text>
+    <text x="410" y="178" fill="#ffb000" font-size="104" font-weight="800" letter-spacing="2">-XMD</text>
     <rect x="5" y="212" width="520" height="4" rx="2" fill="#2dd4bf" opacity=".72">
       <animate attributeName="width" values="360;540;360" dur="3s" repeatCount="indefinite"/>
     </rect>
     <text x="5" y="263" fill="#c9e8f3" font-size="25" font-weight="500" letter-spacing="5">WHATSAPP AUTOMATION</text>
     <text x="5" y="302" fill="#8fb5c6" font-size="18" letter-spacing="2">FAST  •  MODERN  •  RELIABLE</text>
-    <text class="credit" x="5" y="356" fill="url(#credit)" font-size="22" font-weight="800" letter-spacing="4">CRAFTED BY ARNOLDT20</text>
+    <text class="credit" x="5" y="430" fill="url(#credit)" font-size="22" font-weight="800" letter-spacing="4">CRAFTED BY ARNOLDT20</text>
   </g>
 </svg>

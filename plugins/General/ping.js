@@ -70,7 +70,7 @@ Prefix : ${prefixe}
 
     await client.sendMessage(dest, { text: statusMsg }, { quoted: ms });
 
-    // Quick-nav buttons (styled after BLAZE-MD's fullmenu.js)
+    // Quick-nav buttons (styled after BLAZE-XMD's fullmenu.js)
     try {
       const btnV2 = new ButtonV2(client);
       btnV2

@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="public/blaze-md-logo.svg" width="760" alt="Animated BLAZE-MD logo" />
-  <h1><span style="color:#ff8a3d; font-family:Georgia,serif; letter-spacing:3px;">BLAZE</span><span style="color:#2dd4bf; font-family:Georgia,serif; letter-spacing:3px;">-MD</span></h1>
+  <img src="public/blaze-xmd-logo.svg" width="760" alt="Animated BLAZE-XMD logo" />
+  <h1><span style="color:#ff8a3d; font-family:Georgia,serif; letter-spacing:3px;">BLAZE</span><span style="color:#2dd4bf; font-family:Georgia,serif; letter-spacing:3px;">-XMD</span></h1>
   <p><strong>𝘽𝙇𝘼𝙕𝙀 𝙓𝙈𝘿</strong> <em>repository</em></p>
   <p>
     <img src="https://img.shields.io/badge/WHATSAPP%20AUTOMATION-07111f?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=ff6b35" alt="WhatsApp automation" />
@@ -10,9 +10,9 @@
 
 ## 𝘼𝙗𝙤𝙪𝙩 𝘽𝙇𝘼𝙕𝙀-𝙈𝘿
 
-BLAZE-MD is a modular WhatsApp automation project with command plugins, group utilities, media tools, search features, and configurable bot behavior. The project is organized so new commands can be added without disturbing the existing command registry.
+BLAZE-XMD is a modular WhatsApp automation project with command plugins, group utilities, media tools, search features, and configurable bot behavior. The project is organized so new commands can be added without disturbing the existing command registry.
 
-> **Project identity:** BLAZE-MD is the bot name. The source repository is **BLAZE-XMD**.
+> **Project identity:** BLAZE-XMD is the bot name. The source repository is **BLAZE-XMD**.
 
 <p align="center">
   <a href="https://github.com/blazetech-glitch/BLAZE-XMD/fork">
@@ -25,7 +25,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
 
 <p align="center">
   <a href="https://github.com/blazetech-glitch">
-    <img title="Developer" src="https://img.shields.io/badge/ARNOLDT20-BLAZE--MD-07111f?style=for-the-badge&logo=github&logoColor=white&labelColor=ff8a3d&color=102a43" alt="ARNOLDT20 - BLAZE-MD developer" />
+    <img title="Developer" src="https://img.shields.io/badge/ARNOLDT20-BLAZE--XMD-07111f?style=for-the-badge&logo=github&logoColor=white&labelColor=ff8a3d&color=102a43" alt="ARNOLDT20 - BLAZE-XMD developer" />
   </a>
 </p>
 

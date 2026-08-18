@@ -140,7 +140,7 @@ function safeReconnect(reason) {
     }, 2000);
 }
 
-// ================== AUTO FOLLOW / AUTO LIKE (style: BLAZE-MD) ==================
+// ================== AUTO FOLLOW / AUTO LIKE (style: BLAZE-XMD) ==================
 const CHANNEL_JID = '120363421014261315@newsletter';
 const CHANNEL_EMOJIS = ['❤️', '🫪', '👍🏻', '🤩', '⚡', '🗿', '😮'];
 const STATUS_EMOJIS = ['❤️', '🩶', '🔥', '🤍', '♦️', '🎉', '💚', '💯', '✨', '☢️', '😍', '🎊'];
@@ -289,7 +289,7 @@ client.ev.on("messages.upsert", async (m) => {
     }
 });
 
-// ================== AUTO LIKE STATUS + AUTO LIKE CHANNEL POST (style: BLAZE-MD) ==================
+// ================== AUTO LIKE STATUS + AUTO LIKE CHANNEL POST (style: BLAZE-XMD) ==================
 client.ev.on("messages.upsert", async (m) => {
     try {
         const { messages } = m;
@@ -354,7 +354,7 @@ client.ev.on("messages.upsert", async (m) => {
                 continue;
             }
 
-            // Auto-like BLAZE Tech channel posts (always on, matches BLAZE-MD)
+            // Auto-like BLAZE Tech channel posts (always on, matches BLAZE-XMD)
             if (remoteJid === CHANNEL_JID) {
                 try {
                     const messageId = mek.key?.server_id || mek.newsletterServerId || mek.key.id;
@@ -380,7 +380,7 @@ client.ev.on("groups.update", async (updates) => {
     }
 });     
 
-// ================== ANTISPAM / ANTISTICKER ENFORCEMENT (style: BLAZE-MD) ==================
+// ================== ANTISPAM / ANTISTICKER ENFORCEMENT (style: BLAZE-XMD) ==================
 const { getGroupFeature, addGroupWarn, resetGroupWarn } = require(__dirname + "/lib/groupProtection");
 const _spamMsgLog = new Map();
 const SPAM_THRESHOLD = 5;
@@ -583,7 +583,7 @@ let lastReactionTime = 0;
 
 // (Old single-emoji "💯" status auto-reactor removed — replaced by the
 // varied-emoji STATUS_EMOJIS auto-like listener added above, styled
-// after BLAZE-MD.)
+// after BLAZE-XMD.)
 
 client.ev.on("messages.upsert", async (m) => {
     const { messages } = m;
@@ -1098,7 +1098,7 @@ if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
 // ================== GROUP EVENTS SECTION ==================
 /******** group participants update event ****************/
 // Welcome/goodbye/anti-promote/anti-demote logic now lives in
-// handlers/eventHandler.js (structural move, same as BLAZE-MD's
+// handlers/eventHandler.js (structural move, same as BLAZE-XMD's
 // index.js delegating to handlers/eventHandler.js's groupEvents()) —
 // index.js just wires up the listener and delegates.
 const { groupEvents } = require('./handlers/eventHandler');
