@@ -1,24 +1,25 @@
 <div align="center">
   <img src="public/blaze-md-logo.svg" width="760" alt="Animated BLAZE-MD logo" />
-  <h1><span style="color:#ff8a3d;">BLAZE</span><span style="color:#2dd4bf;">-MD</span></h1>
+  <h1><span style="color:#ff8a3d; font-family:Georgia,serif; letter-spacing:3px;">BLAZE</span><span style="color:#2dd4bf; font-family:Georgia,serif; letter-spacing:3px;">-MD</span></h1>
+  <p><strong>𝘽𝙇𝘼𝙕𝙀 𝙓𝙈𝘿</strong> <em>repository</em></p>
   <p>
     <img src="https://img.shields.io/badge/WHATSAPP%20AUTOMATION-07111f?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=ff6b35" alt="WhatsApp automation" />
     <img src="https://img.shields.io/badge/FAST%20%7C%20MODERN%20%7C%20RELIABLE-102a43?style=for-the-badge&labelColor=2dd4bf" alt="Fast modern reliable" />
   </p>
 </div>
 
-## About BLAZE-MD
+## 𝘼𝙗𝙤𝙪𝙩 𝘽𝙇𝘼𝙕𝙀-𝙈𝘿
 
 BLAZE-MD is a modular WhatsApp automation project with command plugins, group utilities, media tools, search features, and configurable bot behavior. The project is organized so new commands can be added without disturbing the existing command registry.
 
-> **Project identity:** BLAZE-MD is the bot name. The source repository is **BLAZE-TECH**.
+> **Project identity:** BLAZE-MD is the bot name. The source repository is **BLAZE-XMD**.
 
 <p align="center">
-  <a href="https://github.com/blazetech-glitch/BLAZE-TECH/fork">
-    <img src="https://img.shields.io/github/forks/blazetech-glitch/BLAZE-TECH?label=Forks&style=social" alt="GitHub Forks" />
+  <a href="https://github.com/blazetech-glitch/BLAZE-XMD/fork">
+    <img src="https://img.shields.io/github/forks/blazetech-glitch/BLAZE-XMD?label=Forks&style=social" alt="GitHub Forks" />
   </a>
-  <a href="https://github.com/blazetech-glitch/BLAZE-TECH">
-    <img src="https://img.shields.io/github/stars/blazetech-glitch/BLAZE-TECH?style=social" alt="GitHub Stars" />
+  <a href="https://github.com/blazetech-glitch/BLAZE-XMD">
+    <img src="https://img.shields.io/github/stars/blazetech-glitch/BLAZE-XMD?style=social" alt="GitHub Stars" />
   </a>
 </p>
 
@@ -31,7 +32,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
 <p align="center">
   <strong>1. FORK REPOSITORY</strong>
   <br />
-  <a href="https://github.com/blazetech-glitch/BLAZE-TECH/fork" target="_blank">
+  <a href="https://github.com/blazetech-glitch/BLAZE-XMD/fork" target="_blank">
     <img alt="Fork Repo" src="https://img.shields.io/badge/Fork%20Repo-100000?style=for-the-badge&logo=github&logoColor=white&labelColor=darkblue&color=darkblue" />
   </a>
 </p>
@@ -47,7 +48,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
 <p align="center">
   <strong>3. DEPLOY TO HEROKU</strong>
   <br />
-  <a href="https://dashboard.heroku.com/new?template=https://github.com/blazetech-glitch/BLAZE-TECH" target="_blank">
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/blazetech-glitch/BLAZE-XMD" target="_blank">
     <img alt="Deploy to Heroku" src="https://img.shields.io/badge/Deploy-100000?style=for-the-badge&logo=heroku&logoColor=white&labelColor=purple&color=purple" />
   </a>
 </p>
@@ -55,7 +56,7 @@ BLAZE-MD is a modular WhatsApp automation project with command plugins, group ut
 <p align="center">
   <strong>4. DOWNLOAD BOT ZIP</strong>
   <br />
-  <a href="https://github.com/blazetech-glitch/BLAZE-TECH/archive/refs/heads/main.zip" target="_blank">
+  <a href="https://github.com/blazetech-glitch/BLAZE-XMD/archive/refs/heads/main.zip" target="_blank">
     <img alt="Download ZIP" src="https://img.shields.io/badge/Download-100000?style=for-the-badge&logo=github&logoColor=white&labelColor=darkorange&color=darkorange" />
   </a>
 </p>
