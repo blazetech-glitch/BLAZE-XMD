@@ -90,7 +90,25 @@ async function refreshSudoCache() {
 }
 refreshSudoCache();
 setInterval(refreshSudoCache, 30000);
-var session = conf.session.replace(/BLAZE-TECH~/g,"");
+function decodeSessionId(rawSession) {
+    let value = String(rawSession || "").trim();
+    if (!value || value.toLowerCase() === "zokk") return null;
+    value = value.replace(/^["']|["']$/g, "").trim();
+    value = value.replace(/^(?:BLAZE-TECH|BLAZE-XMD)~/i, "");
+    value = value.replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/");
+    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value)) {
+        throw new Error("SESSION_ID contains invalid characters; use the complete pairing-session string");
+    }
+    while (value.length % 4) value += "=";
+    return Buffer.from(value, "base64").toString("utf8");
+}
+
+let sessionPayload = null;
+try {
+    sessionPayload = decodeSessionId(conf.session);
+} catch (e) {
+    console.log("Session Invalid " + e.message);
+}
 const prefixe = conf.PREFIXE;
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
@@ -107,16 +125,14 @@ app.listen(PORT, () => {
 });
 async function authentification() {
     try {
-        if (!fs.existsSync(__dirname + "/public/creds.json")) {
-            console.log("Connecting...");
-            await fs.writeFileSync(__dirname + "/public/creds.json", atob(session), "utf8");
-        }
-        else if (fs.existsSync(__dirname + "/public/creds.json") && session != "zokk") {
-            await fs.writeFileSync(__dirname + "/public/creds.json", atob(session), "utf8");
+        if (!sessionPayload) return;
+        const credsPath = __dirname + "/public/creds.json";
+        if (!fs.existsSync(credsPath) || sessionPayload) {
+            await fs.writeFileSync(credsPath, sessionPayload, "utf8");
         }
     }
     catch (e) {
-        console.log("Session Invalid " + e);
+        console.log("Session Invalid " + e.message);
         return;
     }
 }
