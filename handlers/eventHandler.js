@@ -55,7 +55,7 @@ async function groupEvents(client, group) {
             } else {
                 msg = `
 ╭───────────────────────━⊷
-║𝗕.𝗠.𝗕-𝗧𝗘𝗖𝗛 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗚𝗥𝗢𝗨𝗣
+║𝗕𝗟𝗔𝗭𝗘 𝗫𝗠𝗗 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗚𝗥𝗢𝗨𝗣
 ║════════════════════════
 ║ɢʀᴏᴜᴘ ɴᴀᴍᴇ ${groupName}
 ║════════════════════════
@@ -63,7 +63,7 @@ async function groupEvents(client, group) {
 ║════════════════════════
 ║ᴛʜᴇ ᴛɪᴍᴇ ʜᴇ ᴇɴᴛᴇʀᴇᴅ ${time}
 ║════════════════════════
-║ Blaze web bmbtech.zone.id
+║ BLAZE XMD • OFFICIAL BOT
 ║════════════════════════
 ║ ${groupDesc}
 ╰──────────────────────━⊷`;
@@ -106,7 +106,7 @@ async function groupEvents(client, group) {
 ║════════════════════════
 ║ᴅᴀᴛᴇ ɪs ᴏᴜᴛ ${date}
 ║════════════════════════
-║Blaze web bmbtech.zone.id
+║ BLAZE XMD • OFFICIAL BOT
 ╰──────────────────────────━⊷`;
             }
 

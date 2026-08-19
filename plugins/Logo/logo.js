@@ -115,14 +115,14 @@ logoCommands.forEach(({ nomCom, categorie, reaction, makerUrl }) => {
         image: { url: img.image },
         caption: `
 ╭──────────━⊷
-║ 𝗕.𝗠.𝗕-𝗧𝗘𝗖𝗛
+║ 𝗕𝗟𝗔𝗭𝗘 𝗫𝗠𝗗
 ╰──────────━⊷
 ╭──────────━⊷
-  ʙ.ᴍ.ʙ-ᴛᴇᴄʜ ᴄʜᴀɴɴᴇʟ ᴜᴘᴅᴀᴛᴇs
-  ᴛᴀᴘ: https://bmbtech.zone.id
+  ʙʟᴀᴢᴇ xᴍᴅ ᴄʜᴀɴɴᴇʟ ᴜᴘᴅᴀᴛs
+  ᴛᴀᴘ: https://whatsapp.com/channel/0029VbAjawl9MF8vQQa0ZT32
 ╰──────────━⊷
 
-> 𝙱.𝙼.𝙱-𝚇𝙼𝙳
+> 𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳
 `,
         contextInfo
       }, { quoted: quotedContact });

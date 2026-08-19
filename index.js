@@ -1256,8 +1256,8 @@ client.ev.on('group-participants.update', async (group) => {
 │❒ *Mode*: *[ ${md} ]*
 │❒ *Prefix*: *[ ${prefixe} ]*
 
-│❒ *Website by Blaze Tech*
-│❒ bmbtech.zone.id
+│❒ *BLAZE XMD Official*
+│❒ https://whatsapp.com/channel/0029VbAjawl9MF8vQQa0ZT32
 ◈━━━━━━━━━━━━━━◈`;
 
                 const ownerNum = (getConf('NUMERO_OWNER') || conf.NUMERO_OWNER || '').replace(/[^0-9]/g, '');
