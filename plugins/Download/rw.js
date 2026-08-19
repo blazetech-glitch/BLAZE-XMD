@@ -28,7 +28,7 @@ bmbtz({
     const { data } = await axios.get(apiUrl);
 
     if (data.status && data.imgUrl) {
-      const caption = `🌌 *Random Wallpaper: ${query}*\n\n> *© Powered by 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷*`;
+      const caption = `🌌 *Random Wallpaper: ${query}*\n\n> *© Powered by 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷*`;
 
       await sock.sendMessage(jid, {
         image: { url: data.imgUrl },

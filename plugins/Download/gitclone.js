@@ -25,7 +25,7 @@ const contextInfo = {
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
     newsletterJid: "120363421014261315@newsletter",
-    newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+    newsletterName: "𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳",
     serverMessageId: 1
   }
 };

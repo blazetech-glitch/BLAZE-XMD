@@ -28,11 +28,11 @@ const contextInfo = {
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
     newsletterJid: "120363421014261315@newsletter",
-    newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+    newsletterName: "𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳",
     serverMessageId: 1
   },
   externalAdReply: {
-    title: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+    title: "𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳",
     body: "Powered by BLAZE TECH",
     thumbnailUrl: "https://files.catbox.moe/g2brwg.jpg",
     sourceUrl: "https://whatsapp.com/channel/0029VbAjwl9MF8vQQa0ZT32",
@@ -100,7 +100,7 @@ bmbtz({ nomCom: "videologo", categorie: "Download", reaction: "✋" }, async (de
         await client.sendMessage(dest, {
           video: { url: logoUrl },
           mimetype: "video/mp4",
-          caption: `*Downloaded by 𝙱.𝙼.𝙱-𝚇𝙼𝙳*`,
+          caption: `*Downloaded by 𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳*`,
           contextInfo,
         }, { quoted: ms });
       } else {

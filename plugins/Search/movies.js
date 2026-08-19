@@ -25,7 +25,7 @@ const newsletterContext = {
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
       newsletterJid: "120363421014261315@newsletter",
-      newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+      newsletterName: "𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳",
       serverMessageId: 1
     }
   }
@@ -48,7 +48,7 @@ bmbtz({
 
     let imdbInfo = "THANKS ALL FOR THE SUPPORT ITS ME PKDRILLER \n";
     imdbInfo += " ``` BLAZE-TECH FILMS```\n";
-    imdbInfo += "*Made by 𝙱.𝙼.𝙱-𝚇𝙼𝙳*\n";
+    imdbInfo += "*Made by 𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳*\n";
     imdbInfo += "🎬Title    : " + imdbData.Title + "\n";
     imdbInfo += "📅year      : " + imdbData.Year + "\n";
     imdbInfo += "⭐Assessment : " + imdbData.Rated + "\n";

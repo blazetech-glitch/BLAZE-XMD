@@ -94,7 +94,7 @@ function decodeSessionId(rawSession) {
     let value = String(rawSession || "").trim();
     if (!value || value.toLowerCase() === "zokk") return null;
     value = value.replace(/^["']|["']$/g, "").trim();
-    value = value.replace(/^(?:BLAZE-TECH|BLAZE-XMD)~/i, "");
+    value = value.replace(/^(?:BLAZE|BLAZE-TECH|BLAZE-XMD)~/i, "");
     value = value.replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/");
     if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value)) {
         throw new Error("SESSION_ID contains invalid characters; use the complete pairing-session string");

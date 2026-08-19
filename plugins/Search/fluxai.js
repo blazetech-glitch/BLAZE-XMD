@@ -22,7 +22,7 @@ const contextInfo = {
   isForwarded: true,
   forwardedNewsletterMessageInfo: {
     newsletterJid: "120363421014261315@newsletter",
-    newsletterName: "𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷",
+    newsletterName: "𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷",
     serverMessageId: 1
   }
 };
@@ -44,7 +44,7 @@ bmbtz({
 
     await sock.sendMessage(jid, {
       image: Buffer.from(data, "binary"),
-      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷* 😎\n📸 𝚁𝙴𝙰𝙳𝚈 : *${q}*`,
+      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷* 😎\n📸 𝚁𝙴𝙰𝙳𝚈 : *${q}*`,
       contextInfo
     }, { quoted: quotedContact });
 
@@ -71,7 +71,7 @@ bmbtz({
 
     await sock.sendMessage(jid, {
       image: Buffer.from(data, "binary"),
-      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷* 😎\n✨ 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
+      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷* 😎\n✨ 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
       contextInfo
     }, { quoted: quotedContact });
 
@@ -98,7 +98,7 @@ bmbtz({
 
     await sock.sendMessage(jid, {
       image: Buffer.from(data, "binary"),
-      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷* 😎\n📸 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
+      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷* 😎\n📸 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
       contextInfo
     }, { quoted: quotedContact });
 
@@ -125,7 +125,7 @@ bmbtz({
 
     await sock.sendMessage(jid, {
       image: Buffer.from(data, "binary"),
-      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷* 😎\n🍌 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
+      caption: `🌲 *𝙶𝙴𝙽𝙴𝚁𝙰𝚃𝙴𝙳 𝙱𝚈 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷* 😎\n🍌 𝚁𝙴𝙰𝙳𝚈: *${q}*`,
       contextInfo
     }, { quoted: quotedContact });
 

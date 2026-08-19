@@ -53,7 +53,7 @@ bmbtz({
                                 booking_url: `https://wa.me/${DEV_NUMBER}`,
                                 phone_number: DEV_NUMBER,
                                 booking_management_url: "https://whatsapp.com/channel/0029VbAjwl9MF8vQQa0ZT32",
-                                description: "*◦ 👤 Name  :*  bmbtech\n*◦ 📞 Number  :*  +" + DEV_NUMBER + "\n*◦ 💭 Bio  :*  tech \n*◦ ⚡ Status  :*  _Developer_\n*◦ Country  :*  Tanzania\n",
+                                description: "*◦ 👤 Name  :*  ARNOLDT20\n*◦ 📞 Number  :*  +" + DEV_NUMBER + "\n*◦ 💭 Bio  :*  tech \n*◦ ⚡ Status  :*  _Developer_\n*◦ Country  :*  Tanzania\n",
                                 email: "bmbxmd@gmail.com",
                                 display_text: "𝐌𝐨𝐫𝐞 𝐎𝐰𝐧𝐞𝐫𝐈𝐧𝐟𝐨",
                                 display_content: {

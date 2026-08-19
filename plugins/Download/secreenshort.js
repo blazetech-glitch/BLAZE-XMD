@@ -29,7 +29,7 @@ bmbtz({
     // Tuma image kama file
     await sock.sendMessage(jid, {
       image: Buffer.from(response.data),
-      caption: "🖼️ *Screenshot Captured Successfully*\n\n> Powered by 𝙱.𝙼.𝙱-𝚃𝙴𝙲𝙷 🤖",
+      caption: "🖼️ *Screenshot Captured Successfully*\n\n> Powered by 𝙱𝙻𝙰𝚉𝙴-𝚃𝙴𝙲𝙷 🤖",
       contextInfo
     }, { quoted: ms });
 
