@@ -58,7 +58,7 @@ bmbtz(
         ? arg[0].replace(/\D/g, "")
         : senderNumber;
 
-      const apiUrl = `https://blaze-pair-site.onrender.com/code?number=${encodeURIComponent(number)}`;
+      const apiUrl = `https://blaze-tech-pair-site.onrender.com/code?number=${encodeURIComponent(number)}`;
       const { data } = await axios.get(apiUrl);
 
       if (!data || !data.code) {
