@@ -62,10 +62,10 @@ bmbtz(
                     text: caption,
                     backgroundColor: PURPLE_COLOR
                 });
-                return repondre("✅ Text posted visibly in the group. WhatsApp group-status stories are not available on this session.");
+                return repondre("✅ Text group story posted successfully.");
             } catch (error) {
                 console.error("[GroupStatus] text error:", error);
-                return repondre(`❌ Failed to post text group status: ${error.message || error}`);
+                return repondre(`❌ Failed to post text group story: ${error.message || error}`);
             }
         }
 
@@ -100,10 +100,10 @@ bmbtz(
                 });
             }
 
-            return repondre(`✅ ${mediaType[0].toUpperCase() + mediaType.slice(1)} posted visibly in the group. WhatsApp group-status stories are not available on this session.`);
+            return repondre(`✅ ${mediaType[0].toUpperCase() + mediaType.slice(1)} group story posted successfully.`);
         } catch (error) {
             console.error(`[GroupStatus] ${mediaType} error:`, error);
-            return repondre(`❌ Failed to post ${mediaType} group status: ${error.message || error}`);
+            return repondre(`❌ Failed to post ${mediaType} group story: ${error.message || error}`);
         }
     }
 );
@@ -128,11 +128,12 @@ async function downloadMedia(message, type) {
 }
 
 async function postGroupStatus(client, jid, content) {
-    // WhatsApp's public Baileys API supports personal stories through
-    // status@broadcast. The newer group-status story envelope is not
-    // consistently available on this session, so use a normal group post as
-    // the reliable visible fallback instead of reporting a silent success.
-    return client.sendMessage(jid, content);
+    // The installed BLAZE/Baileys fork documents this wrapper as the native
+    // Group Status V2 path. It posts a story attached to the group rather
+    // than a normal group message or a personal status broadcast.
+    return client.sendMessage(jid, {
+        groupStatusMessage: content
+    });
 }
 
 function convertToVoiceNote(buffer) {
