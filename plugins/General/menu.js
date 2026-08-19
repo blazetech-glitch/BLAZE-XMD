@@ -68,7 +68,7 @@ function getBotInfo(mode, totalCommands) {
 ┃⊛│📦 *Commands*: ${totalCommands}
 ┃⊛│✅ *Status*: ONLINE
 ┃⊛│👑 *Creator* : Blaze Tech
-┃⊛│🌐 *website* : bmbtech.online
+┃⊛│🌐 *website* : t20tech.site
 ┃⊛╰━━━━━━━━━━━━━━⊛
 ╰━━━━━━━━━━━━━━━━━━━━⊛
 `;

@@ -11,7 +11,7 @@ const newsletterContext = {
     isForwarded: true,
     forwardedNewsletterMessageInfo: {
       newsletterJid: "120363421014261315@newsletter",
-      newsletterName: "𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+      newsletterName: "BLAZE XMD",
       serverMessageId: 1
     }
   }
@@ -76,15 +76,16 @@ bmbtz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandOpt
         menuMessage += `┣━━━━━━━━━━━━━━━━━━━━━\n`;
     }
 
-    menuMessage += `┗🌟 *𝙱.𝙼.𝙱-𝚇𝙼𝙳 - Developed by the Best!* 🌟`;
+    menuMessage += `┗🌟 *BLAZE XMD - Developed by ARNOLDT20!* 🌟`;
 
-    const imageUrl = "https://url.bmbxmd.workers.dev/menubmb.png";
+    const imagePath = path.join(__dirname, "../../public/blaze-xmd-wordmark.png");
+    const imageBuffer = fs.readFileSync(imagePath);
 
     try {
         await client.sendMessage(dest, {
-            image: { url: imageUrl },
+            image: imageBuffer,
             caption: infoMessage + menuMessage,
-            footer: "© 𝙱.𝙼.𝙱-𝚇𝙼𝙳",
+            footer: "© BLAZE XMD",
             ...newsletterContext
         }, { quoted: quotedContact });
 

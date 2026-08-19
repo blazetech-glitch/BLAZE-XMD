@@ -30,7 +30,7 @@ module.exports = {
     OWNER_NAME: process.env.OWNER_NAME || "BLAZE XMD",
     NUMERO_OWNER: process.env.NUMERO_OWNER || "",
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
-    URL: process.env.BOT_MENU_LINKS || 'https://url.bmbxmd.workers.dev/menubmb.png',
+    URL: process.env.BOT_MENU_LINKS || 'https://t20tech.site',
 
     // Fallback defaults for the database-backed toggle settings (see
     // plugins/Settings/settings.js for the commands that override these
