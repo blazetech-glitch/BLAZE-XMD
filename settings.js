@@ -27,9 +27,9 @@ if (fs.existsSync('settings.env')) {
 module.exports = {
     session: process.env.SESSION_ID || '',
     PREFIXE: process.env.PREFIX || ".",
-    OWNER_NAME: process.env.OWNER_NAME || "𝐛𝐦𝐛 𝐭𝐞𝐜𝐡",
+    OWNER_NAME: process.env.OWNER_NAME || "BLAZE XMD",
     NUMERO_OWNER: process.env.NUMERO_OWNER || "",
-    BOT: process.env.BOT_NAME || '𝐛𝐦𝐛 𝐭𝐞𝐜𝐡',
+    BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://url.bmbxmd.workers.dev/menubmb.png',
 
     // Fallback defaults for the database-backed toggle settings (see
