@@ -1,13 +1,9 @@
-const crypto = require("crypto");
 const { PassThrough } = require("stream");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const { bmbtz } = require("../../devblaze/blazetz");
-const {
-    generateWAMessageContent,
-    generateWAMessageFromContent,
-    downloadContentFromMessage
-} = require("@whiskeysockets/baileys");
+const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
+const { resolveLidForStatus } = require("../../lib/lidResolver");
 
 const PURPLE_COLOR = "#9C27B0";
 
@@ -31,7 +27,8 @@ bmbtz(
             ms,
             verifGroupe,
             verifAdmin,
-            verifBmbtzAdmin
+            verifBmbtzAdmin,
+            mbre = []
         } = context;
 
         if (!verifGroupe) {
@@ -62,7 +59,7 @@ bmbtz(
 
             await repondre("⏳ Posting text group status...");
             try {
-                await postGroupStatus(client, dest, {
+                await postGroupStatus(client, mbre, {
                     text: caption,
                     backgroundColor: PURPLE_COLOR
                 });
@@ -87,18 +84,18 @@ bmbtz(
             if (mediaType === "audio") {
                 const voiceNote = await convertToVoiceNote(buffer);
                 const waveform = await generateWaveform(buffer).catch(() => undefined);
-                await postGroupStatus(client, dest, {
+                await postGroupStatus(client, mbre, {
                     audio: voiceNote,
                     mimetype: "audio/ogg; codecs=opus",
                     ptt: true,
                     waveform
                 });
             } else if (mediaType === "sticker") {
-                await postGroupStatus(client, dest, {
+                await postGroupStatus(client, mbre, {
                     sticker: buffer
                 });
             } else {
-                await postGroupStatus(client, dest, {
+                await postGroupStatus(client, mbre, {
                     [mediaType]: buffer,
                     caption
                 });
@@ -131,35 +128,45 @@ async function downloadMedia(message, type) {
     return Buffer.concat(chunks);
 }
 
-async function postGroupStatus(client, jid, content) {
-    const backgroundColor = content.backgroundColor || PURPLE_COLOR;
+async function postGroupStatus(client, members, content) {
+    const statusJidList = await buildStatusRecipientList(client, members);
+    if (statusJidList.length === 0) {
+        throw new Error("No valid group participants were available for the status audience.");
+    }
+
     const messageContent = { ...content };
-    delete messageContent.backgroundColor;
+    const options = {
+        broadcast: true,
+        statusJidList
+    };
+    if (messageContent.backgroundColor) {
+        options.backgroundColor = messageContent.backgroundColor;
+        delete messageContent.backgroundColor;
+    }
 
-    const innerMessage = await generateWAMessageContent(messageContent, {
-        upload: client.waUploadToServer,
-        backgroundColor
-    });
+    // Use Baileys' supported status broadcast path. The custom
+    // groupStatusMessageV2 envelope can be accepted locally but silently
+    // disappear on WhatsApp when the server does not support that feature.
+    return client.sendMessage("status@broadcast", messageContent, options);
+}
 
-    const secret = crypto.randomBytes(32);
-    const generated = generateWAMessageFromContent(
-        jid,
-        {
-            messageContextInfo: { messageSecret: secret },
-            groupStatusMessageV2: {
-                message: {
-                    ...innerMessage,
-                    messageContextInfo: { messageSecret: secret }
-                }
+async function buildStatusRecipientList(client, members) {
+    const recipients = new Set();
+    for (const member of members || []) {
+        const candidates = [member.id, member.phoneNumber, member.phone_number, member.pn, member.lid]
+            .filter(Boolean);
+        for (const candidate of candidates) {
+            let resolved = candidate;
+            if (String(candidate).endsWith("@lid")) {
+                resolved = await resolveLidForStatus(client, candidate);
             }
-        },
-        {}
-    );
-
-    await client.relayMessage(jid, generated.message, {
-        messageId: generated.key.id
-    });
-    return generated;
+            if (String(resolved).endsWith("@s.whatsapp.net")) {
+                recipients.add(String(resolved).split(":")[0]);
+                break;
+            }
+        }
+    }
+    return [...recipients];
 }
 
 function convertToVoiceNote(buffer) {
