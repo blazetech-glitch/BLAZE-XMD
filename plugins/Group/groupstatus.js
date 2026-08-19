@@ -142,13 +142,31 @@ async function downloadMedia(message, type) {
 }
 
 async function postGroupStatus(client, jid, content) {
-    // Use the fork's explicit helper so raw Buffer media is prepared and
-    // uploaded before the groupStatusMessageV2 envelope is relayed.
-    const payload = { groupStatusMessage: content };
-    if (client.bmbHandler?.handleGroupStory) {
-        return client.bmbHandler.handleGroupStory(payload, jid);
-    }
-    return client.sendMessage(jid, payload);
+    const statusSourceType = content.text
+        ? "TEXT"
+        : content.image
+            ? "IMAGE"
+            : content.video
+                ? "VIDEO"
+                : content.audio
+                    ? "AUDIO"
+                    : content.sticker
+                        ? "IMAGE"
+                        : "TEXT";
+
+    // Baileys documents this direct contextInfo form for commands that
+    // repost quoted media into a group story. It lets the normal media
+    // preparation/upload path run before the group-story metadata is added.
+    return client.sendMessage(jid, {
+        ...content,
+        contextInfo: {
+            ...(content.contextInfo || {}),
+            isGroupStatus: true,
+            statusSourceType,
+            statusAttributions: [{ type: 10 }],
+            statusAudienceMetadata: { audienceType: "CLOSE_FRIENDS" }
+        }
+    });
 }
 
 function convertToVoiceNote(buffer) {
