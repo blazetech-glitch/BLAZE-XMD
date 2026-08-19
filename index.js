@@ -39,6 +39,7 @@ const pino = require("pino");
 const boom_1 = require("@hapi/boom");
 const conf = require("./settings");
 const { loadSettingsCache, getCachedSettingsSync } = require('./lib/settingsCache');
+const { handleChatbotMessage } = require('./handlers/chatbot');
 
 /**
  * Reads a bot-wide toggle setting from the live, database-backed cache
@@ -758,6 +759,12 @@ function mybotpic() {
     mybotpic
 };
 
+// Private-chat AI auto-replies are opt-in through .chatbot and ignore commands/groups.
+handleChatbotMessage(client, ms, {
+    from: origineMessage,
+    sender: auteurMessage,
+    body: texte
+}).catch((error) => console.error('[Chatbot] Message handler error:', error.message));
 
 // Auto read messages
 if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
