@@ -705,12 +705,39 @@ client.ev.on("messages.upsert", async (m) => {
             console.log(texte);
             function groupeAdmin(membreGroupe) {
                 let admin = [];
-                for (m of membreGroupe) {
-                    if (m.admin == null)
-                        continue;
-                    admin.push(m.id);
+                for (const member of membreGroupe || []) {
+                    if (member.admin == null) continue;
+                    admin.push(member);
                 }
                 return admin;
+            }
+
+            function normalizedJidIdentities(jid) {
+                if (!jid) return [];
+                const raw = String(jid);
+                const decoded = decodeJid(raw);
+                const resolved = resolveLidToJid(raw);
+                const values = [raw, decoded, resolved];
+                const numbers = values
+                    .filter(Boolean)
+                    .map((value) => String(value).split(':')[0].split('@')[0].replace(/\D/g, ''))
+                    .filter((value) => value.length >= 7);
+                return [...new Set(values.concat(numbers).filter(Boolean))];
+            }
+
+            function buildAdminIdentitySet(members) {
+                const identities = new Set();
+                for (const member of members || []) {
+                    [member.id, member.lid, member.phoneNumber, member.phone_number, member.pn]
+                        .flatMap(normalizedJidIdentities)
+                        .forEach((identity) => identities.add(identity));
+                }
+                return identities;
+            }
+
+            function isGroupAdmin(jid, members) {
+                const adminIdentities = buildAdminIdentitySet(members);
+                return normalizedJidIdentities(jid).some((identity) => adminIdentities.has(identity));
             }
 
             var etat = getConf('ETAT');
@@ -718,9 +745,9 @@ client.ev.on("messages.upsert", async (m) => {
             client.sendPresenceUpdate(presenceType, origineMessage).catch(()=>{});
 
             const mbre = verifGroupe ? (infosGroupe?.participants || []) : '';
-            let admins = verifGroupe ? groupeAdmin(mbre) : '';
-            const verifAdmin = verifGroupe ? admins.includes(auteurMessage) : false;
-            var verifBmbtzAdmin = verifGroupe ? admins.includes(idBot) : false;
+            let admins = verifGroupe ? groupeAdmin(mbre) : [];
+            const verifAdmin = verifGroupe ? isGroupAdmin(auteurMessage, admins) : false;
+            const verifBmbtzAdmin = verifGroupe ? isGroupAdmin(idBot, admins) : false;
             const arg = texte ? texte.trim().split(/ +/).slice(1) : null;
             const verifCom = texte ? texte.startsWith(getConf('PREFIXE')) : false;
             const com = verifCom ? texte.slice(1).trim().split(/ +/).shift().toLowerCase() : false;
