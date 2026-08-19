@@ -69,7 +69,8 @@ bmbtz(
             }
         }
 
-        const mediaType = detectMediaType(quotedMessage);
+        const mediaPayload = unwrapQuotedMessage(quotedMessage);
+        const mediaType = detectMediaType(mediaPayload);
         if (!mediaType) {
             return repondre("❌ Unsupported quoted media. Reply to an image, video, audio, or sticker.");
         }
@@ -77,7 +78,7 @@ bmbtz(
         await repondre(`⏳ Preparing ${mediaType} group status...`);
 
         try {
-            const buffer = await downloadMedia(quotedMessage, mediaType);
+            const buffer = await downloadMedia(mediaPayload, mediaType);
             if (!buffer?.length) throw new Error("The quoted media could not be downloaded.");
 
             if (mediaType === "audio") {
@@ -117,6 +118,19 @@ function detectMediaType(message) {
     return null;
 }
 
+function unwrapQuotedMessage(message) {
+    let current = message;
+    for (let i = 0; i < 4; i++) {
+        const wrapper = current?.viewOnceMessageV2
+            || current?.viewOnceMessage
+            || current?.viewOnceMessageV2Extension
+            || current?.documentWithCaptionMessage;
+        if (!wrapper?.message) break;
+        current = wrapper.message;
+    }
+    return current;
+}
+
 async function downloadMedia(message, type) {
     const mediaMessage = message[`${type}Message`];
     if (!mediaMessage) throw new Error(`Missing ${type} message payload.`);
@@ -128,12 +142,13 @@ async function downloadMedia(message, type) {
 }
 
 async function postGroupStatus(client, jid, content) {
-    // The installed BLAZE/Baileys fork documents this wrapper as the native
-    // Group Status V2 path. It posts a story attached to the group rather
-    // than a normal group message or a personal status broadcast.
-    return client.sendMessage(jid, {
-        groupStatusMessage: content
-    });
+    // Use the fork's explicit helper so raw Buffer media is prepared and
+    // uploaded before the groupStatusMessageV2 envelope is relayed.
+    const payload = { groupStatusMessage: content };
+    if (client.bmbHandler?.handleGroupStory) {
+        return client.bmbHandler.handleGroupStory(payload, jid);
+    }
+    return client.sendMessage(jid, payload);
 }
 
 function convertToVoiceNote(buffer) {
