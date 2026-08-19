@@ -12,6 +12,7 @@ const chatbotEnabled = new Map();
 const lastReplyTime = new Map();
 const conversationHistory = new Map();
 const userLastActivity = new Map();
+const gptReplyLastTime = new Map();
 
 function normalizeUser(jid) {
   return String(jid || '').split(':')[0].trim();
@@ -132,9 +133,69 @@ async function getAIResponse(user, message) {
   }
 }
 
+function extractQuotedText(message) {
+  const quoted = message?.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+  if (!quoted) return '';
+  return String(
+    quoted.conversation
+      || quoted.extendedTextMessage?.text
+      || quoted.imageMessage?.caption
+      || quoted.videoMessage?.caption
+      || ''
+  ).trim();
+}
+
+function isAiResponse(text) {
+  return /^╭━━━〔\s*🤖\s*BLAZE AI/i.test(text)
+    || /^🤖\s*\*?BLAZE GPT/i.test(text)
+    || /╰━━━〔\s*ARNOLDT20\s*〕━━━╯/i.test(text);
+}
+
+async function handleAutomaticGptReply(client, message, { from, body }) {
+  if (!body || body.startsWith('.') || !isPrivateChat(from)) return false;
+  const quotedText = extractQuotedText(message);
+  if (!isAiResponse(quotedText)) return false;
+
+  const now = Date.now();
+  const lastReply = gptReplyLastTime.get(from) || 0;
+  if (now - lastReply < REPLY_INTERVAL_MS) return true;
+  gptReplyLastTime.set(from, now);
+
+  try {
+    const response = await axios.post(CHATGPT_API, {
+      message: [
+        'Continue the conversation using the previous AI answer as context.',
+        'Do not repeat the entire previous answer unless requested.',
+        '',
+        `Previous AI answer:\n${quotedText.slice(0, 3800)}`,
+        '',
+        `User follow-up:\n${String(body).slice(0, 1800)}`
+      ].join('\n'),
+      conversation_id: `gpt:${from}`
+    }, {
+      timeout: 60_000,
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const data = response.data || {};
+    const answer = String(data.reply ?? data.response ?? data.answer ?? data.result ?? '').trim().slice(0, 3800);
+    if (!answer) throw new Error('AI service returned an empty continuation.');
+
+    await client.sendMessage(from, {
+      text: `╭━━━〔 🤖 BLAZE AI 〕━━━╮\n🔁 *Conversation continued*\n\n${answer}\n\n╰━━━〔 ARNOLDT20 〕━━━╯`
+    }, { quoted: message });
+  } catch (error) {
+    console.error('[Chatbot] Automatic GPT continuation failed:', error.response?.data || error.message);
+    await client.sendMessage(from, { text: '❌ I could not continue that AI conversation right now. Please try again shortly.' }, { quoted: message });
+  }
+  return true;
+}
+
 async function handleChatbotMessage(client, message, { from, sender, body }) {
   if (!isPrivateChat(from) || isFromBot(message, client)) return;
   if (!body || body.startsWith('.')) return;
+
+  if (await handleAutomaticGptReply(client, message, { from, body })) return;
 
   const keys = userKeys(sender, from);
   const user = keys[0] || normalizeUser(from);
@@ -154,6 +215,7 @@ setInterval(saveHistory, 5 * 60 * 1000);
 
 module.exports = {
   handleChatbotMessage,
+  handleAutomaticGptReply,
   toggleChatbot,
   setChatbotState,
   isChatbotEnabled
