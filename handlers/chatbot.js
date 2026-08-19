@@ -17,6 +17,10 @@ function normalizeUser(jid) {
     return String(jid || "").split(":")[0].trim();
 }
 
+function userKeys(...jids) {
+    return [...new Set(jids.map(normalizeUser).filter(Boolean))];
+}
+
 function isPrivateChat(from) {
     return Boolean(from) && !from.endsWith("@g.us") && from !== "status@broadcast";
 }
@@ -43,6 +47,7 @@ function loadHistory() {
             if (!Array.isArray(entry.history)) continue;
             conversationHistory.set(user, entry.history.slice(-10));
             userLastActivity.set(user, Number(entry.lastActivity));
+            if (entry.enabled === true) chatbotEnabled.set(user, true);
         }
 
         console.log(`[Chatbot] Loaded history for ${conversationHistory.size} users`);
@@ -57,7 +62,8 @@ function saveHistory() {
         for (const [user, history] of conversationHistory) {
             data[user] = {
                 history: history.slice(-10),
-                lastActivity: userLastActivity.get(user) || Date.now()
+                lastActivity: userLastActivity.get(user) || Date.now(),
+                enabled: chatbotEnabled.get(user) === true
             };
         }
         fs.writeFileSync(HISTORY_FILE, JSON.stringify(data, null, 2));
@@ -104,14 +110,18 @@ function toggleChatbot(jid) {
     const user = normalizeUser(jid);
     const enabled = !Boolean(chatbotEnabled.get(user));
     chatbotEnabled.set(user, enabled);
+    // Keep the plain number key too, because WhatsApp may alternate between
+    // phone JIDs and LID JIDs across messages from the same private chat.
+    chatbotEnabled.set(user.split("@")[0], enabled);
+    console.log(`[Chatbot] ${enabled ? "Enabled" : "Disabled"} for ${user}`);
 
     if (enabled) {
         conversationHistory.set(user, []);
         lastReplyTime.set(user, 0);
         userLastActivity.set(user, Date.now());
-        saveHistory();
     }
 
+    saveHistory();
     return enabled;
 }
 
@@ -119,9 +129,12 @@ async function handleChatbotMessage(client, message, { from, sender, body }) {
     if (!isPrivateChat(from) || isFromBot(message, client)) return;
     if (!body || body.startsWith(".")) return;
 
-    const user = normalizeUser(sender || from);
-    if (!chatbotEnabled.get(user)) return;
+    const keys = userKeys(sender, from);
+    const user = keys[0] || normalizeUser(from);
+    const enabled = keys.some((key) => chatbotEnabled.get(key) === true || chatbotEnabled.get(key.split("@")[0]) === true);
+    if (!enabled) return;
 
+    console.log(`[Chatbot] Handling private message for ${user}`);
     const now = Date.now();
     const lastReply = lastReplyTime.get(user) || 0;
     if (now - lastReply < REPLY_INTERVAL_MS) return;
