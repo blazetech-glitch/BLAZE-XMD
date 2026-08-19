@@ -40,7 +40,7 @@ module.exports = {
     AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || 'on',
     AUTO_DOWNLOAD_STATUS: process.env.AUTO_DOWNLOAD_STATUS || 'off',
     AUTO_REACT_STATUS: process.env.AUTO_REACT_STATUS || 'on',
-    AUTO_READ: process.env.AUTO_READ || 'on',
+    AUTO_READ: process.env.AUTO_READ || 'off',
     MODE: process.env.PUBLIC_MODE || 'on',
     PM_PERMIT: process.env.PM_PERMIT || 'off',
     WARN_COUNT: process.env.WARN_COUNT || '3',

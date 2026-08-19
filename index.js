@@ -793,13 +793,12 @@ handleChatbotMessage(client, ms, {
     body: texte
 }).catch((error) => console.error('[Chatbot] Message handler error:', error.message));
 
-// Auto read messages
-if (getConf('AUTO_READ') === 'on' && !ms.key.fromMe) {
-    client.readMessages([ms.key]).catch(()=>{});
+// Automatic message read receipts are intentionally disabled so incoming
+// messages do not receive blue ticks. Status read behavior remains controlled
+// separately by AUTO_READ_STATUS.
+if (ms.key && ms.key.remoteJid === "status@broadcast" && getConf('AUTO_READ_STATUS') === "on") {
+    await client.readMessages([ms.key]);
 }
-            if (ms.key && ms.key.remoteJid === "status@broadcast" && getConf('AUTO_READ_STATUS') === "on") {
-                await client.readMessages([ms.key]);
-            }
             if (ms.key && ms.key.remoteJid === 'status@broadcast' && getConf('AUTO_DOWNLOAD_STATUS') === "on") {
                 if (ms.message.extendedTextMessage) {
                     var stTxt = ms.message.extendedTextMessage.text;
