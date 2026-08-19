@@ -1,147 +1,86 @@
-const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const axios = require('axios');
+const { bmbtz } = require('../../devblaze/blazetz');
 
-/* ===== API CONFIG ===== */
-const API_URL = "https://iamtkm.vercel.app/ai/gpt5";
-const API_KEY = "tkm";
+const AI_API = process.env.BLAZE_CHATBOT_API || 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
+const MAX_QUERY_LENGTH = 1800;
 
-/* ===== COMMAND ===== */
+const MODES = {
+  code: 'You are an expert programmer. Provide correct, clean code with a concise explanation.',
+  creative: 'You are a creative writer. Make the response vivid, original, and well structured.',
+  explain: 'You are a patient teacher. Explain the topic simply, with examples when helpful.'
+};
+
 bmbtz(
   {
-    nomCom: "gpt",
-    categorie: "Search",
-    reaction: "🤖",
-    alias: ["gpt5", "ai5", "askgpt", "wolfai"]
+    nomCom: 'gpt',
+    categorie: 'Search',
+    reaction: '🤖',
+    alias: ['ask', 'aiask', 'askgpt']
   },
   async (dest, client, context) => {
-    const { arg, repondre, ms } = context;
+    const { arg = [], repondre, ms } = context;
+    const first = String(arg[0] || '').toLowerCase();
 
-    /* ===== HELP ===== */
-    if (!arg[0] || arg[0].toLowerCase() === "help") {
-      return repondre(
-        "🤖 *BLAZE GPT-5*\n\n" +
-        "📌 *Usage:*\n" +
-        "• .gpt hello\n" +
-        "• .gpt code javascript function\n" +
-        "• .gpt creative short story\n" +
-        "• .gpt explain async await\n"
-      );
+    if (!arg.length || ['help', '?'].includes(first)) {
+      return repondre([
+        '🤖 *BLAZE XMD AI ASSISTANT*',
+        '',
+        '`.gpt your question` — ask anything',
+        '`.gpt code write a JavaScript function` — coding mode',
+        '`.gpt explain async and await` — explanation mode',
+        '`.gpt creative write a short story` — creative mode',
+        '',
+        'Short aliases: `.ask`, `.aiask`, `.askgpt`'
+      ].join('\n'));
     }
 
-    /* ===== MODES ===== */
-    const specialCommands = {
-      code: "code",
-      program: "code",
-      coding: "code",
-      creative: "creative",
-      write: "creative",
-      story: "creative",
-      explain: "explain",
-      whatis: "explain",
-      define: "explain"
-    };
-
-    let query = arg.join(" ");
-    let mode = "general";
-    let enhancedPrompt = query;
-
-    const firstWord = arg[0].toLowerCase();
-    if (specialCommands[firstWord]) {
-      mode = specialCommands[firstWord];
-      query = arg.slice(1).join(" ");
-
-      if (!query) return repondre("❌ Please provide your question.");
-
-      if (mode === "code") {
-        enhancedPrompt =
-          `You are an expert programmer. Provide clean and efficient code with explanation.\nQuestion: ${query}`;
-      } else if (mode === "creative") {
-        enhancedPrompt =
-          `You are a creative writer. Be imaginative and engaging.\nWrite: ${query}`;
-      } else if (mode === "explain") {
-        enhancedPrompt =
-          `You are a teacher. Explain clearly with examples.\nTopic: ${query}`;
-      }
+    let mode = 'general';
+    let query = arg.join(' ').trim();
+    if (MODES[first]) {
+      mode = first;
+      query = arg.slice(1).join(' ').trim();
     }
+
+    if (!query) return repondre(`❌ Add a question after the ${mode} mode.`);
+    if (query.length > MAX_QUERY_LENGTH) return repondre(`❌ Keep your question under ${MAX_QUERY_LENGTH} characters.`);
+
+    await client.sendMessage(dest, { react: { text: '⏳', key: ms.key } }).catch(() => {});
 
     try {
-      /* ===== REACT ===== */
-      await client.sendMessage(dest, {
-        react: { text: "⏳", key: ms.key }
+      const instruction = MODES[mode]
+        ? `${MODES[mode]}\n\nUser request:\n${query}`
+        : query;
+      const response = await axios.post(AI_API, {
+        message: instruction,
+        conversation_id: `gpt:${dest}`
+      }, {
+        timeout: 60_000,
+        headers: { 'Content-Type': 'application/json' }
       });
 
-      /* ===== API REQUEST ===== */
-      const res = await axios.get(API_URL, {
-        params: {
-          apikey: API_KEY,
-          text: enhancedPrompt
-        },
-        timeout: 35000
-      });
+      const data = response.data || {};
+      let answer = data.reply ?? data.response ?? data.answer ?? data.result;
+      if (answer === undefined || answer === null) throw new Error('AI service returned no answer.');
+      answer = String(answer).trim().slice(0, 3800);
+      if (!answer) throw new Error('AI service returned an empty answer.');
 
-      const data = res.data;
-      let aiResponse = "";
+      const modeLabel = mode === 'general' ? '' : `\n🧭 *Mode:* ${mode.toUpperCase()}\n`;
+      const output = [
+        '╭━━━〔 🤖 BLAZE AI 〕━━━╮',
+        `${modeLabel}`,
+        `📝 *Request:* ${query.slice(0, 180)}${query.length > 180 ? '…' : ''}`,
+        '',
+        answer,
+        '',
+        '╰━━━〔 ARNOLDT20 〕━━━╯'
+      ].join('\n');
 
-      if (data?.status && data.result) {
-        aiResponse = data.result;
-      } else if (data?.response) {
-        aiResponse = data.response;
-      } else if (data?.answer) {
-        aiResponse = data.answer;
-      } else {
-        aiResponse = JSON.stringify(data, null, 2).slice(0, 1500);
-      }
-
-      aiResponse = formatResponse(aiResponse, mode);
-
-      if (aiResponse.length > 3000) {
-        aiResponse = aiResponse.slice(0, 3000) + "\n\n...truncated";
-      }
-
-      /* ===== FINAL MESSAGE ===== */
-      let text =
-        "🤖 *BLAZE GPT-5*\n\n";
-
-      if (mode !== "general") {
-        const icons = {
-          code: "👨‍💻",
-          creative: "🎨",
-          explain: "📘"
-        };
-        text += `${icons[mode]} *Mode:* ${mode.toUpperCase()}\n\n`;
-      }
-
-      text +=
-        `🎯 *Question:*\n${query.slice(0, 100)}\n\n` +
-        `✨ *Response:*\n${aiResponse}\n\n` +
-        "⚡ *Powered by BLAZE TECH*";
-
-      await client.sendMessage(dest, { text });
-
-    } catch (err) {
-      console.error("GPT ERROR:", err.response?.data || err);
-      repondre(
-        "❌ *GPT-5 Error*\n\n" +
-        "• API may be down\n" +
-        "• Try again later\n" +
-        "• Use shorter questions"
-      );
+      await client.sendMessage(dest, { text: output }, { quoted: ms });
+      await client.sendMessage(dest, { react: { text: '✅', key: ms.key } }).catch(() => {});
+    } catch (error) {
+      console.error('[gpt]', error.response?.data || error.message || error);
+      await client.sendMessage(dest, { react: { text: '❌', key: ms.key } }).catch(() => {});
+      return repondre('❌ AI request failed. The service may be busy; please try again shortly.');
     }
   }
 );
-
-/* ===== HELPERS ===== */
-
-function formatResponse(text, mode) {
-  if (!text) return "";
-
-  if (mode === "code" && !text.includes("```")) {
-    return "```" + "\n" + text + "\n```";
-  }
-
-  if (mode === "creative") {
-    return text.replace(/\n\s*\n/g, "\n\n");
-  }
-
-  return text;
-}
