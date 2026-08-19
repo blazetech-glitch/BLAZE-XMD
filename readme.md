@@ -42,7 +42,7 @@ BLAZE-XMD is a modular WhatsApp automation project with command plugins, group u
 <p align="center">
   <strong>2. GET SESSION ID</strong>
   <br />
-  <a href="https://blaze-pair-site.onrender.com/" target="_blank">
+  <a href="https://blaze-tech-pair-site.onrender.com/" target="_blank">
     <img alt="Get session ID" src="https://img.shields.io/badge/Pair-100000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=darkred&color=darkred" />
   </a>
 </p>
