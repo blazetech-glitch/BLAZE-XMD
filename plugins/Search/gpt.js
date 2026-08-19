@@ -10,6 +10,23 @@ const MODES = {
   explain: 'You are a patient teacher. Explain the topic simply, with examples when helpful.'
 };
 
+function extractQuotedText(message) {
+  if (!message) return '';
+  return String(
+    message.conversation
+      || message.extendedTextMessage?.text
+      || message.imageMessage?.caption
+      || message.videoMessage?.caption
+      || ''
+  ).trim();
+}
+
+function isLikelyAiResponse(text) {
+  return /^╭━━━〔\s*🤖\s*BLAZE AI/i.test(text)
+    || /^🤖\s*\*?BLAZE GPT/i.test(text)
+    || /╰━━━〔\s*ARNOLDT20\s*〕━━━╯/i.test(text);
+}
+
 bmbtz(
   {
     nomCom: 'gpt',
@@ -18,10 +35,12 @@ bmbtz(
     alias: ['ask', 'aiask', 'askgpt']
   },
   async (dest, client, context) => {
-    const { arg = [], repondre, ms } = context;
+    const { arg = [], repondre, ms, msgRepondu } = context;
     const first = String(arg[0] || '').toLowerCase();
+    const quotedText = extractQuotedText(msgRepondu);
+    const replyingToAi = isLikelyAiResponse(quotedText);
 
-    if (!arg.length || ['help', '?'].includes(first)) {
+    if (!arg.length && !replyingToAi || ['help', '?'].includes(first)) {
       return repondre([
         '🤖 *BLAZE XMD AI ASSISTANT*',
         '',
@@ -30,6 +49,7 @@ bmbtz(
         '`.gpt explain async and await` — explanation mode',
         '`.gpt creative write a short story` — creative mode',
         '',
+        'Reply to an AI answer with `.gpt your follow-up` to continue that conversation.',
         'Short aliases: `.ask`, `.aiask`, `.askgpt`'
       ].join('\n'));
     }
@@ -41,15 +61,29 @@ bmbtz(
       query = arg.slice(1).join(' ').trim();
     }
 
+    if (!query && replyingToAi) query = 'Continue the previous answer and provide the next useful detail.';
     if (!query) return repondre(`❌ Add a question after the ${mode} mode.`);
     if (query.length > MAX_QUERY_LENGTH) return repondre(`❌ Keep your question under ${MAX_QUERY_LENGTH} characters.`);
 
     await client.sendMessage(dest, { react: { text: '⏳', key: ms.key } }).catch(() => {});
 
     try {
-      const instruction = MODES[mode]
+      let instruction = MODES[mode]
         ? `${MODES[mode]}\n\nUser request:\n${query}`
         : query;
+
+      if (replyingToAi) {
+        const trimmedQuoted = quotedText.slice(0, 3800);
+        instruction = [
+          'Continue the conversation using the previous AI answer below as context.',
+          'Do not repeat the entire previous answer unless the user asks for it.',
+          '',
+          `Previous AI answer:\n${trimmedQuoted}`,
+          '',
+          `Follow-up request:\n${instruction}`
+        ].join('\n');
+      }
+
       const response = await axios.post(AI_API, {
         message: instruction,
         conversation_id: `gpt:${dest}`
@@ -65,9 +99,10 @@ bmbtz(
       if (!answer) throw new Error('AI service returned an empty answer.');
 
       const modeLabel = mode === 'general' ? '' : `\n🧭 *Mode:* ${mode.toUpperCase()}\n`;
+      const continuationLabel = replyingToAi ? '\n🔁 *Conversation continued*\n' : '';
       const output = [
         '╭━━━〔 🤖 BLAZE AI 〕━━━╮',
-        `${modeLabel}`,
+        `${modeLabel}${continuationLabel}`,
         `📝 *Request:* ${query.slice(0, 180)}${query.length > 180 ? '…' : ''}`,
         '',
         answer,
