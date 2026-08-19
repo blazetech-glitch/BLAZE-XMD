@@ -3,7 +3,6 @@ const ffmpeg = require("fluent-ffmpeg");
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
 const { bmbtz } = require("../../devblaze/blazetz");
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
-const { resolveLidForStatus } = require("../../lib/lidResolver");
 
 const PURPLE_COLOR = "#9C27B0";
 
@@ -59,11 +58,11 @@ bmbtz(
 
             await repondre("⏳ Posting text group status...");
             try {
-                await postGroupStatus(client, mbre, {
+                await postGroupStatus(client, dest, {
                     text: caption,
                     backgroundColor: PURPLE_COLOR
                 });
-                return repondre("✅ Text group status posted successfully.");
+                return repondre("✅ Text posted visibly in the group. WhatsApp group-status stories are not available on this session.");
             } catch (error) {
                 console.error("[GroupStatus] text error:", error);
                 return repondre(`❌ Failed to post text group status: ${error.message || error}`);
@@ -84,24 +83,24 @@ bmbtz(
             if (mediaType === "audio") {
                 const voiceNote = await convertToVoiceNote(buffer);
                 const waveform = await generateWaveform(buffer).catch(() => undefined);
-                await postGroupStatus(client, mbre, {
+                await postGroupStatus(client, dest, {
                     audio: voiceNote,
                     mimetype: "audio/ogg; codecs=opus",
                     ptt: true,
                     waveform
                 });
             } else if (mediaType === "sticker") {
-                await postGroupStatus(client, mbre, {
+                await postGroupStatus(client, dest, {
                     sticker: buffer
                 });
             } else {
-                await postGroupStatus(client, mbre, {
+                await postGroupStatus(client, dest, {
                     [mediaType]: buffer,
                     caption
                 });
             }
 
-            return repondre(`✅ ${mediaType[0].toUpperCase() + mediaType.slice(1)} group status posted successfully.`);
+            return repondre(`✅ ${mediaType[0].toUpperCase() + mediaType.slice(1)} posted visibly in the group. WhatsApp group-status stories are not available on this session.`);
         } catch (error) {
             console.error(`[GroupStatus] ${mediaType} error:`, error);
             return repondre(`❌ Failed to post ${mediaType} group status: ${error.message || error}`);
@@ -128,45 +127,12 @@ async function downloadMedia(message, type) {
     return Buffer.concat(chunks);
 }
 
-async function postGroupStatus(client, members, content) {
-    const statusJidList = await buildStatusRecipientList(client, members);
-    if (statusJidList.length === 0) {
-        throw new Error("No valid group participants were available for the status audience.");
-    }
-
-    const messageContent = { ...content };
-    const options = {
-        broadcast: true,
-        statusJidList
-    };
-    if (messageContent.backgroundColor) {
-        options.backgroundColor = messageContent.backgroundColor;
-        delete messageContent.backgroundColor;
-    }
-
-    // Use Baileys' supported status broadcast path. The custom
-    // groupStatusMessageV2 envelope can be accepted locally but silently
-    // disappear on WhatsApp when the server does not support that feature.
-    return client.sendMessage("status@broadcast", messageContent, options);
-}
-
-async function buildStatusRecipientList(client, members) {
-    const recipients = new Set();
-    for (const member of members || []) {
-        const candidates = [member.id, member.phoneNumber, member.phone_number, member.pn, member.lid]
-            .filter(Boolean);
-        for (const candidate of candidates) {
-            let resolved = candidate;
-            if (String(candidate).endsWith("@lid")) {
-                resolved = await resolveLidForStatus(client, candidate);
-            }
-            if (String(resolved).endsWith("@s.whatsapp.net")) {
-                recipients.add(String(resolved).split(":")[0]);
-                break;
-            }
-        }
-    }
-    return [...recipients];
+async function postGroupStatus(client, jid, content) {
+    // WhatsApp's public Baileys API supports personal stories through
+    // status@broadcast. The newer group-status story envelope is not
+    // consistently available on this session, so use a normal group post as
+    // the reliable visible fallback instead of reporting a silent success.
+    return client.sendMessage(jid, content);
 }
 
 function convertToVoiceNote(buffer) {
