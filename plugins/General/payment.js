@@ -25,8 +25,8 @@ bmbtz({ nomCom: "payment", categorie: "General" }, async (dest, client, commande
   let infoMsg = `┏━━━━━━━━━━━━━━━━━━\n` +
                 `┃ 💳 *Payment Details*\n` +
                 `┃ \n` +
-                `┃ 👤 *Name:* SAILAS ANTIM MAMSERI\n` +
-                `┃ 📞 *Number:* 0767862457 (Vodacom)\n` +
+                `┃ 👤 *Name:* ARNOLD EMMANUEL TARIMO\n` +
+                `┃ 📞 *Number:* 0768418867\n` +
                 `┃ 🌐 *Method:* Online Payment\n` +
                 `┃ 🌍 *Country:* Tanzania 🇹🇿\n` +
                 `┗━━━━━━━━━━━━━━━━━`;
