@@ -19,12 +19,57 @@ const { recupevents } = require('../lib/welcome');
  * @param {import('@whiskeysockets/baileys').WASocket} client
  * @param {{ id: string, participants: string[], action: string, author?: string }} group
  */
+function normalizeParticipant(participant) {
+    if (typeof participant === 'string') return participant;
+    if (!participant || typeof participant !== 'object') return null;
+    return participant.phoneNumber || participant.id || participant.jid || null;
+}
+
+function mentionLabel(jid) {
+    return String(jid || '').split('@')[0].split(':')[0];
+}
+
+async function sendGreeting(client, groupId, participantJid, caption) {
+    const fallbackImage = 'https://files.catbox.moe/f9jxiv.jpg';
+    let profileImage = fallbackImage;
+
+    try {
+        const profileResult = await client.profilePictureUrl(participantJid, 'image');
+        if (typeof profileResult === 'string' && /^https?:\/\//i.test(profileResult)) {
+            profileImage = profileResult;
+        }
+    } catch (_) {
+        // Keep the stable fallback image.
+    }
+
+    try {
+        await client.sendMessage(groupId, {
+            image: { url: profileImage },
+            caption,
+            mentions: [participantJid]
+        });
+    } catch (mediaError) {
+        console.warn('[Group greeting] Image send failed; sending text fallback:', mediaError.message);
+        await client.sendMessage(groupId, {
+            text: caption,
+            mentions: [participantJid]
+        });
+    }
+}
+
 async function groupEvents(client, group) {
     console.log('Group participants update triggered:', group);
 
     try {
         const metadata = await client.groupMetadata(group.id);
-        const membres = group.participants;
+        const membres = (Array.isArray(group.participants) ? group.participants : [])
+            .map(normalizeParticipant)
+            .filter(Boolean);
+        if (!membres.length) {
+            console.warn('[Group greeting] No usable participant JID was supplied.');
+            return;
+        }
+        const member = membres[0];
         const groupName = metadata.subject || "Group";
         const groupDesc = metadata.desc || "no group information";
 
@@ -35,18 +80,11 @@ async function groupEvents(client, group) {
 
         // 🟢 WELCOME
         if (group.action === 'add' && (await recupevents(group.id, "welcome")) === 'on') {
-            let ppuser;
-            try {
-                ppuser = await client.profilePictureUrl(membres[0], 'image');
-            } catch (error) {
-                ppuser = 'https://files.catbox.moe/f9jxiv.jpg';
-            }
-
             const customWelcome = await recupevents(group.id, "welcometext");
             let msg;
             if (customWelcome && customWelcome !== 'non') {
                 msg = customWelcome
-                    .replace(/{user}/g, `@${membres[0].split("@")[0]}`)
+                    .replace(/{user}/g, `@${mentionLabel(member)}`)
                     .replace(/{group}/g, groupName)
                     .replace(/{desc}/g, groupDesc)
                     .replace(/{date}/g, date)
@@ -69,29 +107,18 @@ async function groupEvents(client, group) {
 ╰──────────────────────━⊷`;
             }
 
-            await client.sendMessage(group.id, {
-                image: { url: ppuser },
-                caption: msg,
-                mentions: membres
-            });
+            await sendGreeting(client, group.id, member, msg);
 
             console.log('✅ Welcome message sent.');
         }
 
         // 🔴 GOODBYE
         else if (group.action === 'remove' && (await recupevents(group.id, "goodbye")) === 'on') {
-            let ppuser;
-            try {
-                ppuser = await client.profilePictureUrl(membres[0], 'image');
-            } catch (error) {
-                ppuser = 'https://files.catbox.moe/f9jxiv.jpg';
-            }
-
             const customGoodbye = await recupevents(group.id, "goodbyetext");
             let msg;
             if (customGoodbye && customGoodbye !== 'non') {
                 msg = customGoodbye
-                    .replace(/{user}/g, `@${membres[0].split("@")[0]}`)
+                    .replace(/{user}/g, `@${mentionLabel(member)}`)
                     .replace(/{group}/g, groupName)
                     .replace(/{desc}/g, groupDesc)
                     .replace(/{date}/g, date)
@@ -100,7 +127,7 @@ async function groupEvents(client, group) {
             } else {
                 msg = `
 ╭─────────────────────────━⊷
-║ɢᴏᴏᴅʙʏᴇ👋 @${membres[0].split("@")[0]}
+║ɢᴏᴏᴅʙʏᴇ👋 @${mentionLabel(member)}
 ║════════════════════════
 ║ᴛʜᴇ ᴛɪᴍᴇ ʜᴇ ʟᴇғᴛ ${time}
 ║════════════════════════
@@ -110,11 +137,7 @@ async function groupEvents(client, group) {
 ╰──────────────────────────━⊷`;
             }
 
-            await client.sendMessage(group.id, {
-                image: { url: ppuser },
-                caption: msg,
-                mentions: membres
-            });
+            await sendGreeting(client, group.id, member, msg);
 
             console.log('✅ Goodbye message sent.');
         }
