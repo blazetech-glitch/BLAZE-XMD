@@ -129,7 +129,10 @@ async function authentification() {
     try {
         if (!sessionPayload) return;
         const credsPath = __dirname + "/public/creds.json";
-        if (!fs.existsSync(credsPath) || sessionPayload) {
+        // SESSION_ID initializes a new auth store only. Never overwrite the
+        // updated WhatsApp credentials after Baileys has saved them; doing so
+        // can invalidate the ratchet and produce repeated Bad MAC errors.
+        if (!fs.existsSync(credsPath)) {
             await fs.writeFileSync(credsPath, sessionPayload, "utf8");
         }
     }
