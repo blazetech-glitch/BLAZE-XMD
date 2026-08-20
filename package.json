@@ -7,6 +7,12 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "overrides": {
+    "sharp": "^0.35.3"
+  },
   "keywords": [
     "termux",
     "whatsapp-openai",
@@ -47,7 +53,7 @@
     "pino-pretty": "^7.5.1",
     "qrcode-terminal": "^0.12.0",
     "sequelize": "^6.21.4",
-    "sharp": "^0.33.5",
+    "sharp": "^0.35.3",
     "translatte": "^3.0.1",
     "wa-sticker-formatter": "^4.4.4",
     "youtube-yts": "^2.0.0",
