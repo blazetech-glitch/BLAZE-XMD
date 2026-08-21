@@ -3,7 +3,7 @@ const { blazetz } = require("../../devblaze/blazetz");
 blazetz(
   {
     nomCom: "delete",
-    desc: "Delete a replied message for everyone.",
+    desc: "Delete a replied message and the delete command.",
     categorie: "General",
     reaction: "🗑️",
     alias: ["del", "d"]
@@ -48,13 +48,25 @@ blazetz(
 
     try {
       await client.sendMessage(dest, { delete: targetKey });
-      return null;
     } catch (error) {
       console.error("[Delete] Failed to delete replied message:", error);
       return repondre(
         "❌ WhatsApp could not delete that message. It may be outside the deletion window, unavailable to the bot, or restricted by chat permissions."
       );
     }
+
+    // Remove the command message after the requested target has been deleted.
+    const commandKey = buildCommandKey(ms, dest);
+    if (commandKey) {
+      try {
+        await client.sendMessage(dest, { delete: commandKey });
+      } catch (error) {
+        // The target was already deleted; failure here is only a cleanup limitation.
+        console.warn("[Delete] Target deleted, but the command message could not be removed:", error.message || error);
+      }
+    }
+
+    return null;
   }
 );
 
@@ -70,6 +82,20 @@ function getQuotedContextInfo(message) {
   ];
 
   return candidates.find((info) => info?.stanzaId) || null;
+}
+
+function buildCommandKey(message, remoteJid) {
+  const key = message?.key;
+  if (!key?.id) return null;
+
+  const commandKey = {
+    remoteJid,
+    fromMe: Boolean(key.fromMe),
+    id: key.id
+  };
+
+  if (key.participant) commandKey.participant = key.participant;
+  return commandKey;
 }
 
 function normalizeJid(value) {
