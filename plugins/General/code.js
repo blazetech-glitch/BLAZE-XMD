@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const PLUGINS_ROOT = path.resolve(__dirname, '..');
 const MAX_CODE_BYTES = 512 * 1024;
@@ -54,7 +54,7 @@ function usage(prefixe) {
 ╰────────────────────`;
 }
 
-bmbtz({
+blazetz({
     nomCom: 'code',
     alias: ['plugin-code', 'source'],
     categorie: 'Mods',

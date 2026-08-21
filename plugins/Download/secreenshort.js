@@ -1,7 +1,7 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
-bmbtz({
+blazetz({
   nomCom: "screenshot",
   categorie: "Download",
   reaction: "📷"

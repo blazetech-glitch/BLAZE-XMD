@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz")
+const { blazetz } = require("../../devblaze/blazetz")
 //const { getGroupe } = require("../../lib/groupe")
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const {ajouterOuMettreAJourJid,mettreAJourAction,verifierEtatJid} = require("../../lib/antilien")
@@ -13,7 +13,7 @@ const { default: axios } = require('axios');
 
 
 
-bmbtz({ nomCom: "tagall", categorie: 'Group', reaction: "📣" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "tagall", categorie: 'Group', reaction: "📣" }, async (dest, client, commandeOptions) => {
 
   const {
     ms,
@@ -66,7 +66,7 @@ bmbtz({ nomCom: "tagall", categorie: 'Group', reaction: "📣" }, async (dest, c
 
 });
 
-bmbtz({ nomCom: "link", categorie: 'Group', reaction: "🙋" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "link", categorie: 'Group', reaction: "🙋" }, async (dest, client, commandeOptions) => {
   const { repondre, nomGroupe, nomAuteurMessage, verifGroupe } = commandeOptions;
 
   if (!verifGroupe) {
@@ -92,7 +92,7 @@ bmbtz({ nomCom: "link", categorie: 'Group', reaction: "🙋" }, async (dest, cli
 
 });
 /** *nommer un membre comme admin */
-bmbtz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest, client, commandeOptions) => {
   let { repondre, verifGroupe, verifAdmin, superUser, utilisateur } = commandeOptions;
   if (!verifGroupe) { return repondre("For groups only"); }
   if (!(verifAdmin || superUser)) { return repondre("Sorry I cannot perform this action because you are not an administrator of the group."); }
@@ -124,7 +124,7 @@ bmbtz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest, 
 //fin nommer
 /** ***demettre */
 
-bmbtz({ nomCom: "demote", categorie: 'Group', reaction: "🔃" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "demote", categorie: 'Group', reaction: "🔃" }, async (dest, client, commandeOptions) => {
   let { repondre, verifGroupe, verifAdmin, superUser, utilisateur } = commandeOptions;
   if (!verifGroupe) { return repondre("For groups only"); }
   if (!(verifAdmin || superUser)) { return repondre("Sorry I cannot perform this action because you are not an administrator of the group."); }
@@ -149,7 +149,7 @@ bmbtz({ nomCom: "demote", categorie: 'Group', reaction: "🔃" }, async (dest, c
 
 /** ***fin démettre****  **/
 /** **retirer** */
-bmbtz({ nomCom: "remove", aliases: ["kick"], categorie: 'Group', reaction: "🦵" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "remove", aliases: ["kick"], categorie: 'Group', reaction: "🦵" }, async (dest, client, commandeOptions) => {
   let { repondre, verifGroupe, verifAdmin, superUser, idBot, utilisateur } = commandeOptions;
 
   if (!verifGroupe) { return repondre("for groups only"); }
@@ -180,7 +180,7 @@ bmbtz({ nomCom: "remove", aliases: ["kick"], categorie: 'Group', reaction: "🦵
 
 /** *****fin retirer */
 
-bmbtz({
+blazetz({
   nomCom: "del",
   categorie: 'Group',
   reaction: "🧹"
@@ -237,7 +237,7 @@ bmbtz({
   }
 });
 
-bmbtz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOptions) => {
   const { ms, repondre, verifGroupe } = commandeOptions;
   if (!verifGroupe) {
     repondre("⚠️ This command is for groups only!");
@@ -272,7 +272,7 @@ bmbtz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOptio
 
  //------------------------------------antilien-------------------------------
 
- bmbtz({ nomCom: "antilink", categorie: 'Group', reaction: "🔗" }, async (dest, client, commandeOptions) => {
+ blazetz({ nomCom: "antilink", categorie: 'Group', reaction: "🔗" }, async (dest, client, commandeOptions) => {
   var { repondre, arg, verifGroupe, superUser, verifAdmin } = commandeOptions;
 
   if (!verifGroupe) return repondre("🚫 *This command works in groups only.*");
@@ -361,7 +361,7 @@ Try: *antilink on*, *antilink off*, *antilink action/remove* etc.`
 
 //----------------------------------------------------------------------------
 
-bmbtz({ nomCom: "group", categorie: 'Group' }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "group", categorie: 'Group' }, async (dest, client, commandeOptions) => {
 
   const { repondre, verifGroupe, verifAdmin, superUser, arg } = commandeOptions;
 
@@ -412,7 +412,7 @@ Type:
   }
 });
 
-bmbtz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { repondre, verifGroupe, superUser } = commandeOptions;
   if (!verifGroupe) { repondre("order reserved for group only"); return };
@@ -425,7 +425,7 @@ bmbtz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOption
   client.groupLeave(dest)
 });
 
-bmbtz({ nomCom: "gname", categorie: 'Group' }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "gname", categorie: 'Group' }, async (dest, client, commandeOptions) => {
   const { arg, repondre, verifAdmin } = commandeOptions;
 
   if (!verifAdmin) {
@@ -452,7 +452,7 @@ bmbtz({ nomCom: "gname", categorie: 'Group' }, async (dest, client, commandeOpti
   repondre(msg);
 });
 
-bmbtz({ nomCom: "gdesc", categorie: 'Group' }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "gdesc", categorie: 'Group' }, async (dest, client, commandeOptions) => {
   const { arg, repondre, verifAdmin } = commandeOptions;
 
   if (!verifAdmin) {
@@ -479,7 +479,7 @@ bmbtz({ nomCom: "gdesc", categorie: 'Group' }, async (dest, client, commandeOpti
   repondre(msg);
 });
 
-bmbtz({ nomCom: "gpp", categorie: 'Group' }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "gpp", categorie: 'Group' }, async (dest, client, commandeOptions) => {
 
   const { repondre, msgRepondu, verifAdmin } = commandeOptions;
 
@@ -504,7 +504,7 @@ bmbtz({ nomCom: "gpp", categorie: 'Group' }, async (dest, client, commandeOption
 });
 
 /////////////
-bmbtz({ nomCom: "tag", categorie: 'Group', reaction: "🎤" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "tag", categorie: 'Group', reaction: "🎤" }, async (dest, client, commandeOptions) => {
   const { repondre, msgRepondu, verifGroupe, arg, verifAdmin, superUser } = commandeOptions;
 
   if (!verifGroupe) return repondre("🚫 *This command is allowed only in groups.*");

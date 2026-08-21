@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz")
+const { blazetz } = require("../../devblaze/blazetz")
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 const { ajouterOuMettreAJourJid, mettreAJourAction, verifierEtatJid } = require("../../lib/antilien")
 const { atbajouterOuMettreAJourJid, atbverifierEtatJid } = require("../../lib/antibot")
@@ -21,7 +21,7 @@ const quotedContact = {
   }
 };
 
-bmbtz({ nomCom: "tagadmin", categorie: 'Group', reaction: "🪰" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "tagadmin", categorie: 'Group', reaction: "🪰" }, async (dest, client, commandeOptions) => {
   const { ms, repondre, arg, verifGroupe, nomGroupe, infosGroupe, nomAuteurMessage, verifAdmin, superUser } = commandeOptions;
 
   if (!verifGroupe) return repondre("❌ This command is for groups only.");

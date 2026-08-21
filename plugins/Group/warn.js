@@ -1,10 +1,10 @@
 
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const {ajouterUtilisateurAvecWarnCount , getWarnCountByJID , resettingsWarnCountByJID} = require('../../lib/warn')
 const s = require("../../settings")
 
 
-bmbtz(
+blazetz(
     {
         nomCom : 'warn',
         categorie : 'Group'

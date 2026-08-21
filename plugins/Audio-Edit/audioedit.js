@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const fs = require("fs");
 const { exec } = require("child_process");
 
@@ -31,7 +31,7 @@ const newsletterContext = {
 };
 
 // DEEP
-bmbtz({
+blazetz({
   nomCom: "deep",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {
@@ -57,7 +57,7 @@ bmbtz({
 });
 
 // BASS
-bmbtz({
+blazetz({
   nomCom: "bass",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {
@@ -83,7 +83,7 @@ bmbtz({
 });
 
 // REVERSE
-bmbtz({
+blazetz({
   nomCom: "reverse",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {
@@ -109,7 +109,7 @@ bmbtz({
 });
 
 // SLOW
-bmbtz({
+blazetz({
   nomCom: "slow",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {
@@ -135,7 +135,7 @@ bmbtz({
 });
 
 // TEMPO
-bmbtz({
+blazetz({
   nomCom: "tempo",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {
@@ -161,7 +161,7 @@ bmbtz({
 });
 
 // NIGHTCORE
-bmbtz({
+blazetz({
   nomCom: "nightcore",
   categorie: "Audio-Edit"
 }, async (dest, client, commandeOptions) => {

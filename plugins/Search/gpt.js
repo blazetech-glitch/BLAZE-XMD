@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const AI_API = process.env.BLAZE_CHATBOT_API || 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
 const MAX_QUERY_LENGTH = 1800;
@@ -27,7 +27,7 @@ function isLikelyAiResponse(text) {
     || /╰━━━〔\s*ARNOLDT20\s*〕━━━╯/i.test(text);
 }
 
-bmbtz(
+blazetz(
   {
     nomCom: 'gpt',
     categorie: 'Search',

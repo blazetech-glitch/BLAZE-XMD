@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const LANGUAGE_ALIASES = {
   english: 'en',
@@ -60,7 +60,7 @@ function displayLanguage(code, requested) {
   return code.toUpperCase();
 }
 
-bmbtz({
+blazetz({
   nomCom: 'translate',
   alias: ['tr', 'trans', 'language'],
   categorie: 'General',

@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const fancy = require("../../devblaze/style");
 
 const pkg = require("@whiskeysockets/baileys");
@@ -24,7 +24,7 @@ END:VCARD`
   }
 };
 
-bmbtz(
+blazetz(
   {
     nomCom: "fancy",
     categorie: "Fun",

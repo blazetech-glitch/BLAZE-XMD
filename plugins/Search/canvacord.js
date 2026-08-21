@@ -1,10 +1,10 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const canvacord = require("canvacord");
 const {uploadImageToImgur} = require("../../devblaze/imgur")
 
 // Generic function to create a canvacord order
 function createCanvacordCommand(commandName, canvacordFunction) {
-  bmbtz({
+  blazetz({
     nomCom: commandName,
     categorie: "Search",
     reaction: "📸"

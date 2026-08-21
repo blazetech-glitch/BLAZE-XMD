@@ -1,8 +1,8 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { attribuerUnevaleur } = require('../../lib/welcome');
 
 async function events(nomCom) {
-bmbtz({
+blazetz({
     nomCom: nomCom,
     categorie: 'Group'
 }, async (dest, client, commandeOptions) => {

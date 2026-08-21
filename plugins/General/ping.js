@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const os = require('os');
 const { ButtonV2 } = require('../../lib/buttonBuilder');
 const conf = require('../../settings');
@@ -40,7 +40,7 @@ function getLatencyLabel(milliseconds) {
   return 'Stable';
 }
 
-bmbtz({
+blazetz({
   nomCom: 'ping',
   desc: 'Check bot speed and system status.',
   categorie: 'General',

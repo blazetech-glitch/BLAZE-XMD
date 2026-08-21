@@ -1,5 +1,5 @@
 const { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const traduire = require("../../devblaze/traduction");
 const { downloadMediaMessage,downloadContentFromMessage } =  require('@whiskeysockets/baileys');
 const fs =require("fs-extra") ;
@@ -36,7 +36,7 @@ async function uploadToTelegraph(Path) {
 
 
 
-bmbtz({nomCom:"sticker",categorie: "Conversion", reaction: "👨🏿‍💻"},async(origineMessage,client,commandeOptions)=>{
+blazetz({nomCom:"sticker",categorie: "Conversion", reaction: "👨🏿‍💻"},async(origineMessage,client,commandeOptions)=>{
 
 let {ms,mtype,arg,repondre,nomAuteurMessage}=commandeOptions
   var txt=JSON.stringify(ms.message)
@@ -126,7 +126,7 @@ try{
 
   
 });
-bmbtz({nomCom:"take",categorie: "Conversion", reaction: "💗"},async(origineMessage,client,commandeOptions)=>{
+blazetz({nomCom:"take",categorie: "Conversion", reaction: "💗"},async(origineMessage,client,commandeOptions)=>{
    const {ms , msgRepondu,arg,repondre,nomAuteurMessage} = commandeOptions ;
 
   if(!msgRepondu) { repondre( 'make sure to mention the media' ) ; return } ;
@@ -164,7 +164,7 @@ mediamsg = msgRepondu.videoMessage
 
 
 
-bmbtz({ nomCom: "write", categorie: "Conversion", reaction: "☘️" }, async (origineMessage, client, commandeOptions) => {
+blazetz({ nomCom: "write", categorie: "Conversion", reaction: "☘️" }, async (origineMessage, client, commandeOptions) => {
   const { ms, msgRepondu, arg, repondre, nomAuteurMessage } = commandeOptions;
 
   if (!msgRepondu) {
@@ -238,7 +238,7 @@ bmbtz({ nomCom: "write", categorie: "Conversion", reaction: "☘️" }, async (o
 
 
 
-bmbtz({nomCom:"photo",categorie: "Conversion", reaction: "☘️"},async(dest,client,commandeOptions)=>{
+blazetz({nomCom:"photo",categorie: "Conversion", reaction: "☘️"},async(dest,client,commandeOptions)=>{
    const {ms , msgRepondu,arg,repondre,nomAuteurMessage} = commandeOptions ;
 
   if(!msgRepondu) { repondre( 'make sure to mention the media' ) ; return } ;
@@ -278,7 +278,7 @@ bmbtz({nomCom:"photo",categorie: "Conversion", reaction: "☘️"},async(dest,cl
 });
 
 
-bmbtz({
+blazetz({
   nomCom: "stickersearch",
   categorie: 'Search',
   reaction: "🍁"
@@ -325,7 +325,7 @@ async (dest, client, commandeOptions) => {
 });
 
 
-bmbtz({ nomCom: "trt", categorie: "Conversion", reaction: "💗" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "trt", categorie: "Conversion", reaction: "💗" }, async (dest, client, commandeOptions) => {
 
   const { msgRepondu, repondre , arg } = commandeOptions;
 

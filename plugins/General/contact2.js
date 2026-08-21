@@ -1,11 +1,11 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const { downloadMediaMessage, downloadContentFromMessage } = require("@whiskeysockets/baileys");
 const { exec } = require('child_process');
 const { writeFile } = require("fs/promises");
 const fs = require('fs-extra');
 const moment = require("moment-timezone");
 
-bmbtz({
+blazetz({
   nomCom: 'report',
   aliases: 'spread',
   desc: 'report anything to the bot developer',

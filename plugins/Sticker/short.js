@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 // VCard Contact (BLAZE VERIFIED ✅)
@@ -32,7 +32,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz(
+blazetz(
   {
     nomCom: "short",
     alias: ["tiny", "shorturl"],

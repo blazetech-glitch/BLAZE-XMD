@@ -1,11 +1,11 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const {
   toggleChatbot,
   setChatbotState,
   isChatbotEnabled
 } = require('../../handlers/chatbot');
 
-bmbtz(
+blazetz(
   {
     nomCom: 'chatbot',
     categorie: 'Search',

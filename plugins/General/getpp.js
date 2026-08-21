@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const s = require("../../settings");
 const fs = require('fs');
 
@@ -29,7 +29,7 @@ const contextInfo = {
 };
 
 // SET PROFILE PICTURE
-bmbtz({
+blazetz({
   nomCom: 'setpp',
   categorie: 'General',
   reaction: '📸'
@@ -82,7 +82,7 @@ bmbtz({
 });
 
 // GET PROFILE PICTURE
-bmbtz({
+blazetz({
   nomCom: "getpp",
   categorie: "General",
   reaction: "📷",

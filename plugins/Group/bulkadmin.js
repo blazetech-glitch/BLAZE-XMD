@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 /**
  * promoteall / demoteall
@@ -9,7 +9,7 @@ const { bmbtz } = require('../../devblaze/blazetz');
  * promote/demote commands in groupe.js already use.
  */
 function registerBulkCommand(nomCom, action, label, reaction) {
-    bmbtz({
+    blazetz({
         nomCom,
         categorie: 'Group',
         reaction

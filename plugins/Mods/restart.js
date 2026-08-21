@@ -1,5 +1,5 @@
 
-const {bmbtz}=require("../../devblaze/blazetz")
+const {blazetz}=require("../../devblaze/blazetz")
 
 
 
@@ -7,7 +7,7 @@ const {bmbtz}=require("../../devblaze/blazetz")
 
 
 
-bmbtz({nomCom:"restart",categorie:"Mods",reaction:"👨🏿‍💼"},async(dest,z,com)=>{
+blazetz({nomCom:"restart",categorie:"Mods",reaction:"👨🏿‍💼"},async(dest,z,com)=>{
 
 
   

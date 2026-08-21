@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;
 const fs = require("fs-extra");
@@ -46,7 +46,7 @@ async function uploadToImgbb(filePath) {
 }
 
 /* ===== COMMAND ===== */
-bmbtz(
+blazetz(
   {
     nomCom: "url2",
     categorie: "General",

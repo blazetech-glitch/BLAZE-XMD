@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;
 const axios = require("axios");
@@ -18,7 +18,7 @@ function generateShortId(length = 6) {
     return result;
 }
 
-bmbtz({
+blazetz({
   nomCom: "url",
   categorie: "General",
   reaction: "🖇",

@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const {
     prepareWAMessageMedia,
     generateWAMessageFromContent
@@ -8,7 +8,7 @@ const OWNER_NUMBER = "255627417402";
 const DEFAULT_IMAGE_URL = "https://cdn.ornzora.eu.cc/a6a1e8f4-b83d-4694-9bba-0f22a58bfd4f-FIORA.jpg";
 const DEFAULT_VIDEO_URL = "https://cdn.ornzora.eu.cc/ed7ebb66-9bf4-44b6-858a-b6b7405e53c5-FIORA.mp4";
 
-bmbtz(
+blazetz(
     {
         nomCom: "mediatest",
         categorie: "Mods",

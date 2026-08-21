@@ -1,9 +1,9 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 const GROUP_SEARCH_API = "https://api.deline.web.id/search/grubwa";
 
-bmbtz({
+blazetz({
   nomCom: "groupsearch",
   alias: ["gsearch", "groupsearch"],
   reaction: "🔍",

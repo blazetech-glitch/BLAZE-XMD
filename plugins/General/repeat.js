@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { delay } = require('@whiskeysockets/baileys');
 
 const MAX_REPEATS = 10;
@@ -32,7 +32,7 @@ function incomingSenderJid(context, dest) {
   return normalizeJid(raw);
 }
 
-bmbtz({
+blazetz({
   nomCom: 'repeat',
   alias: ['repeatmsg', 'resend'],
   categorie: 'General',

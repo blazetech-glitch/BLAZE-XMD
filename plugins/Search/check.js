@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 // VERIFIED CONTACT
 const quotedContact = {
@@ -40,7 +40,7 @@ function getFlagEmoji(countryCode) {
     .join("");
 }
 
-bmbtz(
+blazetz(
   {
     nomCom: "check",
     categorie: "Search",

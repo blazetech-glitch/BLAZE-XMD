@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const SCREENSHOT_SERVICE = 'https://image.thum.io/get/width/1280/crop/900/noanimate/';
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
@@ -28,7 +28,7 @@ function parseWebsiteUrl(arg) {
   return url;
 }
 
-bmbtz({
+blazetz({
   nomCom: 'screenshot',
   alias: ['ss', 'sc', 'shot'],
   desc: 'Capture a website from a URL.',

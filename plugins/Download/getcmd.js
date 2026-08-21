@@ -1,10 +1,10 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;
 const fs = require("fs-extra");
 const path = require("path");
 
-bmbtz({
+blazetz({
   nomCom: "getcmd",
   categorie: "Download",
   reaction: "📂",

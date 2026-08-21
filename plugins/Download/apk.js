@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 // VCard Contact (BLAZE VERIFIED ✅)
 const quotedContact = {
@@ -29,7 +29,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "apk",
   categorie: "Download",
   reaction: "📦"

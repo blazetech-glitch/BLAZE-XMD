@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const axios = require("axios")
 let { Sticker, createSticker, StickerTypes } = require('wa-sticker-formatter');
 const {isUserBanned , addUserToBanList , removeUserFromBanList} = require("../../lib/banUser");
@@ -13,7 +13,7 @@ const sleep =  (ms) =>{
   } ;
 
 
-  bmbtz({ nomCom: "telesticker", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+  blazetz({ nomCom: "telesticker", categorie: "Mods" }, async (dest, client, commandeOptions) => {
     const { ms, repondre, arg, nomAuteurMessage, superUser } = commandeOptions;
   
     if (!superUser) {
@@ -94,7 +94,7 @@ const sleep =  (ms) =>{
     }
   });
 
-bmbtz({ nomCom: "crew", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "crew", categorie: "Mods" }, async (dest, client, commandeOptions) => {
   const { ms, repondre, arg, auteurMessage, superUser, auteurMsgRepondu, msgRepondu } = commandeOptions;
 
   if (!superUser) { repondre("only modds can use this command"); return };
@@ -110,7 +110,7 @@ bmbtz({ nomCom: "crew", categorie: "Mods" }, async (dest, client, commandeOption
 
 });
 
-bmbtz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { ms, repondre, verifGroupe, msgRepondu, verifAdmin, superUser, auteurMessage } = commandeOptions;
   if (!verifGroupe) { repondre("group only"); return };
@@ -122,7 +122,7 @@ bmbtz({ nomCom: "left", categorie: "Mods" }, async (dest, client, commandeOption
   await client.groupLeave(dest)
 });
 
-bmbtz({ nomCom: "join", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "join", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { arg, ms, repondre, verifGroupe, msgRepondu, verifAdmin, superUser, auteurMessage } = commandeOptions;
 
@@ -140,7 +140,7 @@ bmbtz({ nomCom: "join", categorie: "Mods" }, async (dest, client, commandeOption
 })
 
 
-bmbtz({ nomCom: "jid", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "jid", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { arg, ms, repondre, verifGroupe, msgRepondu, verifAdmin, superUser, auteurMessage,auteurMsgRepondu } = commandeOptions;
 
@@ -159,7 +159,7 @@ bmbtz({ nomCom: "jid", categorie: "Mods" }, async (dest, client, commandeOptions
 
   
 
-bmbtz({ nomCom: "block", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "block", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { arg, ms, repondre, verifGroupe, msgRepondu, verifAdmin, superUser, auteurMessage,auteurMsgRepondu } = commandeOptions;
 
@@ -183,7 +183,7 @@ bmbtz({ nomCom: "block", categorie: "Mods" }, async (dest, client, commandeOptio
 
   });
 
-bmbtz({ nomCom: "unblock", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "unblock", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { arg, ms, repondre, verifGroupe, msgRepondu, verifAdmin, superUser, auteurMessage,auteurMsgRepondu } = commandeOptions;
 
@@ -206,7 +206,7 @@ bmbtz({ nomCom: "unblock", categorie: "Mods" }, async (dest, client, commandeOpt
   
     });
 
-bmbtz({ nomCom: "kickall", categorie: 'Group', reaction: "📣" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "kickall", categorie: 'Group', reaction: "📣" }, async (dest, client, commandeOptions) => {
 
   const { auteurMessage ,ms, repondre, arg, verifGroupe, nomGroupe, infosGroupe, nomAuteurMessage, verifAdmin, superUser,prefixe } = commandeOptions
 
@@ -242,7 +242,7 @@ await client.groupParticipantsUpdate(
 });
 
 
-bmbtz({ nomCom: "save", categorie: "Mods" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "save", categorie: "Mods" }, async (dest, client, commandeOptions) => {
 
   const { repondre , msgRepondu , superUser, auteurMessage } = commandeOptions;
   

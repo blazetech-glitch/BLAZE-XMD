@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const DURATIONS = new Map([
     ['off', 0],
@@ -40,7 +40,7 @@ function usage(prefixe) {
 ╰────────────────────────`;
 }
 
-bmbtz({
+blazetz({
     nomCom: 'dms',
     alias: ['disappear', 'disappearing'],
     categorie: 'General',

@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const { bmbtz } = require(__dirname + "/../../devblaze/blazetz");
+const { blazetz } = require(__dirname + "/../../devblaze/blazetz");
 const s = require(__dirname + "/../../settings");
 const more = String.fromCharCode(8206);
 const readmore = more.repeat(4001);
@@ -19,7 +19,7 @@ const quotedContact = {
   }
 };
 
-bmbtz({ nomCom: "payment", categorie: "General" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "payment", categorie: "General" }, async (dest, client, commandeOptions) => {
   let { repondre, mybotpic } = commandeOptions;
 
   let infoMsg = `┏━━━━━━━━━━━━━━━━━━\n` +

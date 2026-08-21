@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const speed = require("performance-now");
 const os = require('os');
 
@@ -47,7 +47,7 @@ async function measurePing(client, dest) {
 }
 
 // Command: Uptime
-bmbtz(
+blazetz(
   {
     nomCom: 'uptime',
     desc: 'Check bot runtime & response speed',

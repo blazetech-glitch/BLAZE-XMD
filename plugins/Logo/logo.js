@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const mumaker = require("mumaker");
 
 // VCard Contact
@@ -99,7 +99,7 @@ const logoCommands = [
 
 // Process each logo command
 logoCommands.forEach(({ nomCom, categorie, reaction, makerUrl }) => {
-  bmbtz({ nomCom, categorie, reaction }, async (dest, client, commandeOptions) => {
+  blazetz({ nomCom, categorie, reaction }, async (dest, client, commandeOptions) => {
     const { arg, repondre, ms, prefixe } = commandeOptions;
 
     if (!arg || arg == "") {

@@ -1,11 +1,11 @@
 const axios = require('axios');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 const IMAGE_SERVICE = 'https://image.pollinations.ai/prompt/';
 const MAX_PROMPT_LENGTH = 800;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
-bmbtz({
+blazetz({
   nomCom: 'imagine',
   alias: ['img', 'gen', 'draw'],
   desc: 'Generate an image from a text prompt.',

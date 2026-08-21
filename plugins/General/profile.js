@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const conf = require(__dirname + "/../../settings");
 
 // VCard Contact kwa quoting
@@ -17,7 +17,7 @@ const quotedContact = {
 };
 
 // PROFILE COMMAND
-bmbtz({
+blazetz({
   nomCom: "profile",
   aliases: ["pp", "whois"],
   desc: "to generate profile picture",
@@ -64,7 +64,7 @@ bmbtz({
 });
 
 // PROFILE2 COMMAND (BUSINESS)
-bmbtz({
+blazetz({
   nomCom: "profile2",
   aliases: ["pp2", "whois2"],
   desc: "to generate business profile picture",

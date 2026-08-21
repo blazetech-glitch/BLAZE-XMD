@@ -1,9 +1,9 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 const PINTEREST_API = "https://api.deline.web.id/downloader/pinterest";
 
-bmbtz({
+blazetz({
   nomCom: "pinterest",
   alias: ["pin", "pindl"],
   reaction: "📌",

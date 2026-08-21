@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 // Contact quote object
@@ -41,7 +41,7 @@ const contextInfo = {
   }
 };
 
-bmbtz({ nomCom: "videologo", categorie: "Download", reaction: "✋" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "videologo", categorie: "Download", reaction: "✋" }, async (dest, client, commandeOptions) => {
   const { ms, repondre, arg } = commandeOptions;
   const text = arg.join(" ");
 

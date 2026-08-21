@@ -1,9 +1,9 @@
-const {bmbtz} = require("../../devblaze/blazetz");
+const {blazetz} = require("../../devblaze/blazetz");
 const conf = require("../../settings");
 
 
 
-bmbtz(
+blazetz(
   {
     nomCom: 'boom',
     categorie: 'Mods',

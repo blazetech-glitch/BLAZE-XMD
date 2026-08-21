@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
 
 /**
@@ -34,7 +34,7 @@ function statusContext(sourceType) {
     };
 }
 
-bmbtz({
+blazetz({
     nomCom: "gstatus",
     alias: ["groupstatus", "gs"],
     categorie: "Group",

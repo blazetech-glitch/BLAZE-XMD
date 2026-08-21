@@ -18,7 +18,7 @@
  *      lib/settingsCache.js's write-through cache), matching how
  *      BLAZE-XMD keeps bot settings in its database instead of app.json.
  */
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const { getCachedSettingsSync, updateCachedSetting } = require("../../lib/settingsCache");
 const s = require("../../settings");
 
@@ -56,7 +56,7 @@ async function sendBox(chatId, client, ms, title, message) {
  * getConf() helper.
  */
 function registerToggleCommand(commandName, settingKey, enabledValue, disabledValue, title, enabledText, disabledText, aliasList) {
-  bmbtz({
+  blazetz({
     nomCom: commandName,
     alias: aliasList || [],
     categorie: "Settings"
@@ -143,7 +143,7 @@ registerToggleCommand("alwaysonline", "ETAT", "1", "off", "ALWAYS ONLINE",
   "❌ Always-online has been *disabled* successfully.");
 
 // mode (public / private)
-bmbtz({
+blazetz({
   nomCom: "mode",
   categorie: "Settings"
 }, async (chatId, client, context) => {
@@ -177,7 +177,7 @@ bmbtz({
 
 //=============== SET PREFIX ===============//
 
-bmbtz({
+blazetz({
   nomCom: "setprefix",
   categorie: "Settings"
 }, async (chatId, client, context) => {
@@ -213,7 +213,7 @@ bmbtz({
 
 //=============== SET WARN LIMIT ===============//
 
-bmbtz({
+blazetz({
   nomCom: "setwarnlimit",
   categorie: "Settings"
 }, async (chatId, client, context) => {

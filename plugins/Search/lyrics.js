@@ -1,7 +1,7 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
-bmbtz({
+blazetz({
   nomCom: "lyrics",
   reaction: '🎵', // Changed reaction to match music theme
   categorie: "Search",

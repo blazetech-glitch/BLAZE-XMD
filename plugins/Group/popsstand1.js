@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 const { ajouterOuMettreAJourJid, mettreAJourAction, verifierEtatJid } = require('../../lib/antilien');
 const { atbajouterOuMettreAJourJid, atbverifierEtatJid } = require('../../lib/antibot');
@@ -16,7 +16,7 @@ const { getBinaryNodeChild, getBinaryNodeChildren } = require("@whiskeysockets/b
 
 
 // REJECT COMMAND
-bmbtz({
+blazetz({
   nomCom: "reject",
   aliases: ["rejectall", "rej", "reject-all"],
   categorie: "Group",
@@ -37,7 +37,7 @@ bmbtz({
 
 
 // APPROVE COMMAND
-bmbtz({
+blazetz({
   nomCom: 'approve',
   aliases: ["approve-all", "accept"],
   categorie: "Group",
@@ -58,7 +58,7 @@ bmbtz({
 
 
 // VCF COMMAND
-bmbtz({
+blazetz({
   nomCom: "vcf",
   aliases: ["savecontact", "savecontacts"],
   categorie: "Group",
@@ -100,7 +100,7 @@ bmbtz({
 
 
 // INVITE COMMAND
-bmbtz({
+blazetz({
   nomCom: 'invite',
   aliases: ["link"],
   categorie: 'Group',
@@ -120,7 +120,7 @@ bmbtz({
 
 
 // REVOKE COMMAND
-bmbtz({
+blazetz({
   nomCom: 'revoke',
   categorie: 'Group'
 }, async (jid, sock, ctx) => {

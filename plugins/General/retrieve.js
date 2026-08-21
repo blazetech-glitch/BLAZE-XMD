@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 
 function unwrapMessage(message) {
@@ -42,7 +42,7 @@ async function downloadMedia(payload, type) {
   return Buffer.concat(chunks);
 }
 
-bmbtz({
+blazetz({
   nomCom: 'retrieve',
   alias: ['retrievetopm', 'sendtopm'],
   desc: 'Retrieve accessible replied media to your private chat.',

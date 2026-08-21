@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require('axios');
 const yts = require('yt-search');
 
@@ -40,7 +40,7 @@ const buildDownloadingCaption = () => (
 );
 
 // PLAY COMMAND (audio)
-bmbtz(
+blazetz(
   { nomCom: "play", categorie: "Search", reaction: "🎵" },
   async (origineMessage, client, commandeOptions) => {
     const { ms, arg } = commandeOptions;
@@ -128,7 +128,7 @@ bmbtz(
 );
 
 // SONG COMMAND (audio as document)
-bmbtz(
+blazetz(
   { nomCom: "song", categorie: "Search", reaction: "🎶" },
   async (origineMessage, client, commandeOptions) => {
     const { ms, arg } = commandeOptions;
@@ -212,7 +212,7 @@ bmbtz(
 );
 
 // VIDEO COMMAND (mp4)
-bmbtz(
+blazetz(
   { nomCom: "video", categorie: "Search", reaction: "🎬" },
   async (origineMessage, client, commandeOptions) => {
     const { ms, arg } = commandeOptions;

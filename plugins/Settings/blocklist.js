@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 // VCard Contact
 const quotedContact = {
@@ -26,7 +26,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "blocklist",
   aliases: ["listblock", "blacklist"],
   reaction: '☘️',

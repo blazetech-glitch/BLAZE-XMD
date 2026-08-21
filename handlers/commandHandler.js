@@ -5,7 +5,7 @@
  * Recursive plugin loader for BLAZE-TECH.
  * Replaces the old flat "require every file in /scs" loop in index.js.
  * Walks /plugins/<category>/*.js and requires each one, so each command
- * file's own bmbtz({...}) call registers it exactly like before.
+ * file's own blazetz({...}) call registers it exactly like before.
  */
 const fs = require("fs");
 const path = require("path");

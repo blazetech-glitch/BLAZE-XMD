@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 /**
  * close / open
@@ -7,7 +7,7 @@ const { bmbtz } = require('../../devblaze/blazetz');
  * messages in the group — Baileys' groupSettingUpdate 'announcement'
  * mode (only admins can post) vs 'not_announcement' (everyone can post).
  */
-bmbtz({
+blazetz({
     nomCom: 'close',
     alias: ['groupclose'],
     categorie: 'Group',
@@ -30,7 +30,7 @@ bmbtz({
     }
 });
 
-bmbtz({
+blazetz({
     nomCom: 'open',
     alias: ['groupopen'],
     categorie: 'Group',

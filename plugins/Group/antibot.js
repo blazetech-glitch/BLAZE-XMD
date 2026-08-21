@@ -1,7 +1,7 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { atbajouterOuMettreAJourJid, atbmettreAJourAction, atbverifierEtatJid, atbrecupererActionJid } = require('../../lib/antibot');
 
-bmbtz({
+blazetz({
     nomCom: 'antibot',
     categorie: 'Group',
     reaction: '🤖'

@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const util = require("util");
 const fs = require("fs-extra");
 const path = require("path");
@@ -75,7 +75,7 @@ function getBotInfo(mode, totalCommands) {
 }
 
 // ====== MAIN COMMAND ======
-bmbtz({
+blazetz({
   nomCom: "menu",
   categorie: "General",
   reaction: "🌚",

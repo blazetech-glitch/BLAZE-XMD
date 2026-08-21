@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 // VCard Contact
@@ -28,7 +28,7 @@ const contextInfo = {
 };
 
 // =============== FLUX AI ===============
-bmbtz({
+blazetz({
   nomCom: "fluxai",
   aliases: ["flux", "imagine"],
   categorie: "Search",
@@ -55,7 +55,7 @@ bmbtz({
 });
 
 // =============== STABLE DIFFUSION ===============
-bmbtz({
+blazetz({
   nomCom: "stablediffusion",
   aliases: ["sdiffusion", "imagine2"],
   categorie: "Search",
@@ -82,7 +82,7 @@ bmbtz({
 });
 
 // =============== STABILITY AI ===============
-bmbtz({
+blazetz({
   nomCom: "stabilityai",
   aliases: ["stability", "imagine3"],
   categorie: "Search",
@@ -109,7 +109,7 @@ bmbtz({
 });
 
 // =============== NANOBANANA ===============
-bmbtz({
+blazetz({
   nomCom: "nanobanana",
   aliases: ["nano", "imagine4"],
   categorie: "Search",

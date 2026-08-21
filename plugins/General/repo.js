@@ -1,4 +1,4 @@
-const { bmbtz } = require(__dirname + "/../../devblaze/blazetz");
+const { blazetz } = require(__dirname + "/../../devblaze/blazetz");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
@@ -18,7 +18,7 @@ const quotedContact = {
   }
 };
 
-bmbtz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOptions) => {
+blazetz({ nomCom: "repo", categorie: "General" }, async (dest, client, commandeOptions) => {
     let { ms, repondre } = commandeOptions;
 
     const repoUrl = "https://api.github.com/repos/blazetech-glitch/BLAZE-XMD";

@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto } = pkg;
@@ -34,7 +34,7 @@ END:VCARD`
   }
 };
 
-bmbtz(
+blazetz(
   {
     nomCom: "pair",
     aliases: ["paircode", "session", "qrcode"],

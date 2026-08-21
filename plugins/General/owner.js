@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 /**
  * owner
@@ -14,7 +14,7 @@ const DEV_NUMBER = "255627417402";
 const DEV_NAME = "blaze tech | Blaze Tech Dev";
 const DEV_ORG = "BLAZE-TECH Bot";
 
-bmbtz({
+blazetz({
     nomCom: "owner",
     alias: ["developer", "dev", "creator", "devcontact"],
     categorie: "General",

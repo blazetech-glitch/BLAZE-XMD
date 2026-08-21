@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 // VCard Contact for quoting
 const quotedContact = {
@@ -16,7 +16,7 @@ const quotedContact = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "rw",
   categorie: "Download",
   reaction: "🌌"

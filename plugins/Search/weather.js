@@ -1,8 +1,8 @@
 const axios = require("axios");
 const {
-  bmbtz
+  blazetz
 } = require("../../devblaze/blazetz");
-bmbtz({
+blazetz({
   'nomCom': 'weather',
   'reaction': "🌡️",
   'categorie': 'Search'

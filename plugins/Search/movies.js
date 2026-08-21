@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const traduire = require("../../devblaze/traduction");
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 
@@ -31,7 +31,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "movie",
   categorie: "Search"
 }, async (dest, client, commandeOptions) => {
@@ -81,7 +81,7 @@ bmbtz({
   }
 });
 
-bmbtz({
+blazetz({
   nomCom: "emomix",
   categorie: "Conversion"
 }, async (dest, client, commandeOptions) => {

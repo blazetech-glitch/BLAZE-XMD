@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { attribuerUnevaleur, recupevents } = require('../../lib/welcome');
 
 /**
@@ -13,7 +13,7 @@ const { attribuerUnevaleur, recupevents } = require('../../lib/welcome');
  * names "welcometext" / "goodbyetext".
  */
 function registerSetMessageCommand(nomCom, row, label) {
-    bmbtz({
+    blazetz({
         nomCom,
         categorie: 'Group',
         reaction: '📝'

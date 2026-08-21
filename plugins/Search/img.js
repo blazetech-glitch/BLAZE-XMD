@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const axios = require('axios');
 
 // VCard Contact
@@ -27,7 +27,7 @@ const contextInfo = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "img",
   categorie: "Search",
   reaction: "📷"

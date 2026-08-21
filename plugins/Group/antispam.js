@@ -1,11 +1,11 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { getGroupFeature, setGroupFeature } = require('../../lib/groupProtection');
 
 const ON = new Set(['on', 'enable', 'enabled', 'warn', 'start']);
 const OFF = new Set(['off', 'disable', 'disabled', 'stop']);
 const KICK = new Set(['kick', 'remove', 'ban', 'hard', 'strict']);
 
-bmbtz({
+blazetz({
     nomCom: 'antispam',
     alias: ['nospam', 'antiflood'],
     categorie: 'Group',

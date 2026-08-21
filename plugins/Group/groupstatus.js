@@ -1,7 +1,7 @@
 const { PassThrough } = require("stream");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegInstaller = require("@ffmpeg-installer/ffmpeg");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
 
 const PURPLE_COLOR = "#9C27B0";
@@ -12,7 +12,7 @@ try {
     console.warn("[GroupStatus] ffmpeg binary setup warning:", error.message);
 }
 
-bmbtz(
+blazetz(
     {
         nomCom: "groupstatus",
         categorie: "Group",
@@ -26,7 +26,7 @@ bmbtz(
             ms,
             verifGroupe,
             verifAdmin,
-            verifBmbtzAdmin,
+            verifBlazetzAdmin,
             mbre = []
         } = context;
 
@@ -36,7 +36,7 @@ bmbtz(
         if (!verifAdmin) {
             return repondre("❌ Only group admins can post a group status.");
         }
-        if (!verifBmbtzAdmin) {
+        if (!verifBlazetzAdmin) {
             return repondre("❌ Please make BLAZE XMD an admin before posting a group status.");
         }
 

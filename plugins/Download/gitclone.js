@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const axios = require('axios');
 const fs = require('fs-extra');
 const { mediafireDl } = require("../../devblaze/Function");
@@ -31,7 +31,7 @@ const contextInfo = {
 };
 
 // GitHub ZIP Downloader
-bmbtz({
+blazetz({
   nomCom: "gitclone",
   aliases: ["zip", "clone"],
   categorie: "Download"

@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 
 // VCard Contact (optional)
 const quotedContact = {
@@ -29,7 +29,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "tiktok",
   categorie: "Download",
   reaction: "🎵",

@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { addOrUpdateDataInAlive, getDataFromAlive } = require('../../lib/alive');
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../../settings");
@@ -49,7 +49,7 @@ async function sendAliveImage(client, dest, caption, repondre) {
     }, { quoted: quotedContact });
 }
 
-bmbtz(
+blazetz(
     {
         nomCom: 'alive',
         categorie: 'General',

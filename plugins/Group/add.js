@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/baileys');
 
 /**
@@ -14,7 +14,7 @@ const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/b
  *      and fails silently against current WhatsApp servers.
  * This version fixes both, matching BLAZE-XMD's working implementation.
  */
-bmbtz({
+blazetz({
     nomCom: 'add',
     categorie: 'Group',
     reaction: '🪄'

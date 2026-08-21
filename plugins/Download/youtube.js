@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 
 const YT_API = "https://apiziaul.vercel.app/api/downloader/ytmp3";
@@ -14,7 +14,7 @@ const contextInfo = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "youtube",
   alias: ["ytmp3", "yta", "ytaudio"],
   reaction: "🎧",

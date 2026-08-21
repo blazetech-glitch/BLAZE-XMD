@@ -1,8 +1,8 @@
 const googleTTS = require('google-tts-api');
-const {bmbtz} = require("../../devblaze/blazetz");
+const {blazetz} = require("../../devblaze/blazetz");
 
 
-bmbtz( {
+blazetz( {
   nomCom : "dit",
  categorie : "Search",
   reaction : "👄" },
@@ -25,7 +25,7 @@ console.log(url);
 }
 ) ;
 
-bmbtz( {
+blazetz( {
   nomCom : "itta",
  categorie : "Search",
   reaction : "👄" },
@@ -48,7 +48,7 @@ console.log(url);
 }
 ) ;
 
-bmbtz( {
+blazetz( {
   nomCom : "say",
  categorie : "Search",
   reaction : "👄" },

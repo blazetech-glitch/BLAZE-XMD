@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const { bmbtz } = require(__dirname + "/../../devblaze/blazetz");
+const { blazetz } = require(__dirname + "/../../devblaze/blazetz");
 const os = require("os");
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../../settings");
@@ -34,7 +34,7 @@ const quotedContact = {
 const more = String.fromCharCode(8206);
 const readMore = more.repeat(4001);
 
-bmbtz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandOptions) => {
+blazetz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandOptions) => {
     let { ms, repondre, prefixe, nomAuteurMessage } = commandOptions;
     let { cm } = require(__dirname + "/../../devblaze/blazetz");
     let commandsByCategory = {};

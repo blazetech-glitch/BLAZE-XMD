@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const conf = require('../../settings');
 
@@ -29,7 +29,7 @@ async function collectMedia(payload, type) {
   return Buffer.concat(chunks);
 }
 
-bmbtz({
+blazetz({
   nomCom: 'vv',
   alias: ['viewmedia', 'getmedia'],
   desc: 'Retrieve accessible replied image or video media.',

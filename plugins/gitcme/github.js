@@ -1,4 +1,4 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require('axios');
 
 const newsletterContext = {
@@ -45,7 +45,7 @@ async function githubstalk(user) {
   });
 }
 
-bmbtz(
+blazetz(
   {
     nomCom: 'github',
     alias: ['githubstalk'],

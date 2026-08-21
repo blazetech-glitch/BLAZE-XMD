@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 
 /**
  * pin / unpin
@@ -9,7 +9,7 @@ const { bmbtz } = require('../../devblaze/blazetz');
  * so this reads it straight off the raw message (reponse.ms).
  */
 function registerPinCommand(nomCom, isUnpin) {
-    bmbtz({
+    blazetz({
         nomCom,
         categorie: 'Group',
         reaction: '📌'

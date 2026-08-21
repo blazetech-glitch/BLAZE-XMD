@@ -1,4 +1,4 @@
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const fs = require('fs');
 const getFBInfo = require("@xaviabot/fb-downloader");
 const { default: axios } = require('axios');
@@ -29,7 +29,7 @@ const newsletterContext = {
   }
 };
 
-bmbtz({
+blazetz({
   nomCom: "fb",
   categorie: "Download",
   reaction: "🔁"
@@ -71,7 +71,7 @@ Lien: ${result.url}
   }
 });
 
-bmbtz({
+blazetz({
   nomCom: "fb2",
   categorie: "Download",
   reaction: "🔁"

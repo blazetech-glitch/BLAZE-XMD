@@ -1,8 +1,8 @@
 const os = require('os');
-const { bmbtz } = require('../../devblaze/blazetz');
+const { blazetz } = require('../../devblaze/blazetz');
 const settings = require('../../settings');
 
-bmbtz({
+blazetz({
   nomCom: 'botinfo',
   alias: ['aboutbot', 'systeminfo'],
   categorie: 'General',

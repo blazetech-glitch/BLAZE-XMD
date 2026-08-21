@@ -1,8 +1,8 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const axios = require("axios");
 const fs = require("fs-extra");
 
-bmbtz({
+blazetz({
   nomCom: "npm",
   categorie: "Search",
   reaction: "📦",

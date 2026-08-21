@@ -1,8 +1,8 @@
-const { bmbtz } = require("../../devblaze/blazetz");
+const { blazetz } = require("../../devblaze/blazetz");
 const pkg = require("@whiskeysockets/baileys");
 const { generateWAMessageFromContent, proto, prepareWAMessageMedia } = pkg;
 
-bmbtz({
+blazetz({
   nomCom: "groupid",
   alias: ["gcid", "gid"],
   reaction: "🆔",
