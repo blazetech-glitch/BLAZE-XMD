@@ -7,6 +7,8 @@ const DURATIONS = new Map([
     ['0', 0],
     ['24h', 24 * 60 * 60],
     ['24hr', 24 * 60 * 60],
+    ['24 hours', 24 * 60 * 60],
+    ['24hours', 24 * 60 * 60],
     ['1d', 24 * 60 * 60],
     ['1day', 24 * 60 * 60],
     ['1 day', 24 * 60 * 60],
@@ -28,11 +30,11 @@ const LABELS = new Map([
 function usage(prefixe) {
     return `╭───〔 DISAPPEARING MESSAGES 〕───
 │
-│ Set messages to disappear automatically.
+│ Changes this chat's actual WhatsApp setting.
 │
-│ ${prefixe}dms 24h
-│ ${prefixe}dms 7d
-│ ${prefixe}dms 90d
+│ ${prefixe}dms 24h   (24 hours)
+│ ${prefixe}dms 7d    (7 days)
+│ ${prefixe}dms 90d   (90 days)
 │ ${prefixe}dms off
 │
 ╰────────────────────────`;
@@ -80,7 +82,7 @@ bmbtz({
         if (seconds === 0) {
             return repondre('✅ Disappearing messages are now *OFF* in this chat.');
         }
-        return repondre(`✅ Disappearing messages enabled for *${label}*.\n\nNew messages in this chat will expire automatically.`);
+        return repondre(`✅ This chat is now set to *${label}* disappearing messages.\n\nWhatsApp will apply the setting to new messages in this chat.`);
     } catch (error) {
         console.error('[DMS] Failed to update chat setting:', error);
         return repondre(`❌ Could not update disappearing messages.\n\n${error?.message || 'The chat setting was rejected.'}`);
