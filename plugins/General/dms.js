@@ -55,11 +55,15 @@ bmbtz({
         prefixe = '.'
     } = commandeOptions;
 
+    const chatJid = String(dest || '');
+    const isGroupChat = chatJid.endsWith('@g.us') || verifGroupe === true;
+    const isPrivateChat = chatJid.endsWith('@s.whatsapp.net') || (!isGroupChat && chatJid !== 'status@broadcast');
+
     if (dest === 'status@broadcast') {
         return repondre('🚫 This command cannot be used in status broadcasts.');
     }
 
-    if (verifGroupe && !(verifAdmin || superUser)) {
+    if (isGroupChat && !(verifAdmin || superUser)) {
         return repondre('🚫 Only group admins or the bot owner can change disappearing-message settings in a group.');
     }
 
@@ -79,10 +83,11 @@ bmbtz({
     try {
         await client.sendMessage(dest, { disappearingMessagesInChat: seconds });
         const label = LABELS.get(seconds);
+        const chatType = isPrivateChat ? 'private chat' : 'chat';
         if (seconds === 0) {
-            return repondre('✅ Disappearing messages are now *OFF* in this chat.');
+            return repondre(`✅ Disappearing messages are now *OFF* in this ${chatType}.`);
         }
-        return repondre(`✅ This chat is now set to *${label}* disappearing messages.\n\nWhatsApp will apply the setting to new messages in this chat.`);
+        return repondre(`✅ This ${chatType} is now set to *${label}* disappearing messages.\n\nWhatsApp will apply the setting to new messages in this chat.`);
     } catch (error) {
         console.error('[DMS] Failed to update chat setting:', error);
         return repondre(`❌ Could not update disappearing messages.\n\n${error?.message || 'The chat setting was rejected.'}`);
