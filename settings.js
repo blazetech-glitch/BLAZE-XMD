@@ -1,25 +1,6 @@
-"use strict";
-/**
- * settings.js
- *
- * Trimmed down to identity/deploy config plus sane starting DEFAULTS for
- * the toggle-style settings — matching BLAZE-XMD's minimal config/settings.js
- * approach. The toggle settings below (ANTICALL, ANTIDELETE, MODE, etc.)
- * are only used as fallbacks now: once a command like .anticall or
- * .setprefix is used, the persisted value in the database (see
- * lib/settingsCache.js / database/db.js) takes over, and survives
- * restarts. These defaults just decide the starting behavior on a fresh
- * install before anyone has run a command yet.
- *
- * Removed from the previous version:
- *   - A hardcoded PostgreSQL connection string (leaked credential,
- *     completely unused — database/db.js reads process.env.DATABASE_URL
- *     directly and doesn't need it here).
- *   - Sequelize require (unused ORM, dead dependency).
- *   - DP / AUTO_BIO / HEROKU_API_KEY / HEROKU_APP_NAME — none of these
- *     were referenced anywhere else in the codebase (dead config).
- */
+/** BLAZE XMD identity, environment loading, and default runtime settings. */
 const fs = require('fs-extra');
+
 if (fs.existsSync('settings.env')) {
     require('dotenv').config({ path: __dirname + '/settings.env' });
 }
@@ -32,9 +13,7 @@ module.exports = {
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://t20tech.site',
 
-    // Fallback defaults for the database-backed toggle settings (see
-    // plugins/Settings/settings.js for the commands that override these
-    // persistently).
+    // Database-backed toggles use these values on a fresh installation.
     ANTICALL: process.env.ANTICALL || 'on',
     ANTIDELETE: process.env.ANTIDELETE || 'off',
     AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || 'on',
@@ -47,6 +26,7 @@ module.exports = {
     ETAT: process.env.PRESENCE || '',
 };
 
+// Reload this module when the file changes during development.
 let fichier = require.resolve(__filename);
 fs.watchFile(fichier, () => {
     fs.unwatchFile(fichier);
@@ -54,3 +34,4 @@ fs.watchFile(fichier, () => {
     delete require.cache[fichier];
     require(fichier);
 });
+
