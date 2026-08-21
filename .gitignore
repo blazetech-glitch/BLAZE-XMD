@@ -1,0 +1,4 @@
+# Local readable entrypoint sources and backups; publish only index.js.
+index.js.pre-obfuscation
+index.js.before-*.js
+index.js.*.backup.js
