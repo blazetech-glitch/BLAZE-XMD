@@ -141,6 +141,14 @@ function canonicalJid(jid) {
   return String(jid || '').split('@')[0].split(':')[0].trim();
 }
 
+function identityCandidates(client, jid) {
+  const values = [jid];
+  if (typeof client?.decodeJid === 'function' && jid) {
+    try { values.push(client.decodeJid(jid)); } catch (_) {}
+  }
+  return values.map(canonicalJid).filter(Boolean);
+}
+
 function isReplyToBot(message, client) {
   const contextInfo = message?.message?.extendedTextMessage?.contextInfo
     || message?.message?.imageMessage?.contextInfo
@@ -148,13 +156,19 @@ function isReplyToBot(message, client) {
     || message?.message?.audioMessage?.contextInfo;
   if (!contextInfo) return false;
 
-  const botIds = [client?.user?.id, client?.user?.jid].map(canonicalJid).filter(Boolean);
-  const replyTarget = canonicalJid(contextInfo.participant || contextInfo.remoteJid);
+  const botIds = [
+    client?.user?.id,
+    client?.user?.jid,
+    client?.user?.lid,
+    client?.user?.phone,
+    client?.user?.phoneNumber
+  ].flatMap((jid) => identityCandidates(client, jid));
+  const replyTargets = [contextInfo.participant, contextInfo.participantAlt, contextInfo.remoteJid]
+    .flatMap((jid) => identityCandidates(client, jid));
   const mentionedBot = (contextInfo.mentionedJid || [])
-    .map(canonicalJid)
-    .some((jid) => botIds.includes(jid));
+    .some((jid) => identityCandidates(client, jid).some((candidate) => botIds.includes(candidate)));
 
-  return Boolean(replyTarget && botIds.includes(replyTarget)) || mentionedBot;
+  return replyTargets.some((target) => botIds.includes(target)) || mentionedBot;
 }
 
 function extractQuotedText(message) {
