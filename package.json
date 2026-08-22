@@ -10,6 +10,11 @@
   "engines": {
     "node": ">=20.9.0"
   },
+  "overrides": {
+    "wa-sticker-formatter": {
+      "sharp": "0.35.3"
+    }
+  },
   "keywords": [
     "termux",
     "whatsapp-openai",
