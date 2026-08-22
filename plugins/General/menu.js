@@ -56,19 +56,27 @@ const contextInfo = {
 };
 
 // ====== BOT INFO (Bila date na time) ======
-function getBotInfo(mode, totalCommands) {
+function getPlatform() {
+  if (process.env.P_SERVER_UUID || process.env.PTERODACTYL) return 'Pterodactyl';
+  if (process.env.DYNO) return 'Heroku';
+  if (process.env.KATABUMP || process.env.KATABUMP_SERVER) return 'Katabump';
+  return 'Node.js';
+}
+
+function getBotInfo(mode, totalCommands, ownerName) {
   const usedRAM = format(os.totalmem() - os.freemem());
   const totalRAM = format(os.totalmem());
 
   return `
-╭───「 *BLAZE-TECH* 」─────⊛
+╭───「 *BLAZE XMD* 」─────⊛
 ┃⊛╭───────────────⊛
-┃⊛│☢️ *Mode*: ${mode.toUpperCase()}
+┃⊛│👑 *Owner*: ${ownerName || 'ARNOLD EMMANUEL TARIMO'}
+┃⊛│🖥️ *Platform*: ${getPlatform()}
+┃⊛│⚙️ *Mode*: ${mode.toUpperCase()}
+┃⊛│📦 *Total Plugins*: ${totalCommands}
 ┃⊛│🖥️ *RAM*: ${usedRAM} / ${totalRAM}
-┃⊛│📦 *Commands*: ${totalCommands}
 ┃⊛│✅ *Status*: ONLINE
-┃⊛│👑 *Creator* : Blaze Tech
-┃⊛│🌐 *website* : t20tech.site
+┃⊛│🌐 *Website*: t20tech.site
 ┃⊛╰━━━━━━━━━━━━━━⊛
 ╰━━━━━━━━━━━━━━━━━━━━⊛
 `;
@@ -165,7 +173,7 @@ blazetz({
         menuText += `🔹 *${prefixe}${cmd}\n`;
       });
 
-      const infoText = getBotInfo(mode, totalCommands);
+      const infoText = getBotInfo(mode, totalCommands, s.OWNER_NAME);
       const finalText = infoText + menuText;
 
       // ====== SEND MENU WITH RANDOM IMAGE ======

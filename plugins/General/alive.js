@@ -62,12 +62,12 @@ blazetz(
 
         if (!arg || !arg[0]) {
             const aliveMsg = `┏━━━━━━━━━━━━━━━━━━━━━━━┓
-┃     𝗕.𝗠.𝗕-𝗧𝗘𝗖𝗛 𝗔𝗟𝗜𝗩𝗘      ┃
+┃       𝗕𝗟𝗔𝗭𝗘 𝗫𝗠𝗗 𝗔𝗟𝗜𝗩𝗘       ┃
 ┣━━━━━━━━━━━━━━━━━━━━━━━┫
 ┃ 📅 Date    : ${date}      
 ┃ 🕒 Time    : ${time}      
 ┃ 👑 Owner   : ${s.OWNER_NAME}   
-┃ 🔵 Platform : *VPS*  
+┃ 🔵 Platform : *Node.js*
 ┗━━━━━━━━━━━━━━━━━━━━━━━┛`;
 
             try {
