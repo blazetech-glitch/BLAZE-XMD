@@ -1,5 +1,5 @@
 const { blazetz } = require('../../devblaze/blazetz');
-const { getStatusAnalytics } = require('../../lib/statusHistory');
+const { clearStatusHistory, getStatusAnalytics } = require('../../lib/statusHistory');
 
 blazetz({
   nomCom: 'statushistory',
@@ -32,7 +32,8 @@ blazetz({
 
     const clearRequest = String(arg?.[0] || '').toLowerCase() === 'clear';
     if (clearRequest) {
-      return repondre('ℹ️ History clearing is intentionally disabled. Status analytics are retained as metadata only.');
+      await clearStatusHistory();
+      return repondre('✅ Status history has been cleared. Future status posts will be recorded normally.');
     }
 
     return repondre(
