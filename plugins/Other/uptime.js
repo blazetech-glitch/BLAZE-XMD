@@ -1,5 +1,4 @@
 const { blazetz } = require("../../devblaze/blazetz");
-const speed = require("performance-now");
 const os = require('os');
 
 // Function for delay simulation
@@ -35,12 +34,12 @@ function formatUptime(seconds) {
 
 // Function to measure ping
 async function measurePing(client, dest) {
-  const start = speed();
+  const start = process.hrtime.bigint();
   try {
     const sent = await client.sendMessage(dest, { text: '🏓' });
-    const end = speed();
+    const end = process.hrtime.bigint();
     await client.sendMessage(dest, { delete: sent.key });
-    return (end - start).toFixed(2);
+    return (Number(end - start) / 1e6).toFixed(2);
   } catch (error) {
     return 'N/A';
   }
