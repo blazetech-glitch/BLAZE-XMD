@@ -14,16 +14,9 @@ blazetz(
     alias: ['cb', 'ai']
   },
   async (dest, client, context) => {
-    const { arg = [], repondre, verifGroupe, verifAdmin, verifBlazetzAdmin, auteurMessage, superUser } = context;
+    const { arg = [], repondre, verifGroupe, auteurMessage } = context;
 
     if (verifGroupe) {
-      if (!superUser && !verifAdmin) {
-        return repondre('❌ Only a group admin or bot owner can control group chatbot mode.');
-      }
-      if (!superUser && verifBlazetzAdmin === false) {
-        return repondre('❌ Make BLAZE XMD a group admin before enabling group chatbot mode.');
-      }
-
       const action = String(arg[0] || 'toggle').toLowerCase();
       if (['help', '?'].includes(action)) {
         return repondre([
@@ -33,6 +26,7 @@ blazetz(
           '`.chatbot off` — disable replies in this group',
           '`.chatbot status` — check the group state',
           '',
+          'Any group participant can control this setting.',
           'When enabled, the bot replies only when a member replies to the bot message.'
         ].join('\\n'));
       }
