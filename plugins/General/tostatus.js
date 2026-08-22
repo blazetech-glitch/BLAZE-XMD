@@ -10,7 +10,7 @@ blazetz({
   desc: 'Post text or replied image, video, audio, or voice-note media to WhatsApp Status.',
   categorie: 'General',
   reaction: '📢'
-}, async (dest, client, { ms, arg, repondre, superUser }) => {
+}, async (dest, client, { ms, arg, repondre, superUser, auteurMessage }) => {
   if (!superUser) {
     return repondre('❌ This command is restricted to the bot owner.');
   }
@@ -30,7 +30,7 @@ blazetz({
 
   try {
     await repondre('⏳ Posting to WhatsApp Status...');
-    const statusOptions = buildStatusOptions(client, dest, ms);
+    const statusOptions = buildStatusOptions(client, dest, ms, auteurMessage);
     if (!statusOptions.statusJidList.length) {
       throw new Error('No valid WhatsApp contacts are available for the status audience.');
     }
@@ -102,9 +102,10 @@ function detectMediaType(message) {
   return null;
 }
 
-function buildStatusOptions(client, dest, message) {
+function buildStatusOptions(client, dest, message, senderJid) {
   const botJid = normalizeUserJid(client?.user?.id);
-  const requesterJid = normalizeUserJid(message?.key?.participant)
+  const requesterJid = normalizeUserJid(senderJid)
+    || normalizeUserJid(message?.key?.participant)
     || (String(dest || '').endsWith('@s.whatsapp.net') ? dest : null);
   const contactJids = Object.values(client?.blazeStore?.contacts || {})
     .map((contact) => normalizeUserJid(contact?.id || contact?.jid))
