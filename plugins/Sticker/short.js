@@ -35,7 +35,7 @@ const newsletterContext = {
 blazetz(
   {
     nomCom: "short",
-    alias: ["tiny", "shorturl"],
+    alias: ["tiny", "shorturl", "shorten", "urlshort"],
     categorie: "Sticker",
     reaction: "General"
   },
@@ -44,17 +44,29 @@ blazetz(
     const { arg, repondre } = context;
 
     if (!arg[0]) {
-      return repondre("*🏷️ Please provide a link.*");
+      return repondre("*🏷️ Please provide a link.*\n\nExample: .short https://example.com");
     }
 
     try {
-      const link = arg[0];
+      const link = arg[0].trim();
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(link);
+      } catch {
+        return repondre("❌ Please provide a valid URL beginning with http:// or https://.");
+      }
+      if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+        return repondre("❌ Only http:// and https:// links can be shortened.");
+      }
 
       const response = await axios.get(
         `https://tinyurl.com/api-create.php?url=${encodeURIComponent(link)}`
       );
 
-      const shortenedUrl = response.data;
+      const shortenedUrl = String(response.data || '').trim();
+      if (!/^https?:\/\//i.test(shortenedUrl)) {
+        return repondre("❌ The shortening service returned an invalid result.");
+      }
 
       // Box style caption
       const caption = `┏━━━━━━━━━━━━━━━━━━━━━━━┓

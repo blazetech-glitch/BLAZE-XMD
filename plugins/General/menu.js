@@ -76,7 +76,7 @@ function getBotInfo(mode, totalCommands, ownerName) {
 ┃⊛│📦 *Total Plugins*: ${totalCommands}
 ┃⊛│🖥️ *RAM*: ${usedRAM} / ${totalRAM}
 ┃⊛│✅ *Status*: ONLINE
-┃⊛│🌐 *Website*: t20tech.site
+┃⊛│🌐 *Website*: https://blaze-xmd.zone.id
 ┃⊛╰━━━━━━━━━━━━━━⊛
 ╰━━━━━━━━━━━━━━━━━━━━⊛
 `;
