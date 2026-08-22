@@ -1,12 +1,13 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { recordStatus } = require('../../lib/statusHistory');
 
 const STATUS_JID = 'status@broadcast';
 
 blazetz({
   nomCom: 'tostatus',
   alias: ['statuspost', 'poststatus'],
-  desc: 'Post text or replied image/video media to WhatsApp Status.',
+  desc: 'Post text or replied image, video, audio, or voice-note media to WhatsApp Status.',
   categorie: 'General',
   reaction: '📢'
 }, async (dest, client, { ms, arg, repondre, superUser }) => {
@@ -23,7 +24,7 @@ blazetz({
     return repondre(
       '📢 *TO STATUS USAGE*\n\n' +
       '• Text: `.tostatus Your status text`\n' +
-      '• Media: Reply to an image or video with `.tostatus [optional caption]`'
+      '• Media: Reply to an image, video, audio, or voice note with `.tostatus [optional caption]`'
     );
   }
 
@@ -34,12 +35,28 @@ blazetz({
       const buffer = await downloadMedia(media, mediaType);
       if (!buffer.length) throw new Error('The replied media could not be downloaded.');
 
-      await client.sendMessage(STATUS_JID, {
-        [mediaType]: buffer,
-        ...(text ? { caption: text } : {})
-      });
+      const mediaMessage = media[`${mediaType}Message`];
+      const payload = mediaType === 'audio'
+        ? {
+            audio: buffer,
+            mimetype: mediaMessage.mimetype || 'audio/ogg; codecs=opus',
+            ptt: Boolean(mediaMessage.ptt)
+          }
+        : {
+            [mediaType]: buffer,
+            ...(text ? { caption: text } : {})
+          };
+
+      await client.sendMessage(STATUS_JID, payload);
+      recordStatus({
+        type: mediaType,
+        voiceNote: mediaType === 'audio' && Boolean(mediaMessage.ptt),
+        captionLength: text.length
+      }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
       await client.sendMessage(STATUS_JID, { text });
+      recordStatus({ type: 'text', captionLength: text.length })
+        .catch((error) => console.error('[ToStatus] history record failed:', error.message));
     }
 
     return repondre(`✅ ${mediaType ? mediaType[0].toUpperCase() + mediaType.slice(1) : 'Text'} status posted successfully.`);
@@ -73,6 +90,7 @@ function detectMediaType(message) {
   if (!message || typeof message !== 'object') return null;
   if (message.imageMessage) return 'image';
   if (message.videoMessage) return 'video';
+  if (message.audioMessage) return 'audio';
   return null;
 }
 
