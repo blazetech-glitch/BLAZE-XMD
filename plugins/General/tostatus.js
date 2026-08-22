@@ -30,6 +30,10 @@ blazetz({
 
   try {
     await repondre('⏳ Posting to WhatsApp Status...');
+    const statusOptions = buildStatusOptions(client, dest, ms);
+    if (!statusOptions.statusJidList.length) {
+      throw new Error('No valid WhatsApp contacts are available for the status audience.');
+    }
 
     if (mediaType) {
       const buffer = await downloadMedia(media, mediaType);
@@ -47,14 +51,18 @@ blazetz({
             ...(text ? { caption: text } : {})
           };
 
-      await client.sendMessage(STATUS_JID, payload);
+      await client.sendMessage(STATUS_JID, payload, statusOptions);
       recordStatus({
         type: mediaType,
         voiceNote: mediaType === 'audio' && Boolean(mediaMessage.ptt),
         captionLength: text.length
       }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
-      await client.sendMessage(STATUS_JID, { text });
+      await client.sendMessage(STATUS_JID, { text }, {
+        ...statusOptions,
+        backgroundColor: '#111827',
+        font: 2
+      });
       recordStatus({ type: 'text', captionLength: text.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
     }
@@ -92,6 +100,25 @@ function detectMediaType(message) {
   if (message.videoMessage) return 'video';
   if (message.audioMessage) return 'audio';
   return null;
+}
+
+function buildStatusOptions(client, dest, message) {
+  const botJid = normalizeUserJid(client?.user?.id);
+  const requesterJid = normalizeUserJid(message?.key?.participant)
+    || (String(dest || '').endsWith('@s.whatsapp.net') ? dest : null);
+  const contactJids = Object.values(client?.blazeStore?.contacts || {})
+    .map((contact) => normalizeUserJid(contact?.id || contact?.jid))
+    .filter(Boolean);
+  const statusJidList = [...new Set([...contactJids, requesterJid, botJid].filter(Boolean))]
+    .filter((jid) => jid !== 'status@broadcast');
+
+  return { broadcast: true, statusJidList };
+}
+
+function normalizeUserJid(value) {
+  if (!value) return null;
+  const jid = String(value).split(':')[0];
+  return jid.endsWith('@s.whatsapp.net') ? jid : null;
 }
 
 async function downloadMedia(message, type) {
