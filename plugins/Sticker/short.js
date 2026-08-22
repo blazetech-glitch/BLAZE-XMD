@@ -37,6 +37,7 @@ blazetz(
     nomCom: "short",
     alias: ["tiny", "shorturl", "shorten", "urlshort"],
     categorie: "Sticker",
+    author: "ARNOLDT20",
     reaction: "General"
   },
   async (from, conn, context) => {

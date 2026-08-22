@@ -9,6 +9,7 @@ blazetz({
   alias: ['statuspost', 'poststatus'],
   desc: 'Post text or replied image, video, audio, or voice-note media to WhatsApp Status.',
   categorie: 'General',
+  author: 'ARNOLDT20',
   reaction: '📢'
 }, async (dest, client, { ms, arg, repondre, superUser, auteurMessage }) => {
   if (!superUser) {

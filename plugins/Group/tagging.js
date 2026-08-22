@@ -5,6 +5,7 @@ blazetz({
   alias: ['hidetag'],
   desc: 'Notify every group member without printing visible mentions.',
   categorie: 'Group',
+  author: 'ARNOLDT20',
   reaction: '📣'
 }, async (dest, client, options) => {
   const { repondre, verifGroupe, verifAdmin, superUser, verifBlazetzAdmin, arg, infosGroupe } = options;
@@ -26,6 +27,7 @@ blazetz({
   nomCom: 'tagall',
   desc: 'Mention every group member visibly.',
   categorie: 'Group',
+  author: 'ARNOLDT20',
   reaction: '📣'
 }, async (dest, client, options) => {
   const { repondre, verifGroupe, verifAdmin, superUser, verifBlazetzAdmin, arg, infosGroupe } = options;
@@ -47,6 +49,7 @@ blazetz({
   alias: ['admins', 'tagadmin'],
   desc: 'Mention all group administrators.',
   categorie: 'Group',
+  author: 'ARNOLDT20',
   reaction: '🛡️'
 }, async (dest, client, options) => {
   const { repondre, verifGroupe, verifAdmin, superUser, verifBlazetzAdmin, arg, infosGroupe } = options;

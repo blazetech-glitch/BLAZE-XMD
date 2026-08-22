@@ -16,6 +16,7 @@ blazetz(
     {
         nomCom: "groupstatus",
         categorie: "Group",
+        author: "ARNOLDT20",
         reaction: "📣",
         alias: ["gcstatus", "gstatus"]
     },

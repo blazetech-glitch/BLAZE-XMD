@@ -6,6 +6,7 @@ blazetz({
   alias: ['statusanalytics', 'statusstats', 'statuslog'],
   desc: 'View analytics and recent history for statuses posted by the bot.',
   categorie: 'General',
+  author: 'ARNOLDT20',
   reaction: '📊'
 }, async (dest, client, { repondre, superUser, arg }) => {
   if (!superUser) {

@@ -26,6 +26,10 @@ function isPrivateChat(from) {
   return Boolean(from) && !from.endsWith('@g.us') && from !== 'status@broadcast';
 }
 
+function isGroupChat(from) {
+  return Boolean(from) && from.endsWith('@g.us');
+}
+
 function isFromBot(message, client) {
   if (!message || !client) return false;
   if (message.key?.fromMe) return true;
@@ -133,6 +137,26 @@ async function getAIResponse(user, message) {
   }
 }
 
+function canonicalJid(jid) {
+  return String(jid || '').split('@')[0].split(':')[0].trim();
+}
+
+function isReplyToBot(message, client) {
+  const contextInfo = message?.message?.extendedTextMessage?.contextInfo
+    || message?.message?.imageMessage?.contextInfo
+    || message?.message?.videoMessage?.contextInfo
+    || message?.message?.audioMessage?.contextInfo;
+  if (!contextInfo) return false;
+
+  const botIds = [client?.user?.id, client?.user?.jid].map(canonicalJid).filter(Boolean);
+  const replyTarget = canonicalJid(contextInfo.participant || contextInfo.remoteJid);
+  const mentionedBot = (contextInfo.mentionedJid || [])
+    .map(canonicalJid)
+    .some((jid) => botIds.includes(jid));
+
+  return Boolean(replyTarget && botIds.includes(replyTarget)) || mentionedBot;
+}
+
 function extractQuotedText(message) {
   const quoted = message?.message?.extendedTextMessage?.contextInfo?.quotedMessage;
   if (!quoted) return '';
@@ -192,21 +216,34 @@ async function handleAutomaticGptReply(client, message, { from, body }) {
 }
 
 async function handleChatbotMessage(client, message, { from, sender, body }) {
-  if (!isPrivateChat(from) || isFromBot(message, client)) return;
-  if (!body || body.startsWith('.')) return;
+  if (isFromBot(message, client) || !body || body.startsWith('.')) return;
+  if (from === 'status@broadcast') return;
 
-  if (await handleAutomaticGptReply(client, message, { from, body })) return;
+  if (isPrivateChat(from)) {
+    if (await handleAutomaticGptReply(client, message, { from, body })) return;
 
-  const keys = userKeys(sender, from);
-  const user = keys[0] || normalizeUser(from);
-  if (!isChatbotEnabled(user)) return;
+    const keys = userKeys(sender, from);
+    const user = keys[0] || normalizeUser(from);
+    if (!isChatbotEnabled(user)) return;
+
+    const now = Date.now();
+    const lastReply = lastReplyTime.get(user) || 0;
+    if (now - lastReply < REPLY_INTERVAL_MS) return;
+    lastReplyTime.set(user, now);
+
+    const aiResponse = await getAIResponse(user, body);
+    if (aiResponse) await client.sendMessage(from, { text: aiResponse }, { quoted: message });
+    return;
+  }
+
+  if (!isGroupChat(from) || !isChatbotEnabled(from) || !isReplyToBot(message, client)) return;
 
   const now = Date.now();
-  const lastReply = lastReplyTime.get(user) || 0;
+  const lastReply = lastReplyTime.get(from) || 0;
   if (now - lastReply < REPLY_INTERVAL_MS) return;
-  lastReplyTime.set(user, now);
+  lastReplyTime.set(from, now);
 
-  const aiResponse = await getAIResponse(user, body);
+  const aiResponse = await getAIResponse(`group:${from}`, body);
   if (aiResponse) await client.sendMessage(from, { text: aiResponse }, { quoted: message });
 }
 
@@ -218,5 +255,6 @@ module.exports = {
   handleAutomaticGptReply,
   toggleChatbot,
   setChatbotState,
-  isChatbotEnabled
+  isChatbotEnabled,
+  isReplyToBot
 };

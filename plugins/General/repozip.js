@@ -10,6 +10,7 @@ blazetz({
   alias: ['sourcezip', 'getzip'],
   desc: 'Download the latest BLAZE-XMD main repository ZIP.',
   categorie: 'General',
+  author: 'ARNOLDT20',
   reaction: '📦'
 }, async (dest, client, { ms, repondre, superUser }) => {
   if (!superUser) {
