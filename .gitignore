@@ -26,3 +26,6 @@ public/lid-mapping-*.json
 *.log
 *.log.*
 run-*.log
+
+# Locally generated WhatsApp identity-key artifacts.
+public/identity-key-*.json

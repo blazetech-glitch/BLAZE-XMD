@@ -25,6 +25,7 @@ const s = require("../../settings");
 const NEWSLETTER_JID = "120363421014261315@newsletter";
 const NEWSLETTER_NAME = "BLAZE TECH OFFICIAL";
 const { getAutoContactState, setAutoContactEnabled, getAutoContacts } = require('../../lib/autoContacts');
+const { FIELDS: BUSINESS_FIELDS, getBusinessProfile, updateBusinessProfile, setBusinessEnabled, clearBusinessProfile } = require('../../lib/businessProfile');
 
 const newsletterContext = {
   contextInfo: {
@@ -123,6 +124,36 @@ blazetz({
   }
   const status = await setAutoContactEnabled(option === 'on');
   return repondre(`✅ Auto-contact is now *${status.toUpperCase()}*.\n\nNew private senders will ${status === 'on' ? 'be added to the bot-side directory once.' : 'no longer be registered automatically.'}`);
+});
+blazetz({
+  nomCom: 'business',
+  alias: ['biz', 'businessbot'],
+  categorie: 'Settings',
+  author: 'ARNOLDT20'
+}, async (chatId, client, context) => {
+  const { repondre, superUser, arg = [] } = context;
+  if (!superUser) return repondre('❌ Only the bot owner can configure the business assistant.');
+  const option = String(arg[0] || '').toLowerCase();
+  if (option === 'on' || option === 'off') {
+    const profile = await setBusinessEnabled(option === 'on');
+    return repondre(`✅ *BUSINESS ASSISTANT ${profile.enabled.toUpperCase()}*\n\nCustomer replies are now ${profile.enabled === 'on' ? 'active for private chats.' : 'paused.'}`);
+  }
+  if (option === 'status') {
+    const profile = await getBusinessProfile();
+    return repondre(`🏢 *BUSINESS ASSISTANT*\n\nStatus: *${profile.enabled.toUpperCase()}*\nBusiness: *${profile.name || 'Not configured'}*\nType: ${profile.category || 'Not set'}\nServices: ${profile.services || 'Not set'}\nHours: ${profile.hours || 'Not set'}\nTone: ${profile.tone}\n\nUse .business help for setup.`);
+  }
+  if (option === 'clear') {
+    await clearBusinessProfile();
+    return repondre('🧹 Business profile cleared and assistant paused.');
+  }
+  if (option === 'set') {
+    const field = String(arg[1] || '').toLowerCase();
+    const value = arg.slice(2).join(' ').trim();
+    if (!BUSINESS_FIELDS.includes(field) || !value) return repondre(`🏢 Use: .business set field value\n\nFields: ${BUSINESS_FIELDS.join(', ')}`);
+    await updateBusinessProfile(field, value);
+    return repondre(`✅ Business *${field}* updated. Use .business status to review the profile.`);
+  }
+  return repondre('🏢 *BLAZE BUSINESS ASSISTANT*\n\n`.business set name Your Business`\n`.business set category Retail and Delivery`\n`.business set services Products or services`\n`.business set hours Mon-Sat 08:00-18:00`\n`.business set location Your location`\n`.business set phone +255...`\n`.business set price Pricing guidance`\n`.business set policy Return or booking policy`\n`.business set tone Warm, brief, professional`\n`.business set instructions Always ask before confirming an order`\n`.business set greeting Your preferred greeting`\n`.business on` / `.business off`\n`.business status` / `.business clear`');
 });
 // Each settingKey below matches exactly what index.js's getConf() reads.
 

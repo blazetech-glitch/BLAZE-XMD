@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { getBusinessProfile, businessPrompt } = require('../lib/businessProfile');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,6 +14,7 @@ const lastReplyTime = new Map();
 const conversationHistory = new Map();
 const userLastActivity = new Map();
 const gptReplyLastTime = new Map();
+const businessReplyLastTime = new Map();
 
 function normalizeUser(jid) {
   return String(jid || '').split(':')[0].trim();
@@ -229,12 +231,42 @@ async function handleAutomaticGptReply(client, message, { from, body }) {
   return true;
 }
 
+async function handleBusinessCustomerReply(client, message, { from, body }) {
+  if (!body || body.startsWith('.') || !isPrivateChat(from)) return false;
+  const profile = await getBusinessProfile();
+  if (profile.enabled !== 'on') return false;
+
+  const now = Date.now();
+  const lastReply = businessReplyLastTime.get(from) || 0;
+  if (now - lastReply < 3_000) return true;
+  businessReplyLastTime.set(from, now);
+
+  try {
+    const response = await axios.post(CHATGPT_API, {
+      message: businessPrompt(profile, body),
+      conversation_id: `business:${from}`
+    }, {
+      timeout: 45_000,
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = response.data || {};
+    const answer = String(data.reply ?? data.response ?? data.answer ?? data.result ?? '').trim().slice(0, 3800);
+    if (!answer) throw new Error('Business AI returned an empty response.');
+    await client.sendMessage(from, { text: answer }, { quoted: message });
+  } catch (error) {
+    console.error('[Business assistant] response failed:', error.response?.data || error.message);
+    await client.sendMessage(from, { text: 'Thank you for contacting us. We are checking your request and will get back to you shortly.' }, { quoted: message });
+  }
+  return true;
+}
+
 async function handleChatbotMessage(client, message, { from, sender, body }) {
   if (isFromBot(message, client) || !body || body.startsWith('.')) return;
   if (from === 'status@broadcast') return;
 
   if (isPrivateChat(from)) {
     if (await handleAutomaticGptReply(client, message, { from, body })) return;
+    if (await handleBusinessCustomerReply(client, message, { from, body })) return;
 
     const keys = userKeys(sender, from);
     const user = keys[0] || normalizeUser(from);
@@ -267,6 +299,7 @@ setInterval(saveHistory, 5 * 60 * 1000);
 module.exports = {
   handleChatbotMessage,
   handleAutomaticGptReply,
+  handleBusinessCustomerReply,
   toggleChatbot,
   setChatbotState,
   isChatbotEnabled,
