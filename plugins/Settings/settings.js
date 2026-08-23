@@ -24,6 +24,7 @@ const s = require("../../settings");
 
 const NEWSLETTER_JID = "120363421014261315@newsletter";
 const NEWSLETTER_NAME = "BLAZE TECH OFFICIAL";
+const { getAutoContactState, setAutoContactEnabled } = require('../../lib/autoContacts');
 
 const newsletterContext = {
   contextInfo: {
@@ -97,6 +98,26 @@ function registerToggleCommand(commandName, settingKey, enabledValue, disabledVa
 }
 
 //=============== COMMAND REGISTRATIONS ===============//
+
+blazetz({
+  nomCom: 'autocontact',
+  alias: ['autoaddcontact', 'savecontacts'],
+  categorie: 'Settings',
+  author: 'ARNOLDT20'
+}, async (chatId, client, context) => {
+  const { repondre, superUser, arg = [] } = context;
+  if (!superUser) return repondre('❌ Only the bot owner can control auto-contact saving.');
+  const option = String(arg[0] || '').toLowerCase();
+  if (!['on', 'off', 'status'].includes(option)) {
+    return repondre('📇 *AUTO-CONTACT*\n\nUse `.autocontact on` to send a saveable BLAZE XMD contact card to new private senders.\nUse `.autocontact off` to disable it.\nUse `.autocontact status` to view the current state.');
+  }
+  if (option === 'status') {
+    const state = await getAutoContactState();
+    return repondre(`📇 *AUTO-CONTACT*\n\nStatus: *${state.enabled.toUpperCase()}*\nNew private senders are ${state.enabled === 'on' ? 'eligible for a one-time contact card.' : 'not automatically sent a contact card.'}`);
+  }
+  const status = await setAutoContactEnabled(option === 'on');
+  return repondre(`✅ Auto-contact is now *${status.toUpperCase()}*.\n\nWhatsApp will show new private senders a saveable BLAZE XMD contact card when enabled.`);
+});
 // Each settingKey below matches exactly what index.js's getConf() reads.
 
 registerToggleCommand("anticall", "ANTICALL", "on", "off", "ANTI-CALL MODE",
