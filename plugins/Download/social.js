@@ -99,7 +99,7 @@ async function fetchMedia(platform, url) {
 
 blazetz({
   nomCom: 'dl',
-  alias: ['download', 'socialdl', 'sdl'],
+  alias: ['download', 'socialdl', 'sdl', 'twitter', 'tw', 'x', 'twitterdl', 'facebook', 'fbdownload'],
   categorie: 'Download',
   reaction: '⬇️',
   desc: 'Download public videos from supported social-media links',
