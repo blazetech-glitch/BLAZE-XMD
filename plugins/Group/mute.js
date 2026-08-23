@@ -1,5 +1,5 @@
 const { blazetz } = require('../../devblaze/blazetz');
-const { setTimedMute, getTimedMute, clearTimedMute, getTimedMutes } = require('../../lib/groupModeration');
+const { setTimedMute, clearTimedMute, getTimedMutes } = require('../../lib/groupModeration');
 
 function cleanJid(value) {
   if (!value) return '';
@@ -48,6 +48,10 @@ function canManage(options) {
   return Boolean(options.verifAdmin || options.superUser);
 }
 
+function privateMuteNotice(groupName, duration, until) {
+  return `🔇 *BLAZE XMD — PRIVATE NOTICE*\n\nYou have been muted in *${groupName || 'this group'}*.\n\n⏱️ Duration: *${formatDuration(duration)}*\n🕒 Expires: *${new Date(until).toLocaleString()}*\n\nText messages sent during this period may be removed automatically.\n\nIf you believe this was a mistake, contact a group admin.\n\n_© BLAZE XMD • ARNOLDT20_`;
+}
+
 async function muteCommand(dest, client, options) {
   const { repondre, verifGroupe, arg = [], idBot, mbre = [] } = options;
   if (!verifGroupe) return repondre('❌ This command is for groups only.');
@@ -66,7 +70,17 @@ async function muteCommand(dest, client, options) {
 
   const until = Date.now() + duration;
   await setTimedMute(dest, target, until, options.auteurMessage);
-  return repondre(`🔇 *USER MUTED*\n\n${displayUser(target)} is muted for *${formatDuration(duration)}*.\nTheir text messages will be removed until ${new Date(until).toLocaleString()}.`);
+  let privateNoticeSent = true;
+  try {
+    await client.sendMessage(target, { text: privateMuteNotice(options.nomGroupe, duration, until) });
+  } catch (error) {
+    privateNoticeSent = false;
+    console.warn('[Mute] private notification failed:', error.message || error);
+  }
+  const noticeState = privateNoticeSent
+    ? 'A private notice was sent to the user.'
+    : 'The mute is active, but WhatsApp did not deliver the private notice.';
+  return repondre(`🔇 *USER MUTED*\n\n${displayUser(target)} is muted for *${formatDuration(duration)}*.\nTheir text messages will be removed until ${new Date(until).toLocaleString()}.\n\n${noticeState}`);
 }
 
 async function unmuteCommand(dest, client, options) {
