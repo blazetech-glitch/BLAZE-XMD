@@ -1,6 +1,21 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { extractQuotedText, getBio, listBios, normalizeJid, removeBio, setBio } = require('../../lib/bios');
 
+const AUTO_BIOS = [
+  'Quiet focus. Clear moves. Better days ahead.',
+  'Built from patience, purpose, and good energy.',
+  'Small steps, strong mindset, meaningful progress.',
+  'Creating my lane with courage and consistency.',
+  'Calm spirit. Bold vision. No unnecessary noise.',
+  'Learning, growing, and leaving things better.',
+  'Discipline in silence. Results in time.',
+  'Good heart, sharp mind, steady direction.',
+  'Turning ideas into moments worth remembering.',
+  'Grace in the journey, fire in the vision.',
+  'Present in the moment, committed to the mission.',
+  'Authentic energy with a future-focused mind.'
+];
+
 function displayName(entry) {
   return String(entry.name || entry.jid || 'Unknown').replace(/[\n\r]/g, ' ').slice(0, 42);
 }
@@ -34,7 +49,8 @@ blazetz({
       'Reply to a message with `.bio set` — save that text as your bio',
       '`.bio` — view your current bio',
       '`.bio list` — view the beautiful dated bio list',
-      '`.bio remove` — remove your bio'
+      '`.bio remove` — remove your bio',
+      '`.autobio` — automatically choose and save a polished bio'
     ].join('\n'));
   }
 
@@ -76,6 +92,29 @@ blazetz({
     `┃ *${String(current.name).slice(0, 42)}*`,
     `┃ “${current.bio}”`,
     `┃ ${formatDate(current.updatedAt)}`,
+    '╰━━━〔 ARNOLDT20 〕━━━╯'
+  ].join('\n'));
+});
+
+
+blazetz({
+  nomCom: 'autobio',
+  alias: ['randombio', 'pickbio'],
+  desc: 'Automatically choose and save a polished personal bio.',
+  categorie: 'General',
+  author: 'ARNOLDT20',
+  reaction: '✨'
+}, async (dest, client, options) => {
+  const { ms, auteurMessage, nomAuteurMessage, repondre } = options;
+  const userJid = normalizeJid(auteurMessage || ms?.key?.participant || ms?.key?.remoteJid || dest);
+  const bio = AUTO_BIOS[Math.floor(Math.random() * AUTO_BIOS.length)];
+  const saved = await setBio({ jid: userJid, name: nomAuteurMessage || userJid, bio });
+  if (!saved) return repondre('❌ I could not set an automatic bio right now.');
+  return repondre([
+    '╭━━━〔 ✨ *AUTO BIO SET* 〕━━━╮',
+    `┃ *${String(saved.name).slice(0, 42)}*`,
+    `┃ “${saved.bio}”`,
+    `┃ ${formatDate(saved.updatedAt)} · BLAZE XMD`,
     '╰━━━〔 ARNOLDT20 〕━━━╯'
   ].join('\n'));
 });
