@@ -22,3 +22,7 @@ sessions/
 **/app-state-sync-key-*
 **/app-state-sync-version-*
 **/device-list-*
+public/lid-mapping-*.json
+*.log
+*.log.*
+run-*.log
