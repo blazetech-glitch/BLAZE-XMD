@@ -22,11 +22,22 @@ function displayName(entry) {
 
 function formatDate(value) {
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? 'Unknown date' : date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+  return Number.isNaN(date.getTime())
+    ? 'Unknown update time'
+    : date.toLocaleString(undefined, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZoneName: 'short'
+    });
 }
 
 function renderEntry(entry, index) {
-  return `┃ *${String(index + 1).padStart(2, '0')} · ${displayName(entry)}*\n┃   “${entry.bio}”\n┃   ${formatDate(entry.updatedAt)}`;
+  return `┃ *${String(index + 1).padStart(2, '0')} · ${displayName(entry)}*\n┃   “${entry.bio}”\n┃   Updated: *${formatDate(entry.updatedAt)}*`;
 }
 
 blazetz({
@@ -80,7 +91,7 @@ blazetz({
       '╭━━━〔 ✅ *BIO UPDATED* 〕━━━╮',
       `┃ *${String(saved.name).slice(0, 42)}*`,
       `┃ “${saved.bio}”`,
-      `┃ ${formatDate(saved.updatedAt)} · BLAZE XMD`,
+      `┃ Updated: *${formatDate(saved.updatedAt)}* · BLAZE XMD`,
       '╰━━━〔 ARNOLDT20 〕━━━╯'
     ].join('\n'));
   }
@@ -91,7 +102,7 @@ blazetz({
     '╭━━━〔 🪪 *YOUR BLAZE XMD BIO* 〕━━━╮',
     `┃ *${String(current.name).slice(0, 42)}*`,
     `┃ “${current.bio}”`,
-    `┃ ${formatDate(current.updatedAt)}`,
+    `┃ Updated: *${formatDate(current.updatedAt)}*`,
     '╰━━━〔 ARNOLDT20 〕━━━╯'
   ].join('\n'));
 });
