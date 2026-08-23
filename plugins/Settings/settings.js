@@ -24,7 +24,7 @@ const s = require("../../settings");
 
 const NEWSLETTER_JID = "120363421014261315@newsletter";
 const NEWSLETTER_NAME = "BLAZE TECH OFFICIAL";
-const { getAutoContactState, setAutoContactEnabled } = require('../../lib/autoContacts');
+const { getAutoContactState, setAutoContactEnabled, getAutoContacts } = require('../../lib/autoContacts');
 
 const newsletterContext = {
   contextInfo: {
@@ -108,15 +108,21 @@ blazetz({
   const { repondre, superUser, arg = [] } = context;
   if (!superUser) return repondre('❌ Only the bot owner can control auto-contact saving.');
   const option = String(arg[0] || '').toLowerCase();
-  if (!['on', 'off', 'status'].includes(option)) {
-    return repondre('📇 *AUTO-CONTACT*\n\nUse `.autocontact on` to send a saveable BLAZE XMD contact card to new private senders.\nUse `.autocontact off` to disable it.\nUse `.autocontact status` to view the current state.');
+  if (!['on', 'off', 'status', 'list'].includes(option)) {
+    return repondre('📇 *AUTO-CONTACT*\n\nUse `.autocontact on` to add new private senders to the bot-side contact directory.\nUse `.autocontact off` to disable detection.\nUse `.autocontact status` or `.autocontact list` to inspect the directory.');
   }
   if (option === 'status') {
     const state = await getAutoContactState();
-    return repondre(`📇 *AUTO-CONTACT*\n\nStatus: *${state.enabled.toUpperCase()}*\nNew private senders are ${state.enabled === 'on' ? 'eligible for a one-time contact card.' : 'not automatically sent a contact card.'}`);
+    return repondre(`📇 *AUTO-CONTACT*\n\nStatus: *${state.enabled.toUpperCase()}*\nBot-side contacts: *${Object.keys(state.contacts).length}*\nNew private senders are ${state.enabled === 'on' ? 'registered locally once.' : 'not automatically registered.'}`);
+  }
+  if (option === 'list') {
+    const contacts = await getAutoContacts();
+    if (!contacts.length) return repondre('📇 The bot-side contact directory is empty.');
+    const lines = contacts.slice(-30).reverse().map((contact, index) => `${index + 1}. *${contact.name}* — ${contact.jid.split('@')[0]}\n   Added: ${new Date(contact.addedAt).toLocaleString()}`);
+    return repondre(`📇 *BLAZE TECH CONTACT DIRECTORY*\n\n${lines.join('\n')}`);
   }
   const status = await setAutoContactEnabled(option === 'on');
-  return repondre(`✅ Auto-contact is now *${status.toUpperCase()}*.\n\nWhatsApp will show new private senders a saveable BLAZE XMD contact card when enabled.`);
+  return repondre(`✅ Auto-contact is now *${status.toUpperCase()}*.\n\nNew private senders will ${status === 'on' ? 'be added to the bot-side directory once.' : 'no longer be registered automatically.'}`);
 });
 // Each settingKey below matches exactly what index.js's getConf() reads.
 
