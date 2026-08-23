@@ -10,7 +10,8 @@ const SUPPORTED_HOSTS = {
   youtube: ['youtube.com', 'youtu.be', 'youtube-nocookie.com'],
   twitter: ['twitter.com', 'x.com', 't.co']
 };
-const X_API = process.env.BLAZE_XDL_API || 'https://api.fabdl.com/twitter/v1/video';
+const X_API = process.env.BLAZE_XDL_API || '';
+const TWITSAVE_URL = 'https://twitsave.com/info';
 
 function hostMatches(hostname, domains) {
   return domains.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
@@ -55,13 +56,36 @@ function mediaFromResult(platform, result) {
   return { type: 'video', url: firstUrl(result, ['download', 'url']) };
 }
 
+function extractTwitterMedia(html) {
+  const candidates = [];
+  const add = (value) => {
+    const decoded = String(value || '').replace(/&amp;/g, '&').replace(/\\u0026/g, '&');
+    if (/^https?:\/\//i.test(decoded)) candidates.push(decoded);
+  };
+  const directUrlPattern = /https?:\/\/[^\s"'<>]+/gi;
+  for (const match of String(html || '').match(directUrlPattern) || []) add(match);
+  const videos = candidates.filter((value) => /\.mp4(?:\?|$)/i.test(value) || /video\.twimg\.com/i.test(value));
+  if (videos[0]) return { video: videos[0] };
+  const images = candidates.filter((value) => /pbs\.twimg\.com/i.test(value) || /\.(?:jpg|jpeg|png|webp)(?:\?|$)/i.test(value));
+  if (images[0]) return { image: images[0] };
+  return null;
+}
+
 async function downloadTwitter(url) {
-  const response = await axios.get(X_API, {
-    params: { url },
-    timeout: 45_000,
-    headers: { Accept: 'application/json', 'User-Agent': 'BLAZE-XMD/1.0' }
-  });
-  return response.data;
+  const headers = { Accept: 'application/json, text/html', 'User-Agent': 'Mozilla/5.0 BLAZE-XMD/1.0' };
+  if (X_API) {
+    try {
+      const response = await axios.get(X_API, { params: { url }, timeout: 45_000, headers });
+      const media = mediaFromResult('twitter', response.data);
+      if (media.url) return media.type === 'video' ? { video: media.url } : { image: media.url };
+    } catch (error) {
+      console.error('[Social downloader:twitter custom endpoint]', error.response?.status || error.message);
+    }
+  }
+  const page = await axios.get(TWITSAVE_URL, { params: { url }, timeout: 45_000, headers: { ...headers, Accept: 'text/html' } });
+  const media = extractTwitterMedia(page.data);
+  if (!media) throw new Error('Twitter fallback returned no direct media URL.');
+  return media;
 }
 
 async function fetchMedia(platform, url) {
