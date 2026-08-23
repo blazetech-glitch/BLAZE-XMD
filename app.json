@@ -1,10 +1,10 @@
 {
   "name": "BLAZE-TECH",
-  "description": "ʙᴇsᴛ ᴡʜᴀᴛsᴀᴘᴘ ʙᴏᴛ ᴅᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ ʙᴍʙ ᴛᴇᴄʜ 🇹🇿",
+  "description": "BLAZE XMD WhatsApp bot developed by ARNOLDT20",
   "keywords": ["bot", "node", "baileys", "whatsapp"],
   "logo": "https://files.catbox.moe/hflcbc.jpg",
   "repository": "https://github.com/blazetech-glitch/BLAZE-XMD",
-  "succes_url": "/",
+  "success_url": "/",
   "stack": "heroku-24",
   "env": {
     "SESSION_ID": {
@@ -19,7 +19,7 @@
     }
   },
   "formation": {
-    "web": {
+    "worker": {
       "quantity": 1,
       "size": "basic"
     }
