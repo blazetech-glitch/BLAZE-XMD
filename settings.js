@@ -12,6 +12,7 @@ module.exports = {
     NUMERO_OWNER: process.env.NUMERO_OWNER || "",
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://blaze-xmd.zone.id',
+    WELCOME_MEDIA_URL: process.env.WELCOME_MEDIA_URL || '',
 
     // Database-backed toggles use these values on a fresh installation.
     ANTICALL: process.env.ANTICALL || 'on',

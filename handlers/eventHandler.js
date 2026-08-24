@@ -14,6 +14,7 @@
  * anti-promote/anti-demote) is unchanged from what index.js did before.
  */
 const { recupevents } = require('../lib/welcome');
+const conf = require('../settings');
 
 /**
  * @param {import('@whiskeysockets/baileys').WASocket} client
@@ -31,15 +32,20 @@ function mentionLabel(jid) {
 
 async function sendGreeting(client, groupId, participantJid, caption) {
     const fallbackImage = 'https://files.catbox.moe/f9jxiv.jpg';
-    let profileImage = fallbackImage;
+    const configuredImage = typeof conf.WELCOME_MEDIA_URL === 'string' && /^https?:\/\//i.test(conf.WELCOME_MEDIA_URL)
+        ? conf.WELCOME_MEDIA_URL
+        : '';
+    let profileImage = configuredImage || fallbackImage;
 
-    try {
-        const profileResult = await client.profilePictureUrl(participantJid, 'image');
-        if (typeof profileResult === 'string' && /^https?:\/\//i.test(profileResult)) {
-            profileImage = profileResult;
+    if (!configuredImage) {
+        try {
+            const profileResult = await client.profilePictureUrl(participantJid, 'image');
+            if (typeof profileResult === 'string' && /^https?:\/\//i.test(profileResult)) {
+                profileImage = profileResult;
+            }
+        } catch (_) {
+            // Keep the stable fallback image.
         }
-    } catch (_) {
-        // Keep the stable fallback image.
     }
 
     try {
