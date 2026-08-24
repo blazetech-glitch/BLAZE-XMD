@@ -91,20 +91,12 @@ async function groupEvents(client, group) {
                     .replace(/{time}/g, time)
                     .replace(/{count}/g, String(metadata.participants?.length || ''));
             } else {
-                msg = `
-╭───────────────────────━⊷
-║𝗕𝗟𝗔𝗭𝗘 𝗫𝗠𝗗 𝗪𝗘𝗟𝗖𝗢𝗠𝗘 𝗚𝗥𝗢𝗨𝗣
-║════════════════════════
-║ɢʀᴏᴜᴘ ɴᴀᴍᴇ ${groupName}
-║════════════════════════
-║ᴅᴀᴛᴇ ʜᴇ ᴊᴏɪɴᴇᴅ ${date}
-║════════════════════════
-║ᴛʜᴇ ᴛɪᴍᴇ ʜᴇ ᴇɴᴛᴇʀᴇᴅ ${time}
-║════════════════════════
-║ BLAZE XMD • OFFICIAL BOT
-║════════════════════════
-║ ${groupDesc}
-╰──────────────────────━⊷`;
+                msg = `✦ *BLAZE XMD* ✦
+
+Welcome, @${mentionLabel(member)}
+*${groupName}*
+
+Glad to have you here.`;
             }
 
             await sendGreeting(client, group.id, member, msg);
@@ -125,16 +117,10 @@ async function groupEvents(client, group) {
                     .replace(/{time}/g, time)
                     .replace(/{count}/g, String(metadata.participants?.length || ''));
             } else {
-                msg = `
-╭─────────────────────────━⊷
-║ɢᴏᴏᴅʙʏᴇ👋 @${mentionLabel(member)}
-║════════════════════════
-║ᴛʜᴇ ᴛɪᴍᴇ ʜᴇ ʟᴇғᴛ ${time}
-║════════════════════════
-║ᴅᴀᴛᴇ ɪs ᴏᴜᴛ ${date}
-║════════════════════════
-║ BLAZE XMD • OFFICIAL BOT
-╰──────────────────────────━⊷`;
+                msg = `✦ *BLAZE XMD* ✦
+
+Goodbye, @${mentionLabel(member)}
+You will be missed in *${groupName}*.`;
             }
 
             await sendGreeting(client, group.id, member, msg);
