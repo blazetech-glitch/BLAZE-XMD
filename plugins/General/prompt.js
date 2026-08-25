@@ -1,29 +1,10 @@
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { blazetz } = require('../../devblaze/blazetz');
 const { requestVision } = require('../../lib/vision');
+const { findRepliedImage } = require('../../lib/repliedImage');
 
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_PROMPT_LENGTH = 1800;
-
-function unwrap(message) {
-  let current = message || {};
-  for (let index = 0; index < 5; index += 1) {
-    if (current.viewOnceMessage?.message || current.viewOnceMessageV2?.message || current.viewOnceMessageV2Extension?.message) {
-      return { protected: true, message: current.viewOnceMessage?.message || current.viewOnceMessageV2?.message || current.viewOnceMessageV2Extension?.message };
-    }
-    if (current.ephemeralMessage?.message) current = current.ephemeralMessage.message;
-    else if (current.documentWithCaptionMessage?.message) current = current.documentWithCaptionMessage.message;
-    else break;
-  }
-  return { protected: false, message: current };
-}
-
-function quotedMessage(ms, replied) {
-  const context = ms?.message?.extendedTextMessage?.contextInfo
-    || ms?.message?.imageMessage?.contextInfo
-    || ms?.message?.documentMessage?.contextInfo;
-  return replied?.message || replied || context?.quotedMessage || null;
-}
 
 async function imageBuffer(media) {
   const stream = await downloadContentFromMessage(media, 'image');
@@ -45,9 +26,9 @@ blazetz({
   author: 'ARNOLDT20',
   reaction: '🧠'
 }, async (dest, client, options) => {
-  const { ms, msgRepondu, repondre } = options;
-  const target = unwrap(quotedMessage(ms, msgRepondu));
-  const image = target.message?.imageMessage;
+  const { repondre } = options;
+  const target = findRepliedImage(options);
+  const image = target.image;
 
   if (target.protected) return repondre('🔒 View Once media cannot be analyzed. Resend the image normally with permission.');
   if (!image) return repondre('🧠 Reply to a normal image with `.prompt`.');
