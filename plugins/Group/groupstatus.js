@@ -18,7 +18,7 @@ blazetz(
         categorie: "Group",
         author: "ARNOLDT20",
         reaction: "📣",
-        alias: ["gcstatus", "gstatus"]
+        alias: ["gcstatus"]
     },
     async (dest, client, context) => {
         const {
@@ -26,16 +26,12 @@ blazetz(
             repondre,
             ms,
             verifGroupe,
-            verifAdmin,
             verifBlazetzAdmin,
             mbre = []
         } = context;
 
         if (!verifGroupe) {
             return repondre("👥 This command can only be used inside a group.");
-        }
-        if (!verifAdmin) {
-            return repondre("❌ Only group admins can post a group status.");
         }
         if (!verifBlazetzAdmin) {
             return repondre("❌ Please make BLAZE XMD an admin before posting a group status.");

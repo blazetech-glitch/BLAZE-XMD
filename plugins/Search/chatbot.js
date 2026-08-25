@@ -11,7 +11,7 @@ blazetz(
     categorie: 'Search',
     author: 'ARNOLDT20',
     reaction: '🤖',
-    alias: ['cb', 'ai']
+    alias: ['cb']
   },
   async (dest, client, context) => {
     const { arg = [], repondre, verifGroupe, auteurMessage } = context;

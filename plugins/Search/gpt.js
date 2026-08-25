@@ -32,7 +32,8 @@ blazetz(
     nomCom: 'gpt',
     categorie: 'Search',
     reaction: '🤖',
-    alias: ['ask', 'aiask', 'askgpt']
+    author: 'ARNOLDT20',
+    alias: ['ai', 'ask', 'aiask', 'askgpt']
   },
   async (dest, client, context) => {
     const { arg = [], repondre, ms, msgRepondu } = context;
@@ -44,13 +45,13 @@ blazetz(
       return repondre([
         '🤖 *BLAZE XMD AI ASSISTANT*',
         '',
-        '`.gpt your question` — ask anything',
+        '`.ai your question` or `.gpt your question` — ask anything',
         '`.gpt code write a JavaScript function` — coding mode',
         '`.gpt explain async and await` — explanation mode',
         '`.gpt creative write a short story` — creative mode',
         '',
         'Reply to an AI answer with `.gpt your follow-up` to continue that conversation.',
-        'Short aliases: `.ask`, `.aiask`, `.askgpt`'
+        'Short aliases: `.ai`, `.ask`, `.aiask`, `.askgpt`'
       ].join('\n'));
     }
 

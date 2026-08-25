@@ -36,7 +36,7 @@ function statusContext(sourceType) {
 
 blazetz({
     nomCom: "gstatus",
-    alias: ["groupstatus", "gs"],
+    alias: ["gs"],
     categorie: "Group",
     reaction: "👥",
 }, async (dest, client, commandeOptions) => {
