@@ -29,3 +29,10 @@ run-*.log
 
 # Locally generated WhatsApp identity-key artifacts.
 public/identity-key-*.json
+
+# WhatsApp authentication and session artifacts
+public/session*.json
+public/*session*.json
+public/*creds*.json
+auth_info_baileys/
+auth_info/
