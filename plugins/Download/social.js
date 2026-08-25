@@ -3,6 +3,7 @@ const { blazetz } = require('../../devblaze/blazetz');
 const { ttdl, igdl, fbdl, ytmp4 } = require('ruhend-scraper');
 
 const MAX_URL_LENGTH = 2_048;
+const MAX_VIDEO_MB = Number(process.env.BLAZE_MAX_VIDEO_MB || 100);
 const SUPPORTED_HOSTS = {
   tiktok: ['tiktok.com', 'vm.tiktok.com', 'vt.tiktok.com'],
   instagram: ['instagram.com', 'instagr.am'],
@@ -46,14 +47,29 @@ function firstUrl(value, preferred = []) {
 }
 
 function mediaFromResult(platform, result) {
-  if (platform === 'tiktok') return { type: 'video', url: firstUrl(result, ['video_hd', 'video', 'download']) };
-  if (platform === 'youtube') return { type: 'video', url: firstUrl(result, ['downloadurl', 'download', 'video', 'url']) };
-  if (platform === 'instagram' || platform === 'facebook' || platform === 'twitter') {
-    const video = firstUrl(result, ['hd', 'video', 'mp4', 'download']);
-    if (video) return { type: 'video', url: video };
-    return { type: 'image', url: firstUrl(result, ['image', 'photo', 'thumbnail', 'url']) };
+  const source = result?.data || result;
+  const duration = source?.duration || source?.durationSec || source?.seconds || null;
+  const videoKeys = platform === 'tiktok'
+    ? ['video_hd', 'video', 'play', 'download']
+    : platform === 'youtube'
+      ? ['video_hd', 'video', 'downloadUrl', 'downloadurl', 'download', 'url']
+      : ['hd', 'video', 'video_hd', 'mp4', 'downloadUrl', 'download', 'url'];
+  const video = firstUrl(source, videoKeys);
+  if (video) return { type: 'video', url: video, duration };
+  const image = firstUrl(source, ['image', 'photo', 'cover', 'thumbnail', 'thumb']);
+  return image ? { type: 'image', url: image } : { type: 'video', url: null, duration };
+}
+
+async function probeMedia(url) {
+  try {
+    const response = await axios.head(url, { timeout: 15_000, maxRedirects: 5, validateStatus: (status) => status >= 200 && status < 400 });
+    const length = Number(response.headers['content-length'] || 0);
+    if (length && length > MAX_VIDEO_MB * 1024 * 1024) throw new Error(`video-too-large:${Math.round(length / 1024 / 1024)}MB`);
+    return { length, contentType: String(response.headers['content-type'] || '').toLowerCase() };
+  } catch (error) {
+    if (String(error.message).startsWith('video-too-large:')) throw error;
+    return { length: 0, contentType: '' };
   }
-  return { type: 'video', url: firstUrl(result, ['download', 'url']) };
 }
 
 function extractTwitterMedia(html) {
@@ -118,11 +134,15 @@ blazetz({
     const result = await fetchMedia(platform, rawUrl);
     const media = mediaFromResult(platform, result);
     if (!media.url) throw new Error('No downloadable media was returned.');
+    const probe = media.type === 'video' ? await probeMedia(media.url) : { length: 0, contentType: '' };
 
-    const caption = `╭━━━〔 ⬇️ BLAZE DOWNLOAD 〕━━━╮\nPlatform: *${platform.toUpperCase()}*\n╰━━━〔 ARNOLDT20 〕━━━╯`;
+    const caption = `╭━━━〔 ⬇️ BLAZE DOWNLOAD 〕━━━╮\nPlatform: *${platform.toUpperCase()}*\n${media.duration ? `Duration: *${media.duration}*\n` : ''}╰━━━〔 ARNOLDT20 〕━━━╯`;
+    const sendAsDocument = media.type === 'video' && probe.length > 50 * 1024 * 1024;
     const payload = media.type === 'image'
       ? { image: { url: media.url }, caption }
-      : { video: { url: media.url }, caption, mimetype: 'video/mp4' };
+      : sendAsDocument
+        ? { document: { url: media.url }, fileName: `blaze-${platform}-full-video.mp4`, mimetype: 'video/mp4', caption }
+        : { video: { url: media.url }, caption, mimetype: 'video/mp4', gifPlayback: false };
     await client.sendMessage(dest, payload, { quoted: ms });
     await client.sendMessage(dest, { react: { text: '✅', key: ms.key } });
   } catch (error) {
