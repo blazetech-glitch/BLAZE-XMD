@@ -7,7 +7,7 @@ const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 blazetz({
   nomCom: 'imagine',
-  alias: ['img', 'gen', 'draw'],
+  alias: ['img', 'image', 'gen', 'draw'],
   desc: 'Generate an image from a text prompt.',
   categorie: 'General',
   reaction: '🎨'
