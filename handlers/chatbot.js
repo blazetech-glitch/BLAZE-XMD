@@ -32,6 +32,17 @@ function isGroupChat(from) {
   return Boolean(from) && from.endsWith('@g.us');
 }
 
+function isForwardedMessage(message) {
+  const content = message?.message;
+  if (!content || typeof content !== 'object') return false;
+
+  return Object.values(content).some((node) => {
+    if (!node || typeof node !== 'object') return false;
+    const contextInfo = node.contextInfo;
+    return contextInfo?.isForwarded === true || Number(contextInfo?.forwardingScore || 0) > 0;
+  });
+}
+
 function isFromBot(message, client) {
   if (!message || !client) return false;
   if (message.key?.fromMe) return true;
@@ -104,15 +115,18 @@ function toggleChatbot(jid) {
   return setChatbotState(jid, !isChatbotEnabled(jid));
 }
 
-async function getAIResponse(user, message) {
+async function getAIResponse(user, message, { concise = false } = {}) {
   const history = conversationHistory.get(user) || [];
   history.push({ role: 'user', content: message });
   if (history.length > MAX_HISTORY_MESSAGES) history.splice(0, history.length - MAX_HISTORY_MESSAGES);
   conversationHistory.set(user, history);
 
   try {
+    const requestMessage = concise
+      ? `Reply briefly and directly in 1-3 short sentences. Do not add greetings, repeated context, long explanations, or decorative sections unless the user asks for detail.\n\nUser message:\n${message}`
+      : message;
     const response = await axios.post(CHATGPT_API, {
-      message,
+      message: requestMessage,
       conversation_id: user
     }, {
       timeout: 60_000,
@@ -125,7 +139,14 @@ async function getAIResponse(user, message) {
       throw new Error('AI service returned no response text.');
     }
 
-    aiResponse = String(aiResponse).trim().slice(0, 4000);
+    aiResponse = String(aiResponse).trim();
+    if (concise && aiResponse.length > 900) {
+      const shortened = aiResponse.slice(0, 900);
+      const boundary = Math.max(shortened.lastIndexOf('. '), shortened.lastIndexOf('? '), shortened.lastIndexOf('! '));
+      aiResponse = `${shortened.slice(0, boundary > 250 ? boundary + 1 : 900).trim()}…`;
+    } else {
+      aiResponse = aiResponse.slice(0, 4000);
+    }
     if (!aiResponse) throw new Error('AI service returned an empty response.');
 
     history.push({ role: 'assistant', content: aiResponse });
@@ -261,7 +282,7 @@ async function handleBusinessCustomerReply(client, message, { from, body }) {
 }
 
 async function handleChatbotMessage(client, message, { from, sender, body }) {
-  if (isFromBot(message, client) || !body || body.startsWith('.')) return;
+  if (isFromBot(message, client) || isForwardedMessage(message) || !body || body.startsWith('.')) return;
   if (from === 'status@broadcast') return;
 
   if (isPrivateChat(from)) {
@@ -289,7 +310,7 @@ async function handleChatbotMessage(client, message, { from, sender, body }) {
   if (now - lastReply < REPLY_INTERVAL_MS) return;
   lastReplyTime.set(from, now);
 
-  const aiResponse = await getAIResponse(`group:${from}`, body);
+  const aiResponse = await getAIResponse(`group:${from}`, body, { concise: true });
   if (aiResponse) await client.sendMessage(from, { text: aiResponse }, { quoted: message });
 }
 
@@ -303,5 +324,6 @@ module.exports = {
   toggleChatbot,
   setChatbotState,
   isChatbotEnabled,
-  isReplyToBot
+  isReplyToBot,
+  isForwardedMessage
 };
