@@ -18,8 +18,8 @@ const businessReplyLastTime = new Map();
 const groupMentionLastReply = new Map();
 const GROUP_MENTION_STICKER_COOLDOWN_MS = 45_000;
 const GROUP_MENTION_STICKERS = [
-  path.join(__dirname, '../assets/mention-angry-slipper.webp'),
-  path.join(__dirname, '../assets/mention-surprised.webp')
+  path.join(__dirname, '../assets/group-feedback/reaction-surprised-kid.webp'),
+  path.join(__dirname, '../assets/group-feedback/reaction-dance.webp')
 ];
 let nextMentionStickerIndex = 0;
 
