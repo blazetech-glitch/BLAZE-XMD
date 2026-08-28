@@ -47,7 +47,6 @@ blazetz({
   alias: ['retrievetopm', 'sendtopm'],
   desc: 'Retrieve accessible replied media to your private chat.',
   categorie: 'General',
-  author: 'ARNOLDT20',
   reaction: '👁️'
 }, async (dest, client, response) => {
   const { ms, msgRepondu, repondre } = response;
@@ -74,7 +73,6 @@ blazetz({
       caption: '👁️ Retrieved media\n\n© BLAZE XMD'
     };
     await client.sendMessage(userJid, outgoing);
-    await client.sendMessage(dest, { react: { text: '✅', key: ms.key } }).catch(() => {});
     return;
   } catch (error) {
     console.error('[retrieve-to-pm]', error);

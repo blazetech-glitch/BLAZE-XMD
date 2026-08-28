@@ -33,7 +33,7 @@ blazetz({
     await repondre('⏳ Posting to WhatsApp Status...');
     const statusOptions = buildStatusOptions(client, dest, ms, auteurMessage);
     if (!statusOptions.statusJidList.length) {
-      throw new Error('No valid WhatsApp contacts are available for the status audience.');
+      throw new Error('No synced WhatsApp contacts are available for the status audience. Send or receive a normal chat first, then try again.');
     }
 
     if (mediaType) {
@@ -104,23 +104,31 @@ function detectMediaType(message) {
 }
 
 function buildStatusOptions(client, dest, message, senderJid) {
-  const botJid = normalizeUserJid(client?.user?.id);
-  const requesterJid = normalizeUserJid(senderJid)
-    || normalizeUserJid(message?.key?.participant)
-    || (String(dest || '').endsWith('@s.whatsapp.net') ? dest : null);
-  const contactJids = Object.values(client?.blazeStore?.contacts || {})
-    .map((contact) => normalizeUserJid(contact?.id || contact?.jid))
+  const botJid = normalizeUserJid(client?.user?.id, client);
+  const requesterJid = normalizeUserJid(senderJid, client)
+    || normalizeUserJid(message?.key?.participant, client)
+    || normalizeUserJid(dest, client);
+  const contactStores = [
+    client?.blazeStore?.contacts,
+    client?.store?.contacts,
+    client?.contacts
+  ].filter((contacts) => contacts && typeof contacts === 'object');
+  const contactJids = contactStores.flatMap((contacts) => Object.values(contacts))
+    .map((contact) => normalizeUserJid(contact?.id || contact?.jid || contact, client))
     .filter(Boolean);
-  const statusJidList = [...new Set([...contactJids, requesterJid, botJid].filter(Boolean))]
-    .filter((jid) => jid !== 'status@broadcast');
+  const statusJidList = [...new Set([...contactJids, requesterJid].filter(Boolean))]
+    .filter((jid) => jid !== 'status@broadcast' && jid !== botJid);
 
   return { broadcast: true, statusJidList };
 }
 
-function normalizeUserJid(value) {
+function normalizeUserJid(value, client) {
   if (!value) return null;
-  const jid = String(value).split(':')[0];
-  return jid.endsWith('@s.whatsapp.net') ? jid : null;
+  let jid = String(value).split(':')[0];
+  if (typeof client?.decodeJid === 'function') {
+    try { jid = client.decodeJid(jid) || jid; } catch (_) {}
+  }
+  return jid.endsWith('@s.whatsapp.net') || jid.endsWith('@lid') ? jid : null;
 }
 
 async function downloadMedia(message, type) {

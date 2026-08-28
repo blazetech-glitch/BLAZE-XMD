@@ -1,5 +1,6 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { getGroupFeature, setGroupFeature } = require('../../lib/groupProtection');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 const ON = new Set(['on', 'enable', 'enabled', 'warn', 'start']);
 const OFF = new Set(['off', 'disable', 'disabled', 'stop']);
@@ -53,7 +54,7 @@ blazetz({
 
     await setGroupFeature(dest, 'antisticker', newVal);
     const desc = newVal === 'off' ? 'disabled ❌' : newVal === 'kick' ? 'enabled in KICK mode 🦾' : 'enabled in WARN mode ⚠️';
-    return repondre(
+    await repondre(
 `╭───〔 ANTISTICKER 〕───
 │
 │ Anti-Sticker ${desc}
@@ -62,4 +63,6 @@ blazetz({
 │
 ╰──────────────`
     );
+    await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
+    return;
 });

@@ -1,4 +1,5 @@
 const { blazetz } = require('../../devblaze/blazetz');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 /**
  * close / open
@@ -24,7 +25,9 @@ blazetz({
 
     try {
         await client.groupSettingUpdate(dest, 'announcement');
-        return repondre('🔒 Group closed. Only admins can send messages now.');
+        await repondre('🔒 Group closed. Only admins can send messages now.');
+        await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
+        return;
     } catch (e) {
         return repondre('Failed to close group: ' + (e.message || e).toString().slice(0, 60));
     }
@@ -47,7 +50,9 @@ blazetz({
 
     try {
         await client.groupSettingUpdate(dest, 'not_announcement');
-        return repondre('🔓 Group opened. Everyone can send messages now.');
+        await repondre('🔓 Group opened. Everyone can send messages now.');
+        await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
+        return;
     } catch (e) {
         return repondre('Failed to open group: ' + (e.message || e).toString().slice(0, 60));
     }

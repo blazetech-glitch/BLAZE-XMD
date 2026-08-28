@@ -1,5 +1,6 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { getBinaryNodeChild, getBinaryNodeChildren } = require('@whiskeysockets/baileys');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 /**
  * add
@@ -149,8 +150,10 @@ blazetz({
     const participantResults = getBinaryNodeChildren(add, 'participant');
     console.log('[add] participant results:', JSON.stringify(participantResults?.map(p => p.attrs)));
 
+    let addedCount = 0;
     for (const item of participantResults) {
         if (!item.attrs.error) {
+            addedCount += 1;
             await repondre(`Successfully added @${item.attrs.jid.split('@')[0]}`);
         }
     }
@@ -180,5 +183,9 @@ blazetz({
                 text: `You have been invited to join the group *${groupMetadata.subject}*:\n\nhttps://chat.whatsapp.com/${inviteCode}\n\n*POWERED BY BLAZE-TECH*`,
             }).catch(() => {});
         }
+    }
+
+    if (addedCount) {
+        await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: ms });
     }
 });

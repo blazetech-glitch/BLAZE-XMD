@@ -1,5 +1,6 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { addBadWord, getBadWords, getState, removeBadWords, setAntiBadWords } = require('../../lib/groupModeration');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 function canManage(options) {
   return Boolean(options.verifAdmin || options.superUser);
@@ -22,7 +23,9 @@ blazetz({
     return repondre(`🛡️ *ANTIBADWORDS*\n\nStatus: ${state.antiBadWords.toUpperCase()}\nWords: ${state.badWords.length}\n\nUse: .antibad on | .antibad off`);
   }
   await setAntiBadWords(dest, sub === 'on');
-  return repondre(`✅ Anti-bad-word moderation is now *${sub.toUpperCase()}*.`);
+  await repondre(`✅ Anti-bad-word moderation is now *${sub.toUpperCase()}*.`);
+  await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: options.ms });
+  return;
 });
 
 blazetz({
@@ -58,13 +61,17 @@ blazetz({
     if (sub === 'add') {
       const results = await Promise.all(requested.map((word) => addBadWord(dest, word)));
       const added = requested.filter((word, index) => results[index]);
-      return repondre(`✅ Added ${added.length} word${added.length === 1 ? '' : 's'} to the bad-word list.`);
+      await repondre(`✅ Added ${added.length} word${added.length === 1 ? '' : 's'} to the bad-word list.`);
+      if (added.length) await sendGroupFeedbackSticker(client, dest, { kind: 'warning', quoted: options.ms });
+      return;
     }
 
     const result = await removeBadWords(dest, requested);
-    return repondre(result.removed.length
+    await repondre(result.removed.length
       ? `✅ Removed ${result.removed.length} word${result.removed.length === 1 ? '' : 's'} from the bad-word list.`
       : 'ℹ️ None of those words were in the bad-word list.');
+    if (result.removed.length) await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: options.ms });
+    return;
   }
 
   return repondre('Use: .badword add word1, word2 | .badword remove word1, word2 | .badword list');

@@ -1,5 +1,6 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { atbajouterOuMettreAJourJid, atbmettreAJourAction, atbverifierEtatJid, atbrecupererActionJid } = require('../../lib/antibot');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 blazetz({
     nomCom: 'antibot',
@@ -45,7 +46,7 @@ blazetz({
 
     if (sub === 'on' || sub === 'off') {
         await atbajouterOuMettreAJourJid(dest, sub === 'on' ? 'oui' : 'non');
-        return repondre(
+        await repondre(
 `╭───〔 SUCCESS 〕───
 │
 │ Feature : antibot
@@ -53,6 +54,8 @@ blazetz({
 │
 ╰──────────────`
         );
+        await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
+        return;
     }
 
     if (sub === 'action') {
@@ -61,7 +64,9 @@ blazetz({
             return repondre('Use: antibot action remove  |  antibot action warn');
         }
         await atbmettreAJourAction(dest, act === 'remove' ? 'remove' : 'warn');
-        return repondre(`✅ Antibot action set to: ${act}`);
+        await repondre(`✅ Antibot action set to: ${act}`);
+        await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
+        return;
     }
 
     return repondre('Use: antibot on | antibot off | antibot action remove/warn');

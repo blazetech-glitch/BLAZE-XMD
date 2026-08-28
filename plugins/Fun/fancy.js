@@ -27,7 +27,7 @@ END:VCARD`
 blazetz(
   {
     nomCom: "fancy",
-    categorie: "Fun",
+    categorie: "Funny",
     reaction: "✍️"
   },
   async (from, conn, context) => {

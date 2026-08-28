@@ -168,7 +168,8 @@ registerToggleCommand("autolikestatus", "AUTO_REACT_STATUS", "on", "off", "AUTO-
 
 registerToggleCommand("readstatus", "AUTO_READ_STATUS", "on", "off", "AUTO-READ STATUS",
   "✅ Auto-read status has been *enabled* successfully.",
-  "❌ Auto-read status has been *disabled* successfully.");
+  "❌ Auto-read status has been *disabled* successfully.",
+  ["autoviewstatus", "viewstatus"]);
 
 registerToggleCommand("antidelete", "ANTIDELETE", "on", "off", "ANTI-DELETE MODE",
   "✅ Anti-delete has been *enabled* successfully.",

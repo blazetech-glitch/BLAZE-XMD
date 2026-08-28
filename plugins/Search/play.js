@@ -1,46 +1,31 @@
-const { blazetz } = require("../../devblaze/blazetz");
+const { blazetz } = require('../../devblaze/blazetz');
 const axios = require('axios');
 const yts = require('yt-search');
 const { ytmp4 } = require('ruhend-scraper');
 
-const BOT_NAME = 'BLAZE-TECH'; // Change as you want
+const BOT_NAME = 'BLAZE XMD';
 const NEWSLETTER_JID = '120363421014261315@newsletter';
-const NEWSLETTER_NAME = 'Blaze Tech Info';
-
-const buildCaption = (type, video) => {
-  const banner = type === "video" ? `${BOT_NAME} VIDEO PLAYER` : `${BOT_NAME} SONG PLAYER`;
-  return (
-    `*${banner}*\n\n` +
-    `╭───────────────◆\n` +
-    `│⿻ *Title:* ${video.title}\n` +
-    `│⿻ *Duration:* ${video.timestamp}\n` +
-    `│⿻ *Views:* ${video.views.toLocaleString()}\n` +
-    `│⿻ *Uploaded:* ${video.ago}\n` +
-    `│⿻ *Channel:* ${video.author.name}\n` +
-    `╰────────────────◆\n\n` +
-    `🔗 ${video.url}`
-  );
-};
-
-// getContextInfo now takes query and botName, and includes body and title
-const getContextInfo = (query = '', botName = BOT_NAME) => ({
-  forwardingScore: 1,
-  isForwarded: true,
-  forwardedNewsletterMessageInfo: {
-    newsletterJid: NEWSLETTER_JID,
-    newsletterName: NEWSLETTER_NAME,
-    serverMessageId: -1
-  },
-  body: query ? `Requested song: ${query}` : undefined,
-  title: botName
-});
-
-const buildDownloadingCaption = () => (
-  `*${BOT_NAME}*\n\n` +
-  `⏬ Downloading your request...`
-);
-
+const NEWSLETTER_NAME = 'BLAZE XMD';
 const MAX_VIDEO_MB = Number(process.env.BLAZE_MAX_VIDEO_MB || 100);
+
+function getContextInfo(query = '') {
+  return {
+    forwardingScore: 1,
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: NEWSLETTER_JID,
+      newsletterName: NEWSLETTER_NAME,
+      serverMessageId: -1
+    },
+    body: query ? `Requested: ${query}` : undefined,
+    title: BOT_NAME
+  };
+}
+
+function cleanFileName(value, fallback) {
+  const name = String(value || fallback).replace(/[\\/:*?"<>|]/g, '').trim().slice(0, 120);
+  return name || fallback;
+}
 
 function firstMediaUrl(value) {
   const preferred = ['downloadUrl', 'downloadurl', 'video_hd', 'video', 'url', 'link'];
@@ -97,212 +82,161 @@ async function probeVideo(downloadUrl) {
   }
 }
 
-// PLAY COMMAND (audio)
-blazetz(
-  { nomCom: "play", categorie: "Search", reaction: "🎵" },
-  async (origineMessage, client, commandeOptions) => {
-    const { ms, arg } = commandeOptions;
-    const query = arg.join(' ');
-    if (!query)
-      return client.sendMessage(
-        origineMessage,
-        { text: 'Please provide a song name or keyword.', contextInfo: getContextInfo() },
-        { quoted: ms }
-      );
+function progressCard(title, stage, bar) {
+  return [
+    '╭━━〔 🎬 *BLAZE XMD* 〕━━╮',
+    `│ *${String(title || 'VIDEO').slice(0, 70)}*`,
+    `│ ${bar} ${stage}`,
+    '╰━━━━━━━━━━━━━━━━━━╯'
+  ].join('\n');
+}
 
-    try {
-      const search = await yts(query);
-      const video = search.videos[0];
+async function createVideoProgress(client, dest, quoted, title) {
+  return client.sendMessage(dest, {
+    text: progressCard(title, 'Match found · preparing', '▰▱▱▱')
+  }, { quoted });
+}
 
-      if (!video)
-        return client.sendMessage(
-          origineMessage,
-          { text: 'No results found for your query.', contextInfo: getContextInfo() },
-          { quoted: ms }
-        );
+async function advanceVideoProgress(client, dest, progress, title) {
+  if (!progress?.key) return;
+  try {
+    await client.sendMessage(dest, {
+      text: progressCard(title, 'Source ready · uploading', '▰▰▰▱'),
+      edit: progress.key
+    });
+  } catch (_) {}
+}
 
-      const safeTitle = video.title.replace(/[\\/:*?"<>|]/g, '');
+function isTransportError(error) {
+  return /connection\s+(closed|terminated)|socket|not connected/i.test(String(error?.message || error));
+}
 
-      const response = await axios.get('https://apiziaul.vercel.app/api/downloader/ytplaymp3', {
-        params: { query }
-      });
-      const data = response.data;
+async function sendFullVideo(client, dest, url, fileName, caption, quoted, sendAsDocument) {
+  const documentPayload = { document: { url }, mimetype: 'video/mp4', fileName, caption };
+  if (sendAsDocument) return client.sendMessage(dest, documentPayload, { quoted });
 
-      if (!data.status || !data.result || !data.result.downloadUrl)
-        return client.sendMessage(
-          origineMessage,
-          { text: 'Failed to retrieve the MP3 download link.', contextInfo: getContextInfo() },
-          { quoted: ms }
-        );
-
-      const downloadUrl = data.result.downloadUrl;
-      const fileName = `${data.result.title || safeTitle}.mp3`;
-
-      // Send caption with thumbnail first
-      await client.sendMessage(
-        origineMessage,
-        {
-          image: { url: video.thumbnail, renderSmallThumbnail: true },
-          caption: buildCaption('audio', video),
-          contextInfo: getContextInfo(query)
-        },
-        { quoted: ms }
-      );
-
-      // Send downloading message
-      await client.sendMessage(
-        origineMessage,
-        {
-          text: buildDownloadingCaption(),
-          contextInfo: getContextInfo()
-        },
-        { quoted: ms }
-      );
-
-      // Send mp3
-      await client.sendMessage(
-        origineMessage,
-        {
-          audio: { url: downloadUrl },
-          mimetype: 'audio/mpeg',
-          fileName,
-          title: BOT_NAME,
-          body: `Requested song :${query}`,
-          image: { url: video.thumbnail, renderSmallThumbnail: true },
-          contextInfo: getContextInfo()
-        },
-        { quoted: ms }
-      );
-
-    } catch (err) {
-      console.error('[PLAY] Error:', err);
-      await client.sendMessage(
-        origineMessage,
-        { text: 'An error occurred while processing your request.', contextInfo: getContextInfo() },
-        { quoted: ms }
-      );
-    }
+  try {
+    return await client.sendMessage(dest, {
+      video: { url },
+      mimetype: 'video/mp4',
+      fileName,
+      gifPlayback: false,
+      caption
+    }, { quoted });
+  } catch (error) {
+    if (isTransportError(error)) throw error;
+    console.warn('[VIDEO] video send failed; retrying as document:', error.message || error);
+    return client.sendMessage(dest, documentPayload, { quoted });
   }
-);
+}
 
-// SONG COMMAND (audio as document)
-blazetz(
-  { nomCom: "song", categorie: "Search", reaction: "🎶" },
-  async (origineMessage, client, commandeOptions) => {
-    const { ms, arg } = commandeOptions;
-    const query = arg.join(' ');
-    if (!query)
-      return client.sendMessage(
-        origineMessage,
-        { text: 'Please provide a song name or keyword.', contextInfo: getContextInfo() },
-        { quoted: ms }
-      );
+async function findAudio(query) {
+  const search = await yts(query);
+  const video = search.videos[0];
+  if (!video) throw new Error('No result');
+  const response = await axios.get('https://apiziaul.vercel.app/api/downloader/ytplaymp3', {
+    params: { query },
+    timeout: 75_000
+  });
+  const result = response.data?.result;
+  if (!response.data?.status || !result?.downloadUrl) throw new Error('No audio URL');
+  return { video, downloadUrl: result.downloadUrl, title: result.title || video.title };
+}
 
-    try {
-      const search = await yts(query);
-      const video = search.videos[0];
+blazetz({
+  nomCom: 'play',
+  categorie: 'Search',
+  reaction: '🎵',
+  desc: 'Download one audio result from a public YouTube title search.',
+  author: 'ARNOLDT20'
+}, async (dest, client, options) => {
+  const { ms, arg = [], repondre } = options;
+  const query = arg.join(' ').trim();
+  if (!query) return repondre('🎵 Send a song name or keyword.\n\nExample: `.play Calm Down`');
 
-      if (!video)
-        return client.sendMessage(
-          origineMessage,
-          { text: 'No results found for your query.', contextInfo: getContextInfo() },
-          { quoted: ms }
-        );
-
-      const safeTitle = video.title.replace(/[\\/:*?"<>|]/g, '');
-
-      const response = await axios.get('https://apiziaul.vercel.app/api/downloader/ytplaymp3', {
-        params: { query }
-      });
-      const data = response.data;
-
-      if (!data.status || !data.result || !data.result.downloadUrl)
-        return client.sendMessage(
-          origineMessage,
-          { text: 'Failed to retrieve the MP3 download link.', contextInfo: getContextInfo() },
-          { quoted: ms }
-        );
-
-      const downloadUrl = data.result.downloadUrl;
-      const fileName = `${data.result.title || safeTitle}.mp3`;
-
-      // Send caption with thumbnail first
-      await client.sendMessage(
-        origineMessage,
-        {
-          image: { url: video.thumbnail },
-          caption: buildCaption('song', video),
-          contextInfo: getContextInfo()
-        },
-        { quoted: ms }
-      );
-
-      // Send downloading message
-      await client.sendMessage(
-        origineMessage,
-        {
-          text: buildDownloadingCaption(),
-          contextInfo: getContextInfo()
-        },
-        { quoted: ms }
-      );
-
-      // Send mp3 as document
-      await client.sendMessage(
-        origineMessage,
-        {
-          document: { url: downloadUrl },
-          mimetype: 'audio/mpeg',
-          fileName
-        },
-        { quoted: ms }
-      );
-
-    } catch (err) {
-      console.error('[SONG] Error:', err);
-      await client.sendMessage(
-        origineMessage,
-        { text: 'An error occurred while processing your request.', contextInfo: getContextInfo() },
-        { quoted: ms }
-      );
-    }
+  try {
+    await client.sendMessage(dest, { react: { text: '⏳', key: ms.key } });
+    const { video, downloadUrl, title } = await findAudio(query);
+    await client.sendMessage(dest, {
+      text: `🎵 *FOUND* — fetching *${video.title}*…`
+    }, { quoted: ms });
+    await client.sendMessage(dest, {
+      audio: { url: downloadUrl },
+      mimetype: 'audio/mpeg',
+      fileName: `${cleanFileName(title, 'blaze-audio')}.mp3`,
+      title: cleanFileName(title, 'BLAZE XMD audio'),
+      body: `${video.timestamp || 'Audio'} · ${video.author?.name || 'YouTube'} · BLAZE XMD`,
+      image: { url: video.thumbnail, renderSmallThumbnail: true },
+      contextInfo: getContextInfo(query)
+    }, { quoted: ms });
+    await client.sendMessage(dest, { react: { text: '✅', key: ms.key } });
+  } catch (error) {
+    console.error('[PLAY] Audio download failed:', error.response?.data || error.message || error);
+    await client.sendMessage(dest, { react: { text: '❌', key: ms.key } });
+    return repondre('❌ Audio download failed. Try another public title.');
   }
-);
+});
 
-// VIDEO COMMAND (full MP4 from a YouTube title search)
-blazetz(
-  { nomCom: "video", categorie: "Search", reaction: "🎬", author: 'ARNOLDT20' },
-  async (origineMessage, client, commandeOptions) => {
-    const { ms, arg, repondre } = commandeOptions;
-    const query = arg.join(' ').trim();
-    if (!query) return repondre('🎬 Send a song or music-video title.\n\nExample: .video Calm Down official music video');
+blazetz({
+  nomCom: 'song',
+  categorie: 'Search',
+  reaction: '🎶',
+  desc: 'Download one audio result as a document from a public YouTube title search.',
+  author: 'ARNOLDT20'
+}, async (dest, client, options) => {
+  const { ms, arg = [], repondre } = options;
+  const query = arg.join(' ').trim();
+  if (!query) return repondre('🎶 Send a song name or keyword.\n\nExample: `.song Calm Down`');
 
-    try {
-      await client.sendMessage(origineMessage, { react: { text: '🔎', key: ms.key } });
-      const search = await yts(query);
-      const video = search.videos.find((item) => item.seconds > 0) || search.videos[0];
-      if (!video) return repondre('❌ No YouTube video matched that title.');
-
-      await client.sendMessage(origineMessage, {
-        image: { url: video.thumbnail },
-        caption: `🎬 *BLAZE XMD VIDEO*\n\n*${video.title}*\nDuration: ${video.timestamp}\nChannel: ${video.author?.name || 'YouTube'}\n\n⏬ Fetching the full available video...`,
-        contextInfo: getContextInfo(query)
-      }, { quoted: ms });
-
-      const resolved = await resolveFullVideo(video.url);
-      const bytes = await probeVideo(resolved.downloadUrl);
-      const safeTitle = String(resolved.title || video.title).replace(/[\\/:*?"<>|]/g, '').slice(0, 120) || 'blaze-video';
-      const fileName = `${safeTitle}.mp4`;
-      const payload = bytes > 50 * 1024 * 1024
-        ? { document: { url: resolved.downloadUrl }, mimetype: 'video/mp4', fileName, caption: '✅ Full available video attached.' }
-        : { video: { url: resolved.downloadUrl }, mimetype: 'video/mp4', fileName, gifPlayback: false, caption: '✅ Full available video' };
-
-      await client.sendMessage(origineMessage, payload, { quoted: ms });
-      await client.sendMessage(origineMessage, { react: { text: '✅', key: ms.key } });
-    } catch (error) {
-      console.error('[VIDEO] Full download error:', error.response?.data || error.message || error);
-      await client.sendMessage(origineMessage, { react: { text: '❌', key: ms.key } });
-      return repondre('❌ I could not fetch the full video. The result may be private, region-restricted, unavailable, or larger than the configured limit.');
-    }
+  try {
+    await client.sendMessage(dest, { react: { text: '⏳', key: ms.key } });
+    const { video, downloadUrl, title } = await findAudio(query);
+    await client.sendMessage(dest, {
+      text: `🎶 *FOUND* — fetching *${video.title}*…`
+    }, { quoted: ms });
+    await client.sendMessage(dest, {
+      document: { url: downloadUrl },
+      mimetype: 'audio/mpeg',
+      fileName: `${cleanFileName(title, 'blaze-song')}.mp3`,
+      caption: `🎶 *${video.title}*\n${video.timestamp || 'Audio'} · BLAZE XMD`
+    }, { quoted: ms });
+    await client.sendMessage(dest, { react: { text: '✅', key: ms.key } });
+  } catch (error) {
+    console.error('[SONG] Document download failed:', error.response?.data || error.message || error);
+    await client.sendMessage(dest, { react: { text: '❌', key: ms.key } });
+    return repondre('❌ Song download failed. Try another public title.');
   }
-);
+});
+
+blazetz({
+  nomCom: 'video',
+  categorie: 'Search',
+  reaction: '🎬',
+  desc: 'Download the full available public YouTube video for a title search.',
+  author: 'ARNOLDT20'
+}, async (dest, client, options) => {
+  const { ms, arg = [], repondre } = options;
+  const query = arg.join(' ').trim();
+  if (!query) return repondre('🎬 Send a song or music-video title.\n\nExample: `.video Calm Down official music video`');
+
+  try {
+    await client.sendMessage(dest, { react: { text: '🔎', key: ms.key } });
+    const search = await yts(query);
+    const video = search.videos.find((item) => item.seconds > 0) || search.videos[0];
+    if (!video) return repondre('❌ No YouTube video matched that title.');
+    const progress = await createVideoProgress(client, dest, ms, video.title);
+
+    const resolved = await resolveFullVideo(video.url);
+    const bytes = await probeVideo(resolved.downloadUrl);
+    const title = cleanFileName(resolved.title || video.title, 'blaze-video');
+    const fileName = `${title}.mp4`;
+    const caption = `🎬 *${video.title}*\n${video.timestamp || 'Video'} · BLAZE XMD`;
+    await advanceVideoProgress(client, dest, progress, video.title);
+    await sendFullVideo(client, dest, resolved.downloadUrl, fileName, caption, ms, bytes > 50 * 1024 * 1024);
+    await client.sendMessage(dest, { react: { text: '✅', key: ms.key } });
+  } catch (error) {
+    console.error('[VIDEO] Full download failed:', error.response?.data || error.message || error);
+    await client.sendMessage(dest, { react: { text: '❌', key: ms.key } });
+    return repondre('❌ Full-video download failed. The result may be private, unavailable, region-restricted, or above the configured size limit.');
+  }
+});

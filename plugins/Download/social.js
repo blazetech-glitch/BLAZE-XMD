@@ -113,6 +113,58 @@ async function fetchMedia(platform, url) {
   throw new Error('Unsupported platform');
 }
 
+function progressCard(icon, title, stage, bar) {
+  return [
+    `╭━━〔 ${icon} *BLAZE XMD* 〕━━╮`,
+    `│ *${title}*`,
+    `│ ${bar} ${stage}`,
+    '╰━━━━━━━━━━━━━━━━━━╯'
+  ].join('\n');
+}
+
+async function createProgress(client, dest, quoted, title) {
+  return client.sendMessage(dest, {
+    text: progressCard('⬇️', title, 'Media found · preparing', '▰▱▱▱')
+  }, { quoted });
+}
+
+async function advanceProgress(client, dest, progress, title) {
+  if (!progress?.key) return;
+  try {
+    await client.sendMessage(dest, {
+      text: progressCard('⬇️', title, 'Source ready · uploading', '▰▰▰▱'),
+      edit: progress.key
+    });
+  } catch (_) {}
+}
+
+function isTransportError(error) {
+  return /connection\s+(closed|terminated)|socket|not connected/i.test(String(error?.message || error));
+}
+
+async function sendVideoWithFallback(client, dest, mediaUrl, platform, fileName, caption, quoted, sendAsDocument) {
+  const documentPayload = {
+    document: { url: mediaUrl },
+    fileName,
+    mimetype: 'video/mp4',
+    caption
+  };
+  if (sendAsDocument) return client.sendMessage(dest, documentPayload, { quoted });
+
+  try {
+    return await client.sendMessage(dest, {
+      video: { url: mediaUrl },
+      mimetype: 'video/mp4',
+      gifPlayback: false,
+      caption
+    }, { quoted });
+  } catch (error) {
+    if (isTransportError(error)) throw error;
+    console.warn(`[Social downloader:${platform}] video send failed; retrying as document:`, error.message || error);
+    return client.sendMessage(dest, documentPayload, { quoted });
+  }
+}
+
 blazetz({
   nomCom: 'dl',
   alias: ['download', 'socialdl', 'sdl', 'twitter', 'tw', 'x', 'twitterdl', 'facebook', 'fbdownload'],
@@ -134,16 +186,26 @@ blazetz({
     const result = await fetchMedia(platform, rawUrl);
     const media = mediaFromResult(platform, result);
     if (!media.url) throw new Error('No downloadable media was returned.');
+    const progress = await createProgress(client, dest, ms, `${platform.toUpperCase()} MEDIA`);
     const probe = media.type === 'video' ? await probeMedia(media.url) : { length: 0, contentType: '' };
 
-    const caption = `╭━━━〔 ⬇️ BLAZE DOWNLOAD 〕━━━╮\nPlatform: *${platform.toUpperCase()}*\n${media.duration ? `Duration: *${media.duration}*\n` : ''}╰━━━〔 ARNOLDT20 〕━━━╯`;
+    const caption = `⬇️ *${platform.toUpperCase()} DOWNLOAD*${media.duration ? ` · ${media.duration}` : ''}\n_BLAZE XMD_`;
     const sendAsDocument = media.type === 'video' && probe.length > 50 * 1024 * 1024;
-    const payload = media.type === 'image'
-      ? { image: { url: media.url }, caption }
-      : sendAsDocument
-        ? { document: { url: media.url }, fileName: `blaze-${platform}-full-video.mp4`, mimetype: 'video/mp4', caption }
-        : { video: { url: media.url }, caption, mimetype: 'video/mp4', gifPlayback: false };
-    await client.sendMessage(dest, payload, { quoted: ms });
+    await advanceProgress(client, dest, progress, `${platform.toUpperCase()} MEDIA`);
+    if (media.type === 'image') {
+      await client.sendMessage(dest, { image: { url: media.url }, caption }, { quoted: ms });
+    } else {
+      await sendVideoWithFallback(
+        client,
+        dest,
+        media.url,
+        platform,
+        `blaze-${platform}-full-video.mp4`,
+        caption,
+        ms,
+        sendAsDocument
+      );
+    }
     await client.sendMessage(dest, { react: { text: '✅', key: ms.key } });
   } catch (error) {
     console.error(`[Social downloader:${platform}]`, error.response?.data || error.message || error);

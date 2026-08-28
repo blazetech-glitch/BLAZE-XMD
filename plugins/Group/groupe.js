@@ -7,6 +7,7 @@ const { search, download } = require("aptoide-scraper");
 const fs = require("fs-extra");
 const conf = require("../../settings");
 const { default: axios } = require('axios');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 //const { uploadImageToImgur } = require('../../devblaze/imgur');
 
 
@@ -111,6 +112,7 @@ blazetz({ nomCom: "promote", categorie: 'Group', reaction: "🔃" }, async (dest
     var txt = `🎊🎊🎊  @${utilisateur.split("@")[0]} rose in rank.\n
                       he/she has been named group administrator.`
     await client.sendMessage(dest, { text: txt, mentions: [utilisateur] })
+    await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: commandeOptions.ms });
   } catch (e) {
     const msg = (e.message || e).toString();
     if (msg.includes('forbidden') || msg.includes('not-authorized') || msg.includes('403')) {
@@ -136,6 +138,7 @@ blazetz({ nomCom: "demote", categorie: 'Group', reaction: "🔃" }, async (dest,
     await client.groupParticipantsUpdate(dest, [utilisateur], "demote");
     var txt = `@${utilisateur.split("@")[0]} was removed from his position as a group administrator\n`
     await client.sendMessage(dest, { text: txt, mentions: [utilisateur] })
+    await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: commandeOptions.ms });
   } catch (e) {
     const msg = (e.message || e).toString();
     if (msg.includes('forbidden') || msg.includes('not-authorized') || msg.includes('403')) {
@@ -168,6 +171,7 @@ blazetz({ nomCom: "remove", aliases: ["kick"], categorie: 'Group', reaction: "�
       text: `╭───〔 🦵 MEMBER REMOVED 〕───\n│\n│ 👤 User: @${utilisateur.split("@")[0]}\n│\n│ ✅ Removed from group successfully\n│\n╰────────────────────`,
       mentions: [utilisateur]
     });
+    await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: commandeOptions.ms });
   } catch (e) {
     const msg = (e.message || e).toString();
     if (msg.includes('forbidden') || msg.includes('not-authorized') || msg.includes('403')) {
@@ -306,20 +310,22 @@ blazetz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOpt
           );
         } else {
           await ajouterOuMettreAJourJid(dest, "oui");
-          repondre(
+          await repondre(
 `╭───❰ *ANTILINK STATUS* ❱───╮
 │ ✅ Antilink has been *activated*
 ╰──────────────────────────╯`
           );
+          await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
         }
       } else if (arg[0] === 'off') {
         if (enetatoui) {
           await ajouterOuMettreAJourJid(dest, "non");
-          repondre(
+          await repondre(
 `╭───❰ *ANTILINK STATUS* ❱───╮
 │ ❌ Antilink has been *deactivated*
 ╰──────────────────────────╯`
           );
+          await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
         } else {
           repondre(
 `╭───❰ *ANTILINK STATUS* ❱───╮
@@ -331,11 +337,12 @@ blazetz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOpt
         let action = input.split("/")[1];
         if (['remove', 'warn', 'delete'].includes(action)) {
           await mettreAJourAction(dest, action);
-          repondre(
+          await repondre(
 `╭───❰ *ANTILINK ACTION UPDATED* ❱───╮
 │ 🔧 Action settings to: *${action.toUpperCase()}*
 ╰────────────────────────────────╯`
           );
+          await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
         } else {
           repondre(
 `❌ Invalid action.

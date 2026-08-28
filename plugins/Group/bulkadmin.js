@@ -1,4 +1,5 @@
 const { blazetz } = require('../../devblaze/blazetz');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 /**
  * promoteall / demoteall
@@ -55,7 +56,9 @@ function registerBulkCommand(nomCom, action, label, reaction) {
             }
         }
 
-        return repondre(`✅ ${label} complete: ${success}/${targets.length} member(s).`);
+        await repondre(`✅ ${label} complete: ${success}/${targets.length} member(s).`);
+        if (success) await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: commandeOptions.ms });
+        return;
     });
 }
 

@@ -2,6 +2,7 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const {ajouterUtilisateurAvecWarnCount , getWarnCountByJID , resettingsWarnCountByJID} = require('../../lib/warn')
 const s = require("../../settings")
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 
 blazetz(
@@ -22,16 +23,20 @@ if(verifAdmin || superUser) {
    let warn = await getWarnCountByJID(auteurMsgRepondu)
    let warnlimit = s.WARN_COUNT
    
-   if( warn >= warnlimit ) { await repondre('this user reach limit of warning , so i kick him/her');
-                client.groupParticipantsUpdate(dest, [auteurMsgRepondu], "remove")
+   if( warn >= warnlimit ) { await client.groupParticipantsUpdate(dest, [auteurMsgRepondu], "remove")
+                await repondre('this user reach limit of warning , so i kick him/her');
+                await sendGroupFeedbackSticker(client, dest, { kind: 'member', quoted: ms });
  } else { 
 
     var rest = warnlimit - warn ;
-     repondre(`this user is warn , rest before kick : ${rest} `)
+     await repondre(`this user is warn , rest before kick : ${rest} `);
+     await sendGroupFeedbackSticker(client, dest, { kind: 'warning', quoted: ms });
    }
 } else if ( arg[0] === 'resettings') { await resettingsWarnCountByJID(auteurMsgRepondu) 
 
-    repondre("Warn count is resettings for this user")} else ( repondre('reply to a user by typing  .warn ou .warn resettings'))
+    await repondre("Warn count is resettings for this user");
+    await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: ms });
+ } else ( repondre('reply to a user by typing  .warn ou .warn resettings'))
    
 }  else {
     repondre('you are not admin')

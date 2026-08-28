@@ -1,5 +1,6 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { setTimedMute, clearTimedMute, getTimedMutes } = require('../../lib/groupModeration');
+const { sendGroupFeedbackSticker } = require('../../lib/groupFeedbackSticker');
 
 function cleanJid(value) {
   if (!value) return '';
@@ -80,7 +81,9 @@ async function muteCommand(dest, client, options) {
   const noticeState = privateNoticeSent
     ? 'A private notice was sent to the user.'
     : 'The mute is active, but WhatsApp did not deliver the private notice.';
-  return repondre(`🔇 *USER MUTED*\n\n${displayUser(target)} is muted for *${formatDuration(duration)}*.\nTheir text messages will be removed until ${new Date(until).toLocaleString()}.\n\n${noticeState}`);
+  await repondre(`🔇 *USER MUTED*\n\n${displayUser(target)} is muted for *${formatDuration(duration)}*.\nTheir text messages will be removed until ${new Date(until).toLocaleString()}.\n\n${noticeState}`);
+  await sendGroupFeedbackSticker(client, dest, { kind: 'warning', quoted: options.ms });
+  return;
 }
 
 async function unmuteCommand(dest, client, options) {
@@ -90,7 +93,10 @@ async function unmuteCommand(dest, client, options) {
   const target = resolveTarget(options);
   if (!target || sameUser(target, idBot)) return repondre('❌ Mention the user or reply to their message, then use `.unmute`.');
   const removed = await clearTimedMute(dest, target);
-  return repondre(removed ? `✅ ${displayUser(target)} has been unmuted.` : 'ℹ️ That user is not currently muted.');
+  if (!removed) return repondre('ℹ️ That user is not currently muted.');
+  await repondre(`✅ ${displayUser(target)} has been unmuted.`);
+  await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: options.ms });
+  return;
 }
 
 async function listMutes(dest, client, options) {

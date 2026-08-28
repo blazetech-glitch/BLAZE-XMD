@@ -15,6 +15,7 @@ blazetz(
       verifGroupe = false,
       verifAdmin = false,
       isOwner = false,
+      superUser = false,
       verifBlazetzAdmin = true,
       auteurMessage
     } = context || {};
@@ -26,7 +27,9 @@ blazetz(
       );
     }
 
-    if (verifGroupe && !verifAdmin && !isOwner) {
+    const canModerateGroup = Boolean(verifAdmin || isOwner || superUser);
+
+    if (verifGroupe && !canModerateGroup) {
       const senderJid = normalizeJid(auteurMessage || ms?.key?.participant || ms?.participant);
       const targetJid = normalizeJid(quoted.participant);
       if (!senderJid || !targetJid || senderJid !== targetJid) {
@@ -34,7 +37,7 @@ blazetz(
       }
     }
 
-    if (verifGroupe && (verifAdmin || isOwner) && !verifBlazetzAdmin) {
+    if (verifGroupe && canModerateGroup && !verifBlazetzAdmin) {
       return repondre("❌ Please make BLAZE XMD an admin before moderating group messages.");
     }
 

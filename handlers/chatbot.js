@@ -15,6 +15,13 @@ const conversationHistory = new Map();
 const userLastActivity = new Map();
 const gptReplyLastTime = new Map();
 const businessReplyLastTime = new Map();
+const groupMentionLastReply = new Map();
+const GROUP_MENTION_STICKER_COOLDOWN_MS = 45_000;
+const GROUP_MENTION_STICKERS = [
+  path.join(__dirname, '../assets/mention-angry-slipper.webp'),
+  path.join(__dirname, '../assets/mention-surprised.webp')
+];
+let nextMentionStickerIndex = 0;
 
 function normalizeUser(jid) {
   return String(jid || '').split(':')[0].trim();
@@ -194,6 +201,47 @@ function isReplyToBot(message, client) {
   return replyTargets.some((target) => botIds.includes(target)) || mentionedBot;
 }
 
+function isDirectBotMention(message, client) {
+  const contextInfo = message?.message?.extendedTextMessage?.contextInfo
+    || message?.message?.imageMessage?.contextInfo
+    || message?.message?.videoMessage?.contextInfo
+    || message?.message?.audioMessage?.contextInfo;
+  if (!contextInfo) return false;
+
+  const botIds = [
+    client?.user?.id,
+    client?.user?.jid,
+    client?.user?.lid,
+    client?.user?.phone,
+    client?.user?.phoneNumber
+  ].flatMap((jid) => identityCandidates(client, jid));
+
+  return (contextInfo.mentionedJid || [])
+    .some((jid) => identityCandidates(client, jid).some((candidate) => botIds.includes(candidate)));
+}
+
+async function handleGroupMentionSticker(client, message, { from, body }) {
+  if (!isGroupChat(from) || !isDirectBotMention(message, client)) return false;
+  if (String(body || '').trim().startsWith('.')) return false;
+
+  const now = Date.now();
+  const lastReply = groupMentionLastReply.get(from) || 0;
+  if (now - lastReply < GROUP_MENTION_STICKER_COOLDOWN_MS) return true;
+
+  const stickerPath = GROUP_MENTION_STICKERS[nextMentionStickerIndex % GROUP_MENTION_STICKERS.length];
+  try {
+    const sticker = fs.readFileSync(stickerPath);
+    groupMentionLastReply.set(from, now);
+    nextMentionStickerIndex += 1;
+    await client.sendMessage(from, { sticker }, { quoted: message });
+    return true;
+  } catch (error) {
+    groupMentionLastReply.delete(from);
+    console.error('[Group mention sticker] send failed:', error.message);
+    return false;
+  }
+}
+
 function extractQuotedText(message) {
   const quoted = message?.message?.extendedTextMessage?.contextInfo?.quotedMessage;
   if (!quoted) return '';
@@ -282,8 +330,11 @@ async function handleBusinessCustomerReply(client, message, { from, body }) {
 }
 
 async function handleChatbotMessage(client, message, { from, sender, body }) {
-  if (isFromBot(message, client) || isForwardedMessage(message) || !body || body.startsWith('.')) return;
+  if (isFromBot(message, client) || isForwardedMessage(message)) return;
   if (from === 'status@broadcast') return;
+
+  if (await handleGroupMentionSticker(client, message, { from, body })) return;
+  if (!body || body.startsWith('.')) return;
 
   if (isPrivateChat(from)) {
     if (await handleAutomaticGptReply(client, message, { from, body })) return;
@@ -325,5 +376,7 @@ module.exports = {
   setChatbotState,
   isChatbotEnabled,
   isReplyToBot,
+  isDirectBotMention,
+  handleGroupMentionSticker,
   isForwardedMessage
 };

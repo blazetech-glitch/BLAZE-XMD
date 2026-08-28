@@ -1,9 +1,24 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const {
-  toggleChatbot,
   setChatbotState,
   isChatbotEnabled
 } = require('../../handlers/chatbot');
+
+function privateChatIds(...values) {
+  return [...new Set(values
+    .filter(Boolean)
+    .map((value) => String(value).split(':')[0].trim())
+    .filter(Boolean))];
+}
+
+function isPrivateChatbotEnabled(ids) {
+  return ids.some((jid) => isChatbotEnabled(jid));
+}
+
+function setPrivateChatbotState(ids, enabled) {
+  for (const jid of ids) setChatbotState(jid, enabled);
+  return Boolean(enabled);
+}
 
 blazetz(
   {
@@ -57,7 +72,7 @@ blazetz(
       return repondre('❌ Unknown group chatbot option. Use `.chatbot help`.');
     }
 
-    const userJid = auteurMessage || dest;
+    const userJids = privateChatIds(auteurMessage, dest);
     const action = String(arg[0] || 'toggle').toLowerCase();
 
     if (['help', '?'].includes(action)) {
@@ -76,23 +91,23 @@ blazetz(
     }
 
     if (action === 'status') {
-      return repondre(isChatbotEnabled(userJid)
+      return repondre(isPrivateChatbotEnabled(userJids)
         ? '✅ AI chatbot is currently *ON* for this private chat.'
         : '⚪ AI chatbot is currently *OFF* for this private chat.\nUse `.chatbot on` to enable it.');
     }
 
     if (['on', 'enable', 'start'].includes(action)) {
-      setChatbotState(userJid, true);
+      setPrivateChatbotState(userJids, true);
       return repondre('✅ *BLAZE XMD AI chatbot enabled.*\nSend a normal private message to receive an AI reply.');
     }
 
     if (['off', 'disable', 'stop'].includes(action)) {
-      setChatbotState(userJid, false);
+      setPrivateChatbotState(userJids, false);
       return repondre('🛑 *BLAZE XMD AI chatbot disabled* for this private chat.');
     }
 
     if (action === 'toggle') {
-      const enabled = toggleChatbot(userJid);
+      const enabled = setPrivateChatbotState(userJids, !isPrivateChatbotEnabled(userJids));
       return repondre(enabled
         ? '✅ *BLAZE XMD AI chatbot enabled.*\nSend a normal private message to begin.'
         : '🛑 *BLAZE XMD AI chatbot disabled.*');
