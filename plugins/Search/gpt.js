@@ -1,7 +1,11 @@
 const axios = require('axios');
 const { blazetz } = require('../../devblaze/blazetz');
 
-const AI_API = process.env.BLAZE_CHATBOT_API || 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
+const PUBLIC_AI_API = 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
+const builtInBase = String(process.env.BUILT_IN_FORGE_API_URL || '').replace(/\/$/, '');
+const builtInKey = String(process.env.BUILT_IN_FORGE_API_KEY || '').trim();
+const useBuiltIn = Boolean(builtInBase && builtInKey);
+const AI_API = process.env.BLAZE_CHATBOT_API || (useBuiltIn ? `${builtInBase}/v1/chat/completions` : PUBLIC_AI_API);
 const MAX_QUERY_LENGTH = 1800;
 
 const MODES = {
@@ -25,6 +29,36 @@ function isLikelyAiResponse(text) {
   return /^╭━━━〔\s*🤖\s*BLAZE AI/i.test(text)
     || /^🤖\s*\*?BLAZE GPT/i.test(text)
     || /╰━━━〔\s*ARNOLDT20\s*〕━━━╯/i.test(text);
+}
+
+function responseText(data) {
+  const value = data?.reply
+    ?? data?.response
+    ?? data?.answer
+    ?? data?.result
+    ?? data?.choices?.[0]?.message?.content;
+  if (Array.isArray(value)) return value.map((item) => item?.text || '').join('');
+  return value;
+}
+
+async function requestAnswer(instruction, conversationId) {
+  const headers = { 'Content-Type': 'application/json' };
+  const builtInRequest = useBuiltIn && !process.env.BLAZE_CHATBOT_API;
+  const payload = builtInRequest
+    ? {
+        model: process.env.BLAZE_CHATBOT_MODEL || 'gpt-5-mini',
+        messages: [
+          { role: 'system', content: 'You are BLAZE XMD, a concise and helpful WhatsApp assistant. Keep ordinary replies short unless detail is requested.' },
+          { role: 'user', content: instruction }
+        ],
+        max_completion_tokens: 700
+      }
+    : { message: instruction, conversation_id: conversationId };
+  if (builtInRequest) headers.Authorization = `Bearer ${builtInKey}`;
+  const response = await axios.post(AI_API, payload, { timeout: 60_000, headers });
+  const answer = responseText(response.data || {});
+  if (answer === undefined || answer === null) throw new Error('AI service returned no answer.');
+  return String(answer).trim();
 }
 
 blazetz(
@@ -85,18 +119,7 @@ blazetz(
         ].join('\n');
       }
 
-      const response = await axios.post(AI_API, {
-        message: instruction,
-        conversation_id: `gpt:${dest}`
-      }, {
-        timeout: 60_000,
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      const data = response.data || {};
-      let answer = data.reply ?? data.response ?? data.answer ?? data.result;
-      if (answer === undefined || answer === null) throw new Error('AI service returned no answer.');
-      answer = String(answer).trim().slice(0, 3800);
+      let answer = (await requestAnswer(instruction, `gpt:${dest}`)).slice(0, 3800);
       if (!answer) throw new Error('AI service returned an empty answer.');
 
       const modeLabel = mode === 'general' ? '' : `\n🧭 *Mode:* ${mode.toUpperCase()}\n`;
