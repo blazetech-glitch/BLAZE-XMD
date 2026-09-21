@@ -3,7 +3,7 @@ const { getBusinessProfile, businessPrompt } = require('../lib/businessProfile')
 const fs = require('fs');
 const path = require('path');
 
-const CHATGPT_API = process.env.BLAZE_CHATBOT_API || 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
+const CHATGPT_API = process.env.BLAZE_CHATBOT_API || 'https://mqudqfsvnvlcptsgdceo.supabase.co/functions/v1/whatsapp-chat';
 const HISTORY_FILE = path.join(__dirname, '../asset/chatbot_history.json');
 const HISTORY_RETENTION_MS = 72 * 60 * 60 * 1000;
 const REPLY_INTERVAL_MS = 10_000;

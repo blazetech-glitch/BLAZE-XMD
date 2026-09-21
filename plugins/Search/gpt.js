@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { blazetz } = require('../../devblaze/blazetz');
 
-const PUBLIC_AI_API = 'https://arimuqnlsqzunbqovakc.supabase.co/functions/v1/whatsapp-chat';
+const PUBLIC_AI_API = 'https://mqudqfsvnvlcptsgdceo.supabase.co/functions/v1/whatsapp-chat';
 const builtInBase = String(process.env.BUILT_IN_FORGE_API_URL || '').replace(/\/$/, '');
 const builtInKey = String(process.env.BUILT_IN_FORGE_API_KEY || '').trim();
 const useBuiltIn = Boolean(builtInBase && builtInKey);
