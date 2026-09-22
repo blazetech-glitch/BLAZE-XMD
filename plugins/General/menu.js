@@ -24,6 +24,11 @@ function getRandomScsImage() {
     return path.join(scsFolder, images[randomIndex]);
 }
 
+function getIosMenuImage() {
+    const imagePath = path.join(__dirname, "../scs/ios-menu.jpg");
+    return fs.existsSync(imagePath) ? imagePath : null;
+}
+
 // ====== CONTACT QUOTE ======
 const quotedContact = {
   key: {
@@ -129,7 +134,19 @@ blazetz({
   // ====== SEND OPTIONS WITH IMAGE ======
   let sentMessage;
   if (iosMenu) {
-    sentMessage = await client.sendMessage(dest, { text: optionsText });
+    const iosImagePath = getIosMenuImage();
+    if (iosImagePath) {
+      try {
+        sentMessage = await client.sendMessage(dest, {
+          image: fs.readFileSync(iosImagePath),
+          caption: optionsText,
+        });
+      } catch (_) {
+        sentMessage = await client.sendMessage(dest, { text: optionsText });
+      }
+    } else {
+      sentMessage = await client.sendMessage(dest, { text: optionsText });
+    }
   } else if (imagePath) {
     try {
       const imageBuffer = fs.readFileSync(imagePath);
@@ -200,7 +217,19 @@ blazetz({
       // ====== SEND MENU WITH RANDOM IMAGE ======
       const categoryImagePath = iosMenu ? null : getRandomScsImage();
       if (iosMenu) {
-        await client.sendMessage(dest, { text: finalText });
+        const iosImagePath = getIosMenuImage();
+        if (iosImagePath) {
+          try {
+            await client.sendMessage(dest, {
+              image: fs.readFileSync(iosImagePath),
+              caption: finalText,
+            });
+          } catch (_) {
+            await client.sendMessage(dest, { text: finalText });
+          }
+        } else {
+          await client.sendMessage(dest, { text: finalText });
+        }
       } else if (categoryImagePath) {
         try {
           const categoryImageBuffer = fs.readFileSync(categoryImagePath);
