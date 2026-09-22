@@ -1,6 +1,7 @@
 const { blazetz } = require('../../devblaze/blazetz');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { recordStatus } = require('../../lib/statusHistory');
+const { getAutoContacts } = require('../../lib/autoContacts');
 
 const STATUS_JID = 'status@broadcast';
 
@@ -31,7 +32,7 @@ blazetz({
 
   try {
     await repondre('⏳ Posting to WhatsApp Status...');
-    const statusOptions = buildStatusOptions(client, dest, ms, auteurMessage);
+    const statusOptions = await buildStatusOptions(client, dest, ms, auteurMessage);
     if (!statusOptions.statusJidList.length) {
       throw new Error('No synced WhatsApp contacts are available for the status audience. Send or receive a normal chat first, then try again.');
     }
@@ -52,23 +53,25 @@ blazetz({
             ...(text ? { caption: text } : {})
           };
 
-      await client.sendMessage(STATUS_JID, payload, statusOptions);
+      const result = await client.sendMessage(STATUS_JID, payload, statusOptions);
+      assertStatusAccepted(result);
       recordStatus({
         type: mediaType,
         voiceNote: mediaType === 'audio' && Boolean(mediaMessage.ptt),
         captionLength: text.length
       }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
-      await client.sendMessage(STATUS_JID, { text }, {
+      const result = await client.sendMessage(STATUS_JID, { text }, {
         ...statusOptions,
         backgroundColor: '#111827',
         font: 2
       });
+      assertStatusAccepted(result);
       recordStatus({ type: 'text', captionLength: text.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
     }
 
-    return repondre(`✅ ${mediaType ? mediaType[0].toUpperCase() + mediaType.slice(1) : 'Text'} status posted successfully.`);
+    return repondre(`✅ WhatsApp accepted the ${mediaType ? mediaType[0].toUpperCase() + mediaType.slice(1) : 'text'} status for ${statusOptions.statusJidList.length} contacts.`);
   } catch (error) {
     console.error('[ToStatus] post failed:', error?.message || error);
     return repondre('❌ Failed to post the status. Check the bot session and try again.');
@@ -103,7 +106,7 @@ function detectMediaType(message) {
   return null;
 }
 
-function buildStatusOptions(client, dest, message, senderJid) {
+async function buildStatusOptions(client, dest, message, senderJid) {
   const botJid = normalizeUserJid(client?.user?.id, client);
   const requesterJid = normalizeUserJid(senderJid, client)
     || normalizeUserJid(message?.key?.participant, client)
@@ -113,13 +116,27 @@ function buildStatusOptions(client, dest, message, senderJid) {
     client?.store?.contacts,
     client?.contacts
   ].filter((contacts) => contacts && typeof contacts === 'object');
-  const contactJids = contactStores.flatMap((contacts) => Object.values(contacts))
+  const liveContactJids = contactStores.flatMap((contacts) => Object.values(contacts))
     .map((contact) => normalizeUserJid(contact?.id || contact?.jid || contact, client))
     .filter(Boolean);
-  const statusJidList = [...new Set([...contactJids, requesterJid].filter(Boolean))]
+  let persistedContactJids = [];
+  try {
+    persistedContactJids = (await getAutoContacts())
+      .map((contact) => normalizeUserJid(contact?.jid, client))
+      .filter(Boolean);
+  } catch (error) {
+    console.error('[ToStatus] persisted contacts unavailable:', error.message || error);
+  }
+  const statusJidList = [...new Set([...liveContactJids, ...persistedContactJids, requesterJid].filter(Boolean))]
     .filter((jid) => jid !== 'status@broadcast' && jid !== botJid);
 
   return { broadcast: true, statusJidList };
+}
+
+function assertStatusAccepted(result) {
+  if (!result?.key?.id) {
+    throw new Error('WhatsApp did not return a status message key. The status was not confirmed.');
+  }
 }
 
 function normalizeUserJid(value, client) {
