@@ -19,7 +19,7 @@
     },
     "BOT_OS": {
       "description": "Menu presentation target: use ios for the iPhone-friendly menu, or android for the existing menu.",
-      "value": "android",
+      "value": "ios",
       "required": false
     }
   },

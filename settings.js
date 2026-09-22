@@ -5,7 +5,17 @@ const localSettingsPath = path.join(__dirname, 'settings.env');
 if (fs.existsSync(localSettingsPath)) {
     require('dotenv').config({ path: localSettingsPath, override: true });
 }
-
+let appConfig = {};
+try {
+    appConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'app.json'), 'utf8'));
+} catch (_) {
+    appConfig = {};
+}
+const configuredBotOs = process.env.BOT_OS
+    || process.env.MENU_OS
+    || process.env.OS
+    || appConfig.env?.BOT_OS?.value
+    || 'android';
 module.exports = {
     session: process.env.SESSION_ID || '',
     PREFIXE: process.env.PREFIX || ".",
@@ -14,7 +24,7 @@ module.exports = {
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://blaze-xmd.zone.id',
     WELCOME_MEDIA_URL: process.env.WELCOME_MEDIA_URL || '',
-    BOT_OS: String(process.env.BOT_OS || process.env.MENU_OS || process.env.OS || 'android').toLowerCase() === 'ios' ? 'ios' : 'android',
+    BOT_OS: String(configuredBotOs).toLowerCase() === 'ios' ? 'ios' : 'android',
 
     // Database-backed toggles use these values on a fresh installation.
     ANTICALL: process.env.ANTICALL || 'on',
