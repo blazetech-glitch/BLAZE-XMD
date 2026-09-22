@@ -9,6 +9,7 @@ bmbtech-data.json
 asset/banGroup.json
 asset/banUser.json
 asset/users_rank.json
+asset/chatbot_history.json
 
 # Local dependencies.
 node_modules/
