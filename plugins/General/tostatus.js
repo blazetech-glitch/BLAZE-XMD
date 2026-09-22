@@ -61,11 +61,7 @@ blazetz({
         captionLength: text.length
       }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
-      const result = await client.sendMessage(STATUS_JID, { text }, {
-        ...statusOptions,
-        backgroundColor: '#111827',
-        font: 2
-      });
+      const result = await client.sendMessage(STATUS_JID, { text }, statusOptions);
       assertStatusAccepted(result);
       recordStatus({ type: 'text', captionLength: text.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
@@ -128,9 +124,10 @@ async function buildStatusOptions(client, dest, message, senderJid) {
     console.error('[ToStatus] persisted contacts unavailable:', error.message || error);
   }
   const statusJidList = [...new Set([...liveContactJids, ...persistedContactJids, requesterJid].filter(Boolean))]
-    .filter((jid) => jid !== 'status@broadcast' && jid !== botJid);
+    .filter((jid) => jid !== 'status@broadcast' && jid !== botJid)
+    .filter((jid) => jid.endsWith('@s.whatsapp.net'));
 
-  return { broadcast: true, statusJidList };
+  return { statusJidList };
 }
 
 function assertStatusAccepted(result) {
@@ -145,7 +142,7 @@ function normalizeUserJid(value, client) {
   if (typeof client?.decodeJid === 'function') {
     try { jid = client.decodeJid(jid) || jid; } catch (_) {}
   }
-  return jid.endsWith('@s.whatsapp.net') || jid.endsWith('@lid') ? jid : null;
+  return jid.endsWith('@s.whatsapp.net') ? jid : null;
 }
 
 async function downloadMedia(message, type) {
