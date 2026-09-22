@@ -13,6 +13,7 @@ module.exports = {
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://blaze-xmd.zone.id',
     WELCOME_MEDIA_URL: process.env.WELCOME_MEDIA_URL || '',
+    BOT_OS: String(process.env.BOT_OS || 'android').toLowerCase() === 'ios' ? 'ios' : 'android',
 
     // Database-backed toggles use these values on a fresh installation.
     ANTICALL: process.env.ANTICALL || 'on',
@@ -35,4 +36,3 @@ fs.watchFile(fichier, () => {
     delete require.cache[fichier];
     require(fichier);
 });
-

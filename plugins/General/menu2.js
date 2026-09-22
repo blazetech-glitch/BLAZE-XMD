@@ -39,6 +39,7 @@ blazetz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandO
     let { cm } = require(__dirname + "/../../devblaze/blazetz");
     let commandsByCategory = {};
     let mode = (s.MODE.toLowerCase() === "yes") ? "PUBLIC" : "PRIVATE";
+    const iosMenu = s.BOT_OS === "ios";
 
     cm.map((com) => {
         if (!commandsByCategory[com.categorie]) commandsByCategory[com.categorie] = [];
@@ -49,7 +50,21 @@ blazetz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandO
     const currentTime = moment().format('HH:mm:ss');
     const currentDate = moment().format('DD/MM/YYYY');
 
-    let infoMessage = `┏━━━⚡ *BLAZE-TECH-V2* ⚡━━━┓
+    let infoMessage = iosMenu
+        ? `📱 *BLAZE XMD · iOS MENU*
+
+👋 Hello, *${nomAuteurMessage}*!
+📱 Platform: *${os.platform()}*
+⚙️ Mode: *${mode}*
+🚀 Prefix: *[ ${prefixe} ]*
+⏳ Time: *${currentTime}*
+📆 Date: *${currentDate}*
+📟 Commands: *${cm.length}*
+
+🎩 *Command Menu*
+
+`
+        : `┏━━━⚡ *BLAZE-TECH-V2* ⚡━━━┓
 ┃ 🔥  Hello, *${nomAuteurMessage}*! 🔥
 ┣━━━━━━━━━━━━━━━━━━━━━
 ┃ 📌 *System Info:*
@@ -69,14 +84,24 @@ blazetz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandO
     let menuMessage = "";
 
     for (const category in commandsByCategory) {
-        menuMessage += `┣ 🔹 *${category.toUpperCase()}* 🔹\n`;
-        for (const cmd of commandsByCategory[category]) {
-            menuMessage += `┃   🔸 ${cmd}\n`;
+        if (iosMenu) {
+            menuMessage += `📂 *${category.toUpperCase()}*\n`;
+            commandsByCategory[category].forEach((cmd, index) => {
+                menuMessage += `${index + 1}. ${prefixe}${cmd}\n`;
+            });
+            menuMessage += `\n`;
+        } else {
+            menuMessage += `┣ 🔹 *${category.toUpperCase()}* 🔹\n`;
+            for (const cmd of commandsByCategory[category]) {
+                menuMessage += `┃   🔸 ${cmd}\n`;
+            }
+            menuMessage += `┣━━━━━━━━━━━━━━━━━━━━━\n`;
         }
-        menuMessage += `┣━━━━━━━━━━━━━━━━━━━━━\n`;
     }
 
-    menuMessage += `┗🌟 *BLAZE XMD - Developed by ARNOLDT20!* 🌟`;
+    menuMessage += iosMenu
+        ? `© *BLAZE XMD · ARNOLDT20*`
+        : `┗🌟 *BLAZE XMD - Developed by ARNOLDT20!* 🌟`;
 
     const imagePath = path.join(__dirname, "../../public/blaze-xmd-wordmark.png");
     const imageBuffer = fs.readFileSync(imagePath);

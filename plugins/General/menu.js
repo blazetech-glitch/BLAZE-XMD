@@ -107,14 +107,22 @@ blazetz({
   const imagePath = getRandomScsImage();
   
   // ====== BUILD OPTIONS TEXT ======
-  let optionsText = `📑 *BLAZE TOOL MENU*\n\n`;
-  optionsText += `Reply with category number:\n\n`;
-  
+  // iOS mode intentionally stays text-only and numeric: it avoids dense
+  // box-drawing layouts while preserving the existing reply-by-number flow.
+  const iosMenu = s.BOT_OS === "ios";
+  let optionsText = iosMenu
+    ? `📱 *BLAZE XMD · iOS MENU*\n\nReply with a category number:\n\n`
+    : `📑 *BLAZE TOOL MENU*\n\nReply with category number:\n\n`;
+
   categories.forEach((cat, index) => {
-    optionsText += `${index + 1} ➠ ${cat.toUpperCase()}\n`;
+    optionsText += iosMenu
+      ? `${index + 1}. ${cat.toUpperCase()}\n`
+      : `${index + 1} ➠ ${cat.toUpperCase()}\n`;
   });
-  
-  optionsText += `\n*Send number (1-${categories.length})*`;
+
+  optionsText += iosMenu
+    ? `\n*Send 1-${categories.length} to open a category*`
+    : `\n*Send number (1-${categories.length})*`;
 
   // ====== SEND OPTIONS WITH IMAGE ======
   let sentMessage;
@@ -168,9 +176,13 @@ blazetz({
       const commands = coms[selectedCategory];
 
       // ====== BUILD CATEGORY MENU ======
-      let menuText = `📂 *${selectedCategory.toUpperCase()}*\n\n`;
-      commands.forEach((cmd) => {
-        menuText += `🔹 *${prefixe}${cmd}\n`;
+      let menuText = iosMenu
+        ? `📱 *${selectedCategory.toUpperCase()} · iOS MENU*\n\n`
+        : `📂 *${selectedCategory.toUpperCase()}*\n\n`;
+      commands.forEach((cmd, commandIndex) => {
+        menuText += iosMenu
+          ? `${commandIndex + 1}. ${prefixe}${cmd}\n`
+          : `🔹 *${prefixe}${cmd}\n`;
       });
 
       const infoText = getBotInfo(mode, totalCommands, s.OWNER_NAME);

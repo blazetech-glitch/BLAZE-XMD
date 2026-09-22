@@ -16,6 +16,11 @@
       "description": "Command prefix (can also be changed later with .setprefix).",
       "value": ".",
       "required": false
+    },
+    "BOT_OS": {
+      "description": "Menu presentation target: use ios for the iPhone-friendly menu, or android for the existing menu.",
+      "value": "android",
+      "required": false
     }
   },
   "formation": {
