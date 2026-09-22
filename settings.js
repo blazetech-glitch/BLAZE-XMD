@@ -1,8 +1,9 @@
 /** BLAZE XMD identity, environment loading, and default runtime settings. */
 const fs = require('fs-extra');
-
-if (fs.existsSync('settings.env')) {
-    require('dotenv').config({ path: __dirname + '/settings.env' });
+const path = require('path');
+const localSettingsPath = path.join(__dirname, 'settings.env');
+if (fs.existsSync(localSettingsPath)) {
+    require('dotenv').config({ path: localSettingsPath, override: true });
 }
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
     BOT: process.env.BOT_NAME || 'BLAZE XMD',
     URL: process.env.BOT_MENU_LINKS || 'https://blaze-xmd.zone.id',
     WELCOME_MEDIA_URL: process.env.WELCOME_MEDIA_URL || '',
-    BOT_OS: String(process.env.BOT_OS || 'android').toLowerCase() === 'ios' ? 'ios' : 'android',
+    BOT_OS: String(process.env.BOT_OS || process.env.MENU_OS || process.env.OS || 'android').toLowerCase() === 'ios' ? 'ios' : 'android',
 
     // Database-backed toggles use these values on a fresh installation.
     ANTICALL: process.env.ANTICALL || 'on',
