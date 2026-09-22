@@ -171,9 +171,26 @@ registerToggleCommand("readstatus", "AUTO_READ_STATUS", "on", "off", "AUTO-READ 
   "❌ Auto-read status has been *disabled* successfully.",
   ["autoviewstatus", "viewstatus"]);
 
-registerToggleCommand("antidelete", "ANTIDELETE", "on", "off", "ANTI-DELETE MODE",
-  "✅ Anti-delete has been *enabled* successfully.",
-  "❌ Anti-delete has been *disabled* successfully.");
+blazetz({ nomCom: "antidelete", categorie: "Settings", reaction: "🗑️" }, async (chatId, client, context) => {
+  const { repondre, superUser, arg = [] } = context;
+  if (!superUser) return repondre("*This command is only allowed to be controlled by the owner.👤");
+
+  const option = String(arg[0] || "status").trim().toLowerCase();
+  const destination = String(getCachedSettingsSync().ANTIDELETE_DESTINATION || "log").toLowerCase() === "chat" ? "chat" : "log";
+  if (option === "status") {
+    const enabled = String(getCachedSettingsSync().ANTIDELETE ?? s.ANTIDELETE).toLowerCase();
+    return sendBox(chatId, client, context.ms, "ANTI-DELETE MODE", `Status: *${enabled.toUpperCase()}*\nDestination: *${destination.toUpperCase()}*\n\nUse .antidelete on|off|log|chat`);
+  }
+  if (option === "on" || option === "off") {
+    await updateCachedSetting("ANTIDELETE", option);
+    return sendBox(chatId, client, context.ms, "ANTI-DELETE MODE", option === "on" ? "✅ Anti-delete has been enabled." : "❌ Anti-delete has been disabled.");
+  }
+  if (option === "log" || option === "chat") {
+    await updateCachedSetting("ANTIDELETE_DESTINATION", option);
+    return sendBox(chatId, client, context.ms, "ANTI-DELETE DESTINATION", option === "log" ? "✅ Deleted messages will be restored to the owner PM." : "✅ Deleted messages will be restored in the original chat.");
+  }
+  return repondre("Use: `.antidelete on`, `.antidelete off`, `.antidelete log`, `.antidelete chat`, or `.antidelete status`");
+});
 
 registerToggleCommand("downloadstatus", "AUTO_DOWNLOAD_STATUS", "on", "off", "DOWNLOAD STATUS",
   "✅ Auto-download status has been *enabled* successfully.",
