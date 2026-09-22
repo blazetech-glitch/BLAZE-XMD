@@ -6,8 +6,14 @@ index.js.*.backup.js
 # Local JSON runtime database.
 blaze-data.json
 bmbtech-data.json
+asset/banGroup.json
+asset/banUser.json
 
-# WhatsApp session credentials and cryptographic state; never commit these.
+# Local dependencies.
+node_modules/
+
+# WhatsApp authentication and cryptographic state; never commit these.
+settings.env
 public/creds.json
 public/session-*.json
 public/tctoken-*.json
