@@ -300,8 +300,9 @@ blazetz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOpt
       }
 
       const input = arg.join('').toLowerCase();
+      const option = String(arg[0] || '').trim().toLowerCase();
 
-      if (arg[0] === 'on') {
+      if (option === 'on') {
         if (enetatoui) {
           repondre(
 `╭───❰ *ANTILINK STATUS* ❱───╮
@@ -317,7 +318,7 @@ blazetz({ nomCom: "info", categorie: 'Group' }, async (dest, client, commandeOpt
           );
           await sendGroupFeedbackSticker(client, dest, { kind: 'config', quoted: commandeOptions.ms });
         }
-      } else if (arg[0] === 'off') {
+      } else if (option === 'off') {
         if (enetatoui) {
           await ajouterOuMettreAJourJid(dest, "non");
           await repondre(
