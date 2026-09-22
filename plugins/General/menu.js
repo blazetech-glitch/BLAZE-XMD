@@ -6,6 +6,7 @@ const os = require("os");
 const moment = require("moment-timezone");
 const { format } = require(__dirname + "/../../devblaze/mesfonctions");
 const s = require(__dirname + "/../../settings");
+const { isIosPlainMenu, iosPlainMenu } = require(__dirname + "/../../lib/menuStyle");
 
 // ====== LOAD RANDOM IMAGE FROM /scs FOLDER ======
 function getRandomScsImage() {
@@ -109,9 +110,9 @@ blazetz({
   // ====== BUILD OPTIONS TEXT ======
   // iOS mode intentionally stays text-only and numeric: it avoids dense
   // box-drawing layouts while preserving the existing reply-by-number flow.
-  const iosMenu = s.BOT_OS === "ios";
+  const iosMenu = isIosPlainMenu;
   let optionsText = iosMenu
-    ? `📱 *BLAZE XMD · iOS MENU*\n\nReply with a category number:\n\n`
+    ? `${iosPlainMenu(["BLAZE XMD IOS MENU", "", "Reply with a category number:", ""])}\n`
     : `📑 *BLAZE TOOL MENU*\n\nReply with category number:\n\n`;
 
   categories.forEach((cat, index) => {
@@ -121,12 +122,15 @@ blazetz({
   });
 
   optionsText += iosMenu
-    ? `\n*Send 1-${categories.length} to open a category*`
+    ? `\nSend 1-${categories.length} to open a category`
     : `\n*Send number (1-${categories.length})*`;
+  if (iosMenu) optionsText = iosPlainMenu([optionsText]);
 
   // ====== SEND OPTIONS WITH IMAGE ======
   let sentMessage;
-  if (imagePath) {
+  if (iosMenu) {
+    sentMessage = await client.sendMessage(dest, { text: optionsText });
+  } else if (imagePath) {
     try {
       const imageBuffer = fs.readFileSync(imagePath);
       sentMessage = await client.sendMessage(dest, {
@@ -162,35 +166,42 @@ blazetz({
 
     // ====== VALIDATE NUMBER ======
     if (isNaN(categoryIndex) || categoryIndex < 0 || categoryIndex >= categories.length) {
-      await repondre(`❌ Invalid number! Send 1-${categories.length}`);
+      await repondre(iosMenu
+        ? iosPlainMenu([`Invalid number. Send 1-${categories.length}`])
+        : `❌ Invalid number! Send 1-${categories.length}`);
       return;
     }
 
     try {
       // ====== REACT TO USER ======
-      await client.sendMessage(message.key.remoteJid, {
-        react: { text: "⏳", key: message.key }
-      });
+      if (!iosMenu) {
+        await client.sendMessage(message.key.remoteJid, {
+          react: { text: "⏳", key: message.key }
+        });
+      }
 
       const selectedCategory = categories[categoryIndex];
       const commands = coms[selectedCategory];
 
       // ====== BUILD CATEGORY MENU ======
       let menuText = iosMenu
-        ? `📱 *${selectedCategory.toUpperCase()} · iOS MENU*\n\n`
+        ? `BLAZE XMD IOS MENU\n\n${selectedCategory.toUpperCase()}\n\n`
         : `📂 *${selectedCategory.toUpperCase()}*\n\n`;
       commands.forEach((cmd, commandIndex) => {
         menuText += iosMenu
           ? `${commandIndex + 1}. ${prefixe}${cmd}\n`
           : `🔹 *${prefixe}${cmd}\n`;
       });
+      if (iosMenu) menuText = iosPlainMenu([menuText]);
 
       const infoText = getBotInfo(mode, totalCommands, s.OWNER_NAME);
-      const finalText = infoText + menuText;
+      const finalText = iosMenu ? menuText : infoText + menuText;
 
       // ====== SEND MENU WITH RANDOM IMAGE ======
-      const categoryImagePath = getRandomScsImage();
-      if (categoryImagePath) {
+      const categoryImagePath = iosMenu ? null : getRandomScsImage();
+      if (iosMenu) {
+        await client.sendMessage(dest, { text: finalText });
+      } else if (categoryImagePath) {
         try {
           const categoryImageBuffer = fs.readFileSync(categoryImagePath);
           await client.sendMessage(dest, {
@@ -213,13 +224,17 @@ blazetz({
       }
 
       // ====== REACT SUCCESS ======
-      await client.sendMessage(message.key.remoteJid, {
-        react: { text: "✅", key: message.key }
-      });
+      if (!iosMenu) {
+        await client.sendMessage(message.key.remoteJid, {
+          react: { text: "✅", key: message.key }
+        });
+      }
 
     } catch (error) {
       console.error(error);
-      await repondre(`❌ Error: ${error.message}`);
+      await repondre(iosMenu
+        ? iosPlainMenu([`Error: ${error.message}`])
+        : `❌ Error: ${error.message}`);
     }
   });
 });
