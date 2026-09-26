@@ -11,6 +11,8 @@ const { isIosPlainMenu, iosPlainMenu } = require(__dirname + "/../../lib/menuSty
 // ====== LOAD RANDOM IMAGE FROM /scs FOLDER ======
 function getRandomScsImage() {
     const scsFolder = path.join(__dirname, "../scs");
+    const liveMenu = path.join(scsFolder, "blaze-live-menu.png");
+    if (fs.existsSync(liveMenu)) return liveMenu;
     const images = fs.readdirSync(scsFolder).filter(f =>
         /^menu\d+\.(jpg|jpeg|png|mp4|gif)$/i.test(f)
     );
