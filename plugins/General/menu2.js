@@ -109,7 +109,7 @@ blazetz({ nomCom: "menu2", categorie: "General" }, async (dest, client, commandO
         if (iosMenu) {
             await client.sendMessage(dest, { text: iosPlainMenu([infoMessage, menuMessage]) });
         } else {
-            const imagePath = path.join(__dirname, "../scs/blaze-live-menu.png");
+            const imagePath = path.join(__dirname, "../../public/blaze-xmd-wordmark.png");
             const imageBuffer = fs.readFileSync(imagePath);
             await client.sendMessage(dest, {
                 image: imageBuffer,
