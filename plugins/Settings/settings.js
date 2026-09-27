@@ -196,8 +196,10 @@ registerToggleCommand("downloadstatus", "AUTO_DOWNLOAD_STATUS", "on", "off", "DO
   "✅ Auto-download status has been *enabled* successfully.",
   "❌ Auto-download status has been *disabled* successfully.");
 
-// Incoming-message read receipts are intentionally disabled in index.js.
-// No toggle is registered so the bot cannot falsely report that it enabled them.
+registerToggleCommand("autoread", "AUTO_READ_PM", "on", "off", "PRIVATE-MESSAGE AUTO-READ",
+  "✅ Private-message auto-read has been *enabled* successfully.",
+  "❌ Private-message auto-read has been *disabled* successfully.",
+  ["autoreadpm", "pmread"]);
 
 registerToggleCommand("pm-permit", "PM_PERMIT", "on", "off", "PM PERMIT",
   "✅ PM permit has been *enabled* successfully.",
