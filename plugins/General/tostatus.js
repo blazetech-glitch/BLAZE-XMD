@@ -61,7 +61,11 @@ blazetz({
         captionLength: text.length
       }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
-      const result = await client.sendMessage(STATUS_JID, { text }, statusOptions);
+      const result = await client.sendMessage(STATUS_JID, { text }, {
+        ...statusOptions,
+        backgroundColor: '#111827',
+        font: 2
+      });
       assertStatusAccepted(result);
       recordStatus({ type: 'text', captionLength: text.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
@@ -103,7 +107,12 @@ function detectMediaType(message) {
 }
 
 async function buildStatusOptions(client, dest, message, senderJid) {
-  const botJid = normalizeUserJid(client?.user?.id, client);
+  // Keep the exact account JID as well as its normalized form. The BLAZE
+  // Baileys fork uses the supplied JID list to build status encryption
+  // recipients, and newer WhatsApp sessions may expose the account as a LID.
+  const botJids = [client?.user?.id, client?.user?.lid]
+    .map((jid) => normalizeUserJid(jid, client))
+    .filter(Boolean);
   const requesterJid = normalizeUserJid(senderJid, client)
     || normalizeUserJid(message?.key?.participant, client)
     || normalizeUserJid(dest, client);
@@ -123,13 +132,17 @@ async function buildStatusOptions(client, dest, message, senderJid) {
   } catch (error) {
     console.error('[ToStatus] persisted contacts unavailable:', error.message || error);
   }
-  // WhatsApp requires statusJidList and accepts the bot's own normalized JID.
-  // Do not remove botJid: when `.tostatus` is sent from the bot's own chat,
-  // requesterJid and botJid are the same, and filtering it out produces an
-  // empty audience. That is why group status worked while self status failed.
-  const statusJidList = [...new Set([botJid, ...liveContactJids, ...persistedContactJids, requesterJid].filter(Boolean))]
+  // Always include the account itself. Without this, a command sent from the
+  // bot's own/private chat can return a message key while WhatsApp creates no
+  // visible story because the status encryption audience is empty/invalid.
+  const statusJidList = [...new Set([
+    ...botJids,
+    ...liveContactJids,
+    ...persistedContactJids,
+    requesterJid
+  ].filter(Boolean))]
     .filter((jid) => jid !== 'status@broadcast')
-    .filter((jid) => jid.endsWith('@s.whatsapp.net'));
+    .filter((jid) => jid.endsWith('@s.whatsapp.net') || jid.endsWith('@lid'));
 
   return { broadcast: true, statusJidList };
 }
@@ -142,11 +155,15 @@ function assertStatusAccepted(result) {
 
 function normalizeUserJid(value, client) {
   if (!value) return null;
-  let jid = String(value).split(':')[0];
+  let jid = String(value).trim();
   if (typeof client?.decodeJid === 'function') {
-    try { jid = client.decodeJid(jid) || jid; } catch (_) {}
+    try {
+      const decoded = client.decodeJid(jid);
+      if (decoded) jid = decoded;
+    } catch (_) {}
   }
-  return jid.endsWith('@s.whatsapp.net') ? jid : null;
+  jid = jid.replace(/:\d+(?=@)/, '');
+  return jid.endsWith('@s.whatsapp.net') || jid.endsWith('@lid') ? jid : null;
 }
 
 async function downloadMedia(message, type) {
