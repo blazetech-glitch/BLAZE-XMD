@@ -123,11 +123,15 @@ async function buildStatusOptions(client, dest, message, senderJid) {
   } catch (error) {
     console.error('[ToStatus] persisted contacts unavailable:', error.message || error);
   }
-  const statusJidList = [...new Set([...liveContactJids, ...persistedContactJids, requesterJid].filter(Boolean))]
-    .filter((jid) => jid !== 'status@broadcast' && jid !== botJid)
+  // WhatsApp requires statusJidList and accepts the bot's own normalized JID.
+  // Do not remove botJid: when `.tostatus` is sent from the bot's own chat,
+  // requesterJid and botJid are the same, and filtering it out produces an
+  // empty audience. That is why group status worked while self status failed.
+  const statusJidList = [...new Set([botJid, ...liveContactJids, ...persistedContactJids, requesterJid].filter(Boolean))]
+    .filter((jid) => jid !== 'status@broadcast')
     .filter((jid) => jid.endsWith('@s.whatsapp.net'));
 
-  return { statusJidList };
+  return { broadcast: true, statusJidList };
 }
 
 function assertStatusAccepted(result) {
