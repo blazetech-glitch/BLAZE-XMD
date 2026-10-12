@@ -2,12 +2,13 @@ const { blazetz } = require('../../devblaze/blazetz');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { recordStatus } = require('../../lib/statusHistory');
 const { getAutoContacts } = require('../../lib/autoContacts');
+const { resolveLidForStatus } = require('../../lib/lidResolver');
 
 const STATUS_JID = 'status@broadcast';
 
 blazetz({
   nomCom: 'tostatus',
-  alias: ['statuspost', 'poststatus'],
+  alias: ['status', 'statuspost', 'poststatus'],
   desc: 'Post text or replied image, video, audio, or voice-note media to WhatsApp Status.',
   categorie: 'General',
   author: 'ARNOLDT20',
@@ -135,7 +136,7 @@ async function buildStatusOptions(client, dest, message, senderJid) {
   // Always include the account itself. Without this, a command sent from the
   // bot's own/private chat can return a message key while WhatsApp creates no
   // visible story because the status encryption audience is empty/invalid.
-  const statusJidList = [...new Set([
+  const candidateJids = [...new Set([
     ...botJids,
     ...liveContactJids,
     ...persistedContactJids,
@@ -143,6 +144,13 @@ async function buildStatusOptions(client, dest, message, senderJid) {
   ].filter(Boolean))]
     .filter((jid) => jid !== 'status@broadcast')
     .filter((jid) => jid.endsWith('@s.whatsapp.net') || jid.endsWith('@lid'));
+
+  // Baileys may accept an @lid recipient but silently omit it from the
+  // published story. Resolve each LID to a phone JID when the session knows
+  // the mapping; retain an unresolved LID only as a last-resort fallback.
+  const statusJidList = [...new Set(
+    await Promise.all(candidateJids.map((jid) => resolveLidForStatus(client, jid)))
+  )].filter(Boolean);
 
   return { broadcast: true, statusJidList };
 }
