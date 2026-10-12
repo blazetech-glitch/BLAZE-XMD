@@ -37,6 +37,7 @@ blazetz({
     if (!statusOptions.statusJidList.length) {
       throw new Error('No synced WhatsApp contacts are available for the status audience. Send or receive a normal chat first, then try again.');
     }
+    let resultKey;
 
     if (mediaType) {
       const buffer = await downloadMedia(media, mediaType);
@@ -55,7 +56,7 @@ blazetz({
           };
 
       const result = await client.sendMessage(STATUS_JID, payload, statusOptions);
-      assertStatusAccepted(result);
+      resultKey = assertStatusAccepted(result);
       recordStatus({
         type: mediaType,
         voiceNote: mediaType === 'audio' && Boolean(mediaMessage.ptt),
@@ -67,12 +68,16 @@ blazetz({
         backgroundColor: '#111827',
         font: 2
       });
-      assertStatusAccepted(result);
+      resultKey = assertStatusAccepted(result);
       recordStatus({ type: 'text', captionLength: text.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
     }
 
-    return repondre(`✅ WhatsApp accepted the ${mediaType ? mediaType[0].toUpperCase() + mediaType.slice(1) : 'text'} status for ${statusOptions.statusJidList.length} contacts.`);
+    return repondre(
+      `✅ *Status posted successfully on WhatsApp.*\n\n` +
+      `Type: *${mediaType ? mediaType[0].toUpperCase() + mediaType.slice(1) : 'Text'}*\n` +
+      `Message ID: \`${resultKey}\``
+    );
   } catch (error) {
     console.error('[ToStatus] post failed:', error?.message || error);
     return repondre('❌ Failed to post the status. Check the bot session and try again.');
@@ -159,6 +164,7 @@ function assertStatusAccepted(result) {
   if (!result?.key?.id) {
     throw new Error('WhatsApp did not return a status message key. The status was not confirmed.');
   }
+  return result.key.id;
 }
 
 function normalizeUserJid(value, client) {
