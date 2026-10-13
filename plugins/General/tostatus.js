@@ -37,6 +37,7 @@ blazetz({
     if (!statusOptions.statusJidList.length) {
       throw new Error('No synced WhatsApp contacts are available for the status audience. Send or receive a normal chat first, then try again.');
     }
+    console.log(`[ToStatus] publishing ${mediaType || 'text'} status to ${statusOptions.statusJidList.length} audience recipients`);
     let resultKey;
 
     if (mediaType) {
@@ -116,7 +117,14 @@ async function buildStatusOptions(client, dest, message, senderJid) {
   // Keep the exact account JID as well as its normalized form. The BLAZE
   // Baileys fork uses the supplied JID list to build status encryption
   // recipients, and newer WhatsApp sessions may expose the account as a LID.
-  const botJids = [client?.user?.id, client?.user?.lid]
+  const account = client?.authState?.creds?.me || client?.creds?.me || {};
+  const botJids = [
+    client?.user?.id,
+    client?.user?.lid,
+    client?.user?.jid,
+    account.id,
+    account.lid
+  ]
     .map((jid) => normalizeUserJid(jid, client))
     .filter(Boolean);
   const requesterJid = normalizeUserJid(senderJid, client)
@@ -157,7 +165,11 @@ async function buildStatusOptions(client, dest, message, senderJid) {
     await Promise.all(candidateJids.map((jid) => resolveLidForStatus(client, jid)))
   )].filter(Boolean);
 
-  return { broadcast: true, statusJidList };
+  console.log(`[ToStatus] account/status recipients resolved: ${statusJidList.length}`);
+  // bmbtech-baileys consumes statusJidList in relayMessage. The broadcast
+  // flag is not needed for status@broadcast and can make self-status sends
+  // look successful while WhatsApp omits the story audience.
+  return { statusJidList };
 }
 
 function assertStatusAccepted(result) {
