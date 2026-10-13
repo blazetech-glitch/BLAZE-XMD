@@ -13,21 +13,29 @@ blazetz({
   categorie: 'General',
   author: 'ARNOLDT20',
   reaction: '📢'
-}, async (dest, client, { ms, arg, repondre, superUser, auteurMessage }) => {
-  if (!superUser) {
-    return repondre('❌ This command is restricted to the bot owner.');
+}, async (dest, client, { ms, arg, repondre, superUser, verifGroupe, auteurMessage }) => {
+  if (!superUser && !verifGroupe) {
+    return repondre('❌ Use this command from a group, or use it privately as the bot owner.');
   }
 
-  const text = arg.join(' ').trim();
+  const statusArgs = parseStatusArguments(arg);
+  const text = statusArgs.text;
   const quoted = getQuotedMessage(ms);
   const media = unwrapMessage(quoted);
   const mediaType = detectMediaType(media);
+  const mediaMessage = mediaType ? media[`${mediaType}Message`] : null;
+  const mediaCaption = String(mediaMessage?.caption || '').trim();
+  const caption = mediaCaption && text && mediaCaption !== text
+    ? `${mediaCaption}\n${text}`
+    : text || mediaCaption;
 
-  if (!text && !mediaType) {
+  if (!caption && !mediaType) {
     return repondre(
       '📢 *TO STATUS USAGE*\n\n' +
-      '• Text: `.tostatus Your status text`\n' +
-      '• Media: Reply to an image, video, audio, or voice note with `.tostatus [optional caption]`'
+      '• Text: `.tostatus [color] Your status text`\n' +
+      '• Colors: `red`, `blue`, `green`, `purple`, `yellow`, or `#RRGGBB`\n' +
+      '• Media: Reply to an image, video, audio, or voice note with `.tostatus [color] [caption]`\n' +
+      '  The original media caption is preserved automatically.'
     );
   }
 
@@ -44,16 +52,16 @@ blazetz({
       const buffer = await downloadMedia(media, mediaType);
       if (!buffer.length) throw new Error('The replied media could not be downloaded.');
 
-      const mediaMessage = media[`${mediaType}Message`];
       const payload = mediaType === 'audio'
         ? {
             audio: buffer,
             mimetype: mediaMessage.mimetype || 'audio/ogg; codecs=opus',
-            ptt: Boolean(mediaMessage.ptt)
+            ptt: Boolean(mediaMessage.ptt),
+            ...(caption ? { caption } : {})
           }
         : {
             [mediaType]: buffer,
-            ...(text ? { caption: text } : {})
+            ...(caption ? { caption } : {})
           };
 
       const result = await client.sendMessage(STATUS_JID, payload, statusOptions);
@@ -61,16 +69,16 @@ blazetz({
       recordStatus({
         type: mediaType,
         voiceNote: mediaType === 'audio' && Boolean(mediaMessage.ptt),
-        captionLength: text.length
+        captionLength: caption.length
       }).catch((error) => console.error('[ToStatus] history record failed:', error.message));
     } else {
-      const result = await client.sendMessage(STATUS_JID, { text }, {
+      const result = await client.sendMessage(STATUS_JID, { text: caption }, {
         ...statusOptions,
-        backgroundColor: '#111827',
-        font: 2
+        backgroundColor: statusArgs.backgroundColor,
+        font: statusArgs.font
       });
       resultKey = assertStatusAccepted(result);
-      recordStatus({ type: 'text', captionLength: text.length })
+      recordStatus({ type: 'text', captionLength: caption.length })
         .catch((error) => console.error('[ToStatus] history record failed:', error.message));
     }
 
@@ -84,6 +92,41 @@ blazetz({
     return repondre('❌ Failed to post the status. Check the bot session and try again.');
   }
 });
+
+const STATUS_COLORS = {
+  black: '#111827', navy: '#172554', blue: '#1d4ed8', cyan: '#0e7490',
+  green: '#166534', lime: '#3f6212', yellow: '#a16207', orange: '#c2410c',
+  red: '#b91c1c', pink: '#be185d', purple: '#6b21a8', violet: '#4c1d95',
+  brown: '#78350f', gray: '#374151', grey: '#374151', white: '#f8fafc'
+};
+
+function parseStatusArguments(args = []) {
+  const values = [...args];
+  let backgroundColor = '#111827';
+  let font = 2;
+  const first = String(values[0] || '').toLowerCase();
+  const colorMatch = first.match(/^(?:--?color=|bg=)(#[0-9a-f]{6}|[a-z]+)$/i);
+  if (colorMatch) {
+    backgroundColor = normalizeStatusColor(colorMatch[1]);
+    values.shift();
+  } else if (first === 'color' || first === '--color' || first === '-color') {
+    values.shift();
+    if (values[0]) backgroundColor = normalizeStatusColor(values.shift());
+  } else if (STATUS_COLORS[first] || /^#[0-9a-f]{6}$/i.test(first)) {
+    backgroundColor = normalizeStatusColor(values.shift());
+  }
+  const fontMatch = String(values[0] || '').match(/^(?:--?font=)([1-5])$/i);
+  if (fontMatch) {
+    font = Number(fontMatch[1]);
+    values.shift();
+  }
+  return { text: values.join(' ').trim(), backgroundColor, font };
+}
+
+function normalizeStatusColor(value) {
+  const color = String(value || '').trim().toLowerCase();
+  return STATUS_COLORS[color] || (/^#[0-9a-f]{6}$/i.test(color) ? color : '#111827');
+}
 
 function getQuotedMessage(message) {
   return message?.message?.extendedTextMessage?.contextInfo?.quotedMessage
