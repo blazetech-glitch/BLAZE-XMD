@@ -46,7 +46,7 @@ blazetz({
     const response = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${arg}&plot=full`);
     const imdbData = response.data;
 
-    let imdbInfo = "THANKS ALL FOR THE SUPPORT ITS ME PKDRILLER \n";
+    let imdbInfo = "THANKS ALL FOR THE SUPPORT ITS ME ARNOLDT20 \n";
     imdbInfo += " ``` BLAZE-TECH FILMS```\n";
     imdbInfo += "*Made by 𝙱𝙻𝙰𝚉𝙴 𝚇𝙼𝙳*\n";
     imdbInfo += "🎬Title    : " + imdbData.Title + "\n";
